@@ -8,6 +8,9 @@ android:
     - build-tools-23.0.3
     - android-23
 
+sudo:
+  false
+
 script:
   gradle/build.sh
 
