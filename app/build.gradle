@@ -30,4 +30,8 @@ dependencies {
 
     // Square libraries
     compile 'com.squareup.sqlbrite:sqlbrite:0.7.0'
+
+    // Jake Wharton libraries
+    compile 'com.jakewharton:butterknife:8.2.1'
+    apt 'com.jakewharton:butterknife-compiler:8.2.1'
 }

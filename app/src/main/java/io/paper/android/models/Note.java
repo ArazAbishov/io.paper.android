@@ -20,11 +20,11 @@ public class Note {
         this.description = description;
     }
 
-    public String getTitle() {
+    public String title() {
         return title;
     }
 
-    public String getDescription() {
+    public String description() {
         return description;
     }
 
