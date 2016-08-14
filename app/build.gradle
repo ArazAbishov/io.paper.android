@@ -27,4 +27,7 @@ dependencies {
     apt 'com.google.dagger:dagger-compiler:2.6'
     compile 'com.google.dagger:dagger:2.6'
     provided 'javax.annotation:jsr250-api:1.0'
+
+    // Square libraries
+    compile 'com.squareup.sqlbrite:sqlbrite:0.7.0'
 }
