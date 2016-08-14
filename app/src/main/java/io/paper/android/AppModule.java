@@ -2,9 +2,17 @@ package io.paper.android;
 
 import android.app.Application;
 
-import dagger.Module;
+import javax.inject.Singleton;
 
-@Module
+import dagger.Module;
+import dagger.Provides;
+import io.paper.android.models.DbModule;
+
+@Module(
+        includes = {
+                DbModule.class
+        }
+)
 public class AppModule {
     private final Application application;
 
@@ -12,5 +20,9 @@ public class AppModule {
         this.application = application;
     }
 
-    
+    @Provides
+    @Singleton
+    Application providesApplication() {
+        return application;
+    }
 }
