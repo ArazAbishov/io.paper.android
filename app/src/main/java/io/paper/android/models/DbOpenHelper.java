@@ -14,11 +14,11 @@ final class DbOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(DbSchemas.CREATE_NOTES_TABLE);
+        sqLiteDatabase.execSQL(DbSchemas.Notes.CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int currentVersion, int newVersion) {
-        sqLiteDatabase.execSQL(DbSchemas.DROP_NOTES_TABLE);
+        sqLiteDatabase.execSQL(DbSchemas.Notes.DROP_TABLE);
     }
 }
