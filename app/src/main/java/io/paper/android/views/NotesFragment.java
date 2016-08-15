@@ -9,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,6 +20,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.paper.android.PaperApp;
 import io.paper.android.R;
@@ -109,16 +109,15 @@ public final class NotesFragment extends Fragment {
         subscriptions.unsubscribe();
     }
 
+    @OnClick(R.id.fab_add_note)
+    @SuppressWarnings("unused")
+    public void onAddNote() {
+        AddNoteFragment.newInstance()
+                .show(getChildFragmentManager(), NotesFragment.class.getSimpleName());
+    }
+
     private void setupToolbar() {
         toolbar.setTitle(getString(R.string.notes));
-        toolbar.inflateMenu(R.menu.menu_notes);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                showAddNoteDialog();
-                return true;
-            }
-        });
     }
 
     private void setupRecyclerView() {
@@ -129,10 +128,5 @@ public final class NotesFragment extends Fragment {
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(notesAdapter);
-    }
-
-    private void showAddNoteDialog() {
-        AddNoteFragment.newInstance()
-                .show(getChildFragmentManager(), NotesFragment.class.getSimpleName());
     }
 }

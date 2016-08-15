@@ -5,4 +5,5 @@
 
     <!-- MaterialUI specific dimensions and keylines -->
     <dimen name="padding_default">16dp</dimen>
+    <dimen name="margin_default">16dp</dimen>
 </resources>
