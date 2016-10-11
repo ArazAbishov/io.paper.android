@@ -20,8 +20,8 @@ import javax.inject.Inject;
 
 import io.paper.android.PaperApp;
 import io.paper.android.R;
-import io.paper.android.models.DbSchemas;
-import io.paper.android.models.Note;
+import io.paper.android.models.Book;
+import io.paper.android.stores.Notes;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func2;
@@ -54,6 +54,8 @@ public class AddNoteFragment extends DialogFragment {
         View view = LayoutInflater.from(getActivity())
                 .inflate(R.layout.fragment_add_note, null);
 
+        Book book = Book.builder().build();
+
         EditText editText = findById(view, android.R.id.input);
         Observable.combineLatest(createdClick, RxTextView.afterTextChangeEvents(editText),
                 new Func2<String, TextViewAfterTextChangeEvent, String>() {
@@ -66,8 +68,9 @@ public class AddNoteFragment extends DialogFragment {
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String noteText) {
-                        Note note = new Note("Here is stub title", noteText);
-                        paperDatabase.insert(DbSchemas.Notes.TABLE_NAME, note.toContentValues());
+
+                        // Note note = new Note("Here is stub title", noteText);
+                        paperDatabase.insert(Notes.TABLE_NAME, Notes.MAPPER.toContentValues(null));
 
                         Log.d(AddNoteFragment.class.getSimpleName(), noteText);
                     }

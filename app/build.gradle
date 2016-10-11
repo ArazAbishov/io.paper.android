@@ -3,7 +3,7 @@ apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         applicationId "io.paper.android"
@@ -18,16 +18,23 @@ dependencies {
     // Test dependencies
     testCompile 'junit:junit:4.12'
 
+    // Google
+
+
     // Support libraries
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:support-annotations:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
 
-    // Google libraries
+    // Google dagger
     apt 'com.google.dagger:dagger-compiler:2.6'
     compile 'com.google.dagger:dagger:2.6'
     provided 'javax.annotation:jsr250-api:1.0'
+
+    // Google auto-value
+    apt 'com.google.auto.value:auto-value:1.2'
+    provided 'com.google.auto.value:auto-value:1.2'
 
     // Square libraries
     compile 'com.squareup.sqlbrite:sqlbrite:0.7.0'

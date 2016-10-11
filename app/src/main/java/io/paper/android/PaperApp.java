@@ -3,7 +3,7 @@ package io.paper.android;
 import android.app.Application;
 import android.content.Context;
 
-import io.paper.android.models.DbModule;
+import io.paper.android.stores.DbModule;
 
 public final class PaperApp extends Application {
     private AppComponent appComponent;

@@ -6,7 +6,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.paper.android.models.DbModule;
+import io.paper.android.stores.DbModule;
 
 @Module(
         includes = {

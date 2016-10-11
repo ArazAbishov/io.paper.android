@@ -24,8 +24,8 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.paper.android.PaperApp;
 import io.paper.android.R;
-import io.paper.android.models.DbSchemas;
 import io.paper.android.models.Note;
+import io.paper.android.stores.Notes;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -84,12 +84,14 @@ public final class NotesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        final String QUERY = "SELECT * FROM " + Notes.TABLE_NAME;
+
         // making a new database query
-        subscriptions = paperDatabase.createQuery(DbSchemas.Notes.TABLE_NAME, DbSchemas.Notes.QUERY)
+        subscriptions = paperDatabase.createQuery(Notes.TABLE_NAME, QUERY)
                 .mapToList(new Func1<Cursor, Note>() {
                     @Override
                     public Note call(Cursor cursor) {
-                        return Note.mapNote(cursor);
+                        return Notes.MAPPER.toModel(cursor);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())

@@ -1,4 +1,4 @@
-package io.paper.android.models;
+package io.paper.android.stores;
 
 import android.database.Cursor;
 
