@@ -13,7 +13,7 @@ public abstract class Book implements Model {
 
     @AutoValue.Builder
     public abstract static class Builder {
-        public abstract Builder id(long id);
+        public abstract Builder id(Long id);
         public abstract Builder title(String title);
         public abstract Builder description(String description);
         public abstract Book build();

@@ -1,6 +1,7 @@
 package io.paper.android.views;
 
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -14,14 +15,14 @@ import android.widget.EditText;
 
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.jakewharton.rxbinding.widget.TextViewAfterTextChangeEvent;
-import com.squareup.sqlbrite.BriteDatabase;
 
 import javax.inject.Inject;
 
 import io.paper.android.PaperApp;
 import io.paper.android.R;
-import io.paper.android.models.Book;
-import io.paper.android.stores.Notes;
+import io.paper.android.models.Note;
+import io.paper.android.stores.NotesContract;
+import io.paper.android.stores.NotesMapper;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func2;
@@ -37,7 +38,7 @@ public class AddNoteFragment extends DialogFragment {
     }
 
     @Inject
-    BriteDatabase paperDatabase;
+    ContentResolver briteContentResolver;
 
     @Override
     public void onAttach(Context context) {
@@ -54,8 +55,6 @@ public class AddNoteFragment extends DialogFragment {
         View view = LayoutInflater.from(getActivity())
                 .inflate(R.layout.fragment_add_note, null);
 
-        Book book = Book.builder().build();
-
         EditText editText = findById(view, android.R.id.input);
         Observable.combineLatest(createdClick, RxTextView.afterTextChangeEvents(editText),
                 new Func2<String, TextViewAfterTextChangeEvent, String>() {
@@ -68,9 +67,12 @@ public class AddNoteFragment extends DialogFragment {
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String noteText) {
-
-                        // Note note = new Note("Here is stub title", noteText);
-                        paperDatabase.insert(Notes.TABLE_NAME, Notes.MAPPER.toContentValues(null));
+                        Note note = Note.builder()
+                                .title("StubTitle")
+                                .description(noteText)
+                                .build();
+                        briteContentResolver.insert(NotesContract.CONTENT_URI,
+                                NotesMapper.INSTANCE.toContentValues(note));
 
                         Log.d(AddNoteFragment.class.getSimpleName(), noteText);
                     }

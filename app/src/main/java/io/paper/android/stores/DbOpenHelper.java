@@ -9,12 +9,12 @@ final class DbOpenHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
 
     private static final String CREATE_NOTES_TABLE = "CREATE TABLE IF NOT EXISTS " +
-            Notes.TABLE_NAME + "(" +
-            Notes.ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-            Notes.TITLE + " TEXT," +
-            Notes.DESCRIPTION + " TEXT" + ")";
+            NotesContract.TABLE_NAME + "(" +
+            NotesContract.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            NotesContract.COLUMN_TITLE + " TEXT," +
+            NotesContract.COLUMN_DESCRIPTION + " TEXT" + ")";
 
-    private static final String DROP_NOTES_TABLE = "DROP TABLE IF EXISTS " + Notes.TABLE_NAME;
+    private static final String DROP_NOTES_TABLE = "DROP TABLE IF EXISTS " + NotesContract.TABLE_NAME;
 
     public DbOpenHelper(Context context) {
         super(context, NAME, null, VERSION);

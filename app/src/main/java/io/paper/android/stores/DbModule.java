@@ -1,9 +1,9 @@
 package io.paper.android.stores;
 
 import android.app.Application;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.content.ContentResolver;
 
-import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite.BriteContentResolver;
 import com.squareup.sqlbrite.SqlBrite;
 
 import javax.inject.Singleton;
@@ -17,21 +17,22 @@ public final class DbModule {
 
     @Provides
     @Singleton
-    SQLiteOpenHelper providesSqlLiteOpenHelper(Application application) {
-        return new DbOpenHelper(application);
-    }
-
-    @Provides
-    @Singleton
     SqlBrite providesSqlBrite() {
         return SqlBrite.create();
     }
 
     @Provides
     @Singleton
-    BriteDatabase providesBriteDatabase(SQLiteOpenHelper openHelper, SqlBrite sqlBrite) {
-        BriteDatabase database = sqlBrite.wrapDatabaseHelper(openHelper, Schedulers.io());
-        database.setLoggingEnabled(true);
-        return database;
+    ContentResolver providesSqlLiteOpenHelper(Application application) {
+        return application.getContentResolver();
+    }
+
+    @Provides
+    @Singleton
+    BriteContentResolver providesBriteContentResolver(ContentResolver resolver, SqlBrite sqlBrite) {
+        BriteContentResolver briteContentResolver = sqlBrite
+                .wrapContentProvider(resolver, Schedulers.io());
+        briteContentResolver.setLoggingEnabled(true);
+        return briteContentResolver;
     }
 }

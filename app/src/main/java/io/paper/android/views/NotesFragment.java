@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite.BriteContentResolver;
 
 import java.util.List;
 
@@ -25,7 +25,8 @@ import butterknife.Unbinder;
 import io.paper.android.PaperApp;
 import io.paper.android.R;
 import io.paper.android.models.Note;
-import io.paper.android.stores.Notes;
+import io.paper.android.stores.NotesContract;
+import io.paper.android.stores.NotesMapper;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -40,7 +41,7 @@ public final class NotesFragment extends Fragment {
     RecyclerView recyclerView;
 
     @Inject
-    BriteDatabase paperDatabase;
+    BriteContentResolver paperContentResolver;
 
     @Nullable
     Unbinder unbinder;
@@ -84,14 +85,13 @@ public final class NotesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        final String QUERY = "SELECT * FROM " + Notes.TABLE_NAME;
-
         // making a new database query
-        subscriptions = paperDatabase.createQuery(Notes.TABLE_NAME, QUERY)
+        subscriptions = paperContentResolver
+                .createQuery(NotesContract.CONTENT_URI, null, null, null, null, true)
                 .mapToList(new Func1<Cursor, Note>() {
                     @Override
                     public Note call(Cursor cursor) {
-                        return Notes.MAPPER.toModel(cursor);
+                        return NotesMapper.INSTANCE.toModel(cursor);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())

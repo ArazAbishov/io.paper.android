@@ -7,7 +7,6 @@ import com.google.auto.value.AutoValue;
  */
 @AutoValue
 public abstract class Note implements Model {
-    public abstract long book();
     public abstract String title();
     public abstract String description();
 
@@ -17,8 +16,7 @@ public abstract class Note implements Model {
 
     @AutoValue.Builder
     public abstract static class Builder {
-        public abstract Builder id(long id);
-        public abstract Builder book(long book);
+        public abstract Builder id(Long id);
         public abstract Builder title(String title);
         public abstract Builder description(String description);
         public abstract Note build();

@@ -14,15 +14,15 @@ final class Db {
         return cursor.getString(cursor.getColumnIndexOrThrow(column));
     }
 
-    public static boolean getBoolean(Cursor cursor, String column) {
+    public static Boolean getBoolean(Cursor cursor, String column) {
         return getInt(cursor, column) == BOOLEAN_TRUE;
     }
 
-    public static long getLong(Cursor cursor, String column) {
+    public static Long getLong(Cursor cursor, String column) {
         return cursor.getLong(cursor.getColumnIndexOrThrow(column));
     }
 
-    public static int getInt(Cursor cursor, String column) {
+    public static Integer getInt(Cursor cursor, String column) {
         return cursor.getInt(cursor.getColumnIndexOrThrow(column));
     }
 }
