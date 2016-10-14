@@ -1,24 +1,44 @@
 apply plugin: 'com.android.application'
 
+def versions = rootProject.ext.versions
+def libraries = rootProject.ext.libraries
+
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    compileSdkVersion versions.sdk
+    buildToolsVersion versions.tools
 
     defaultConfig {
         applicationId "io.paper.android"
-        minSdkVersion 15
-        targetSdkVersion 24
-        versionCode 1
-        versionName "0.0.1"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.sdk
+        versionCode versions.versionCode
+        versionName versions.versionName
     }
 }
 
 dependencies {
-    // test dependencies
-    testCompile 'junit:junit:4.12'
+    // Support libraries
+    compile "com.android.support:design:${libraries.support}"
+    compile "com.android.support:appcompat-v7:${libraries.support}"
+    compile "com.android.support:recyclerview-v7:${libraries.support}"
+    compile "com.android.support:support-annotations:${libraries.support}"
 
-    // support libraries
-    compile 'com.android.support:appcompat-v7:24.1.1'
-    compile 'com.android.support:support-annotations:24.1.1'
-    compile 'com.android.support:recyclerview-v7:24.1.1'
+    // Google dagger
+    compile "com.google.dagger:dagger:${libraries.dagger}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${libraries.dagger}"
+
+    // Google auto-value
+    provided "com.google.auto.value:auto-value:${libraries.autovalue}"
+    annotationProcessor "com.google.auto.value:auto-value:${libraries.autovalue}"
+
+    // Square libraries
+    compile "com.squareup.sqlbrite:sqlbrite:${libraries.sqlbrite}"
+
+    // Jake Wharton libraries
+    compile "com.jakewharton.rxbinding:rxbinding:${libraries.rxbinding}"
+    compile "com.jakewharton:butterknife:${libraries.butterknife}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${libraries.butterknife}"
+
+    // Test dependencies
+    testCompile "junit:junit:${libraries.junit}"
 }

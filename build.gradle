@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'com.android.tools.build:gradle:2.2.1'
     }
 }
 
@@ -16,4 +16,24 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    versions = [
+            sdk        : 24,
+            tools      : "24.0.2",
+            minSdk     : 15,
+            versionCode: 1,
+            versionName: "0.1"
+    ]
+
+    libraries = [
+            support    : "24.2.1",
+            dagger     : "2.6",
+            autovalue  : "1.2",
+            sqlbrite   : "0.7.0",
+            rxbinding  : "0.4.0",
+            butterknife: "8.2.1",
+            junit      : "4.12"
+    ]
 }

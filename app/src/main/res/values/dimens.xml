@@ -1,0 +1,14 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- MaterialUI specific dimensions and keylines -->
+    <dimen name="padding_default">16dp</dimen>
+    <dimen name="margin_default">16dp</dimen>
+
+    <!-- Text size -->
+    <dimen name="text_size_large">17sp</dimen>
+    <dimen name="text_size_medium">15sp</dimen>
+    <dimen name="text_size_small">13sp</dimen>
+</resources>
