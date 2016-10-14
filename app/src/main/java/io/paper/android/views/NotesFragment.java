@@ -41,7 +41,7 @@ public final class NotesFragment extends Fragment {
     RecyclerView recyclerView;
 
     @Inject
-    BriteContentResolver paperContentResolver;
+    BriteContentResolver contentResolver;
 
     @Nullable
     Unbinder unbinder;
@@ -86,7 +86,7 @@ public final class NotesFragment extends Fragment {
         super.onResume();
 
         // making a new database query
-        subscriptions = paperContentResolver
+        subscriptions = contentResolver
                 .createQuery(NotesContract.CONTENT_URI, null, null, null, null, true)
                 .mapToList(new Func1<Cursor, Note>() {
                     @Override
@@ -98,7 +98,7 @@ public final class NotesFragment extends Fragment {
                 .subscribe(new Action1<List<Note>>() {
                     @Override
                     public void call(List<Note> notes) {
-                        notesAdapter.swapData(notes);
+                        notesAdapter.swap(notes);
                     }
                 });
     }

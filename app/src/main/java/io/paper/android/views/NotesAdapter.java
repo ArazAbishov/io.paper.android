@@ -38,7 +38,7 @@ final class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHolde
         return notes.size();
     }
 
-    public void swapData(List<Note> notes) {
+    public void swap(List<Note> notes) {
         this.notes.clear();
 
         if (notes != null) {

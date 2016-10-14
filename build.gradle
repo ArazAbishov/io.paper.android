@@ -18,7 +18,6 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-
 ext {
     versions = [
             sdk        : 24,

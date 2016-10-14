@@ -38,7 +38,7 @@ public class AddNoteFragment extends DialogFragment {
     }
 
     @Inject
-    ContentResolver briteContentResolver;
+    ContentResolver contentResolver;
 
     @Override
     public void onAttach(Context context) {
@@ -71,7 +71,7 @@ public class AddNoteFragment extends DialogFragment {
                                 .title("StubTitle")
                                 .description(noteText)
                                 .build();
-                        briteContentResolver.insert(NotesContract.CONTENT_URI,
+                        contentResolver.insert(NotesContract.CONTENT_URI,
                                 NotesMapper.INSTANCE.toContentValues(note));
 
                         Log.d(AddNoteFragment.class.getSimpleName(), noteText);
