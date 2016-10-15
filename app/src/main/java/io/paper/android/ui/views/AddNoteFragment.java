@@ -1,4 +1,4 @@
-package io.paper.android.views;
+package io.paper.android.ui.views;
 
 import android.app.Dialog;
 import android.content.ContentResolver;

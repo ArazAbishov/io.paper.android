@@ -1,4 +1,4 @@
-package io.paper.android.views;
+package io.paper.android.ui.views;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
