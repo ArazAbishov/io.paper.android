@@ -4,5 +4,4 @@
     <!-- NotesFragment -->
     <string name="notes">Notes</string>
     <string name="add_note">Add note</string>
-    <string name="switch_layout">Switch layout</string>
 </resources>
