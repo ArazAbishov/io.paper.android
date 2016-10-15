@@ -99,8 +99,8 @@ public final class NotesFragment extends Fragment implements NotesView {
     @OnClick(R.id.fab_add_note)
     @SuppressWarnings("unused")
     public void onAddNote() {
-        AddNoteFragment.newInstance()
-                .show(getChildFragmentManager(), NotesFragment.class.getSimpleName());
+        AddNoteFragment.newInstance().show(getChildFragmentManager(),
+                NotesFragment.class.getSimpleName());
     }
 
     @Override
