@@ -11,11 +11,11 @@
         android:theme="@style/AppTheme">
 
         <provider
-            android:name=".stores.DbContentProvider"
+            android:name=".data.stores.DbContentProvider"
             android:authorities="io.paper.android.provider"
             android:exported="false" />
 
-        <activity android:name=".ui.views.HomeActivity">
+        <activity android:name=".notes.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

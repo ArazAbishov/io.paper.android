@@ -1,8 +1,8 @@
-package io.paper.android.stores;
+package io.paper.android.data.stores;
 
 import android.support.annotation.NonNull;
 
-interface Contract {
+public interface Contract {
     @NonNull
     String table();
 }

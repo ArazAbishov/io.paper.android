@@ -1,6 +1,8 @@
-package io.paper.android.models;
+package io.paper.android.notes;
 
 import com.google.auto.value.AutoValue;
+
+import io.paper.android.data.Model;
 
 /**
  * Immutable model which represents Note

@@ -1,4 +1,4 @@
-package io.paper.android.stores;
+package io.paper.android.data.stores;
 
 import android.content.ContentProvider;
 import android.content.ContentProviderOperation;
@@ -19,6 +19,9 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import io.paper.android.notes.NotesContract;
+import io.paper.android.data.stores.Contract;
 
 import static android.content.ContentUris.parseId;
 import static android.content.ContentUris.withAppendedId;

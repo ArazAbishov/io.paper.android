@@ -1,9 +1,10 @@
-package io.paper.android.ui.views;
+package io.paper.android.notes;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import io.paper.android.R;
+import io.paper.android.notes.NotesFragment;
 
 public class HomeActivity extends AppCompatActivity {
 

@@ -1,9 +1,10 @@
-package io.paper.android.stores;
+package io.paper.android.notes;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import io.paper.android.models.Note;
+import io.paper.android.data.stores.Db;
+import io.paper.android.data.stores.Mapper;
 
 public final class NotesMapper implements Mapper<Note> {
     public static final Mapper<Note> INSTANCE = new NotesMapper();

@@ -1,42 +1,28 @@
-package io.paper.android.ui.presenters;
+package io.paper.android.notes;
 
-import android.database.Cursor;
 import android.support.annotation.NonNull;
-
-import com.squareup.sqlbrite.BriteContentResolver;
 
 import java.util.List;
 
-import io.paper.android.models.Note;
-import io.paper.android.stores.NotesContract;
-import io.paper.android.stores.NotesMapper;
-import io.paper.android.ui.views.NotesView;
-import io.paper.android.ui.views.View;
+import io.paper.android.data.stores.Store;
+import io.paper.android.ui.View;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
 
 public class NotesPresenterImpl implements NotesPresenter {
-    private final BriteContentResolver contentResolver;
-
+    private final Store<Note> noteStore;
     private Subscription subscriptions;
     private NotesView notesView;
 
-    public NotesPresenterImpl(BriteContentResolver contentResolver) {
-        this.contentResolver = contentResolver;
+    public NotesPresenterImpl(Store<Note> noteStore) {
+        this.noteStore = noteStore;
     }
 
     @Override
     public void listNotes() {
-        subscriptions = contentResolver
-                .createQuery(NotesContract.CONTENT_URI, null, null, null, null, true)
-                .mapToList(new Func1<Cursor, Note>() {
-                    @Override
-                    public Note call(Cursor cursor) {
-                        return NotesMapper.INSTANCE.toModel(cursor);
-                    }
-                })
+        subscriptions = noteStore.query(Query.builder()
+                .notifyForDescendents(true).build())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<Note>>() {
                     @Override

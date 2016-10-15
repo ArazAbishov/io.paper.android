@@ -1,7 +1,6 @@
-package io.paper.android.ui.views;
+package io.paper.android.notes;
 
 import android.app.Dialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -20,9 +19,7 @@ import javax.inject.Inject;
 
 import io.paper.android.PaperApp;
 import io.paper.android.R;
-import io.paper.android.models.Note;
-import io.paper.android.stores.NotesContract;
-import io.paper.android.stores.NotesMapper;
+import io.paper.android.data.stores.Store;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func2;
@@ -38,7 +35,7 @@ public class AddNoteFragment extends DialogFragment {
     }
 
     @Inject
-    ContentResolver contentResolver;
+    Store<Note> noteStore;
 
     @Override
     public void onAttach(Context context) {
@@ -71,8 +68,7 @@ public class AddNoteFragment extends DialogFragment {
                                 .title("StubTitle")
                                 .description(noteText)
                                 .build();
-                        contentResolver.insert(NotesContract.CONTENT_URI,
-                                NotesMapper.INSTANCE.toContentValues(note));
+                        noteStore.insert(note).toBlocking().first();
 
                         Log.d(AddNoteFragment.class.getSimpleName(), noteText);
                     }

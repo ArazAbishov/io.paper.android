@@ -1,4 +1,4 @@
-package io.paper.android.ui.views;
+package io.paper.android.notes;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +12,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.paper.android.R;
-import io.paper.android.models.Note;
 
 final class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHolder> {
     private final LayoutInflater inflater;

@@ -1,4 +1,4 @@
-package io.paper.android.ui.views;
+package io.paper.android.notes;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -21,8 +21,6 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.paper.android.PaperApp;
 import io.paper.android.R;
-import io.paper.android.models.Note;
-import io.paper.android.ui.presenters.NotesPresenter;
 
 public final class NotesFragment extends Fragment implements NotesView {
 
