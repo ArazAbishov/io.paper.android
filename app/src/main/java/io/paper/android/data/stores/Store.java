@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 import io.paper.android.data.Model;
-import io.paper.android.notes.Query;
 import rx.Observable;
 
 public interface Store<T extends Model> {

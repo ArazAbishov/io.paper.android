@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
+import io.paper.android.data.stores.Query;
 import io.paper.android.data.stores.Store;
 import io.paper.android.ui.View;
 import rx.Subscription;

@@ -1,4 +1,4 @@
-package io.paper.android.notes;
+package io.paper.android.data.stores;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

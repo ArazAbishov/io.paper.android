@@ -9,6 +9,7 @@ import com.squareup.sqlbrite.BriteContentResolver;
 
 import java.util.List;
 
+import io.paper.android.data.stores.Query;
 import io.paper.android.data.stores.Store;
 import rx.Observable;
 import rx.functions.Func0;
