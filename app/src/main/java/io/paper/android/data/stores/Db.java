@@ -1,8 +1,8 @@
-package io.paper.android.stores;
+package io.paper.android.data.stores;
 
 import android.database.Cursor;
 
-final class Db {
+public final class Db {
     public static final int BOOLEAN_FALSE = 0;
     public static final int BOOLEAN_TRUE = 1;
 

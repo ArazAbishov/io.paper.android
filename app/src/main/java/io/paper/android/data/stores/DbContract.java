@@ -1,4 +1,4 @@
-package io.paper.android.stores;
+package io.paper.android.data.stores;
 
 import android.net.Uri;
 

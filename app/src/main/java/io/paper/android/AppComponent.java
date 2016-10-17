@@ -3,8 +3,8 @@ package io.paper.android;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import io.paper.android.views.AddNoteFragment;
-import io.paper.android.views.NotesFragment;
+import io.paper.android.notes.AddNoteFragment;
+import io.paper.android.notes.NotesFragment;
 
 @Singleton
 @Component(modules = AppModule.class)

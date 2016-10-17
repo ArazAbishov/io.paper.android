@@ -6,7 +6,11 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.paper.android.stores.DbModule;
+import io.paper.android.data.stores.DbModule;
+import io.paper.android.data.stores.Store;
+import io.paper.android.notes.Note;
+import io.paper.android.notes.NotesPresenter;
+import io.paper.android.notes.NotesPresenterImpl;
 
 @Module(
         includes = {
@@ -24,5 +28,11 @@ public class AppModule {
     @Singleton
     Application providesApplication() {
         return application;
+    }
+
+    @Provides
+    @Singleton
+    NotesPresenter providesNotesPresenter(Store<Note> noteStore) {
+        return new NotesPresenterImpl(noteStore);
     }
 }

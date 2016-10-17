@@ -1,8 +1,10 @@
-package io.paper.android.stores;
+package io.paper.android.data.stores;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import io.paper.android.notes.NotesContract;
 
 final class DbOpenHelper extends SQLiteOpenHelper {
     private static final String NAME = "Paper.db";
