@@ -1,4 +1,4 @@
-package io.paper.android.notes;
+package io.paper.android.addnote;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -20,6 +20,8 @@ import javax.inject.Inject;
 import io.paper.android.PaperApp;
 import io.paper.android.R;
 import io.paper.android.data.stores.Store;
+import io.paper.android.notes.Note;
+import io.paper.android.notes.NotesFragment;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func2;

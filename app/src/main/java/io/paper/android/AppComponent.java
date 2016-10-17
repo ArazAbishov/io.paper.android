@@ -3,7 +3,7 @@ package io.paper.android;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import io.paper.android.notes.AddNoteFragment;
+import io.paper.android.addnote.AddNoteFragment;
 import io.paper.android.notes.NotesFragment;
 
 @Singleton

@@ -21,6 +21,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.paper.android.PaperApp;
 import io.paper.android.R;
+import io.paper.android.addnote.AddNoteFragment;
 
 public final class NotesFragment extends Fragment implements NotesView {
 

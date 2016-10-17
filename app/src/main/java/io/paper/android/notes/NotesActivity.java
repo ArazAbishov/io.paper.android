@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import io.paper.android.R;
 import io.paper.android.notes.NotesFragment;
 
-public class HomeActivity extends AppCompatActivity {
+public class NotesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
