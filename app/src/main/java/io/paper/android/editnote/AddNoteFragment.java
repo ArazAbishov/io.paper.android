@@ -1,4 +1,4 @@
-package io.paper.android.addnote;
+package io.paper.android.editnote;
 
 import android.app.Dialog;
 import android.content.Context;

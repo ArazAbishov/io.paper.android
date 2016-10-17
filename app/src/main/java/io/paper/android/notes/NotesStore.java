@@ -3,6 +3,7 @@ package io.paper.android.notes;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.squareup.sqlbrite.BriteContentResolver;
@@ -25,14 +26,19 @@ public class NotesStore implements Store<Note> {
     }
 
     @Override
-    public Observable<List<Note>> query(@NonNull Query query) {
-        return briteContentResolver.createQuery(NotesContract.CONTENT_URI, query.projection(),
-                query.selection(), query.selectionArgs(), query.sortOrder(), query.notifyForDescendents())
-                .mapToList(new Func1<Cursor, Note>() {
-                    @Override public Note call(Cursor cursor) {
-                        return NotesMapper.INSTANCE.toModel(cursor);
+    public Observable<Note> query(@NonNull Long id, @NonNull Query query) {
+        return query(ContentUris.withAppendedId(NotesContract.CONTENT_URI, id), query)
+                .flatMap(new Func1<List<Note>, Observable<Note>>() {
+                    @Override public Observable<Note> call(List<Note> notes) {
+                        return Observable.from(notes);
                     }
-                });
+                })
+                .take(1);
+    }
+
+    @Override
+    public Observable<List<Note>> query(@NonNull Query query) {
+        return query(NotesContract.CONTENT_URI, query);
     }
 
     @Override
@@ -50,7 +56,8 @@ public class NotesStore implements Store<Note> {
     public Observable<Integer> update(@NonNull final Note model) {
         return Observable.defer(new Func0<Observable<Integer>>() {
             @Override public Observable<Integer> call() {
-                return Observable.just(contentResolver.update(NotesContract.CONTENT_URI,
+                return Observable.just(contentResolver.update(
+                        ContentUris.withAppendedId(NotesContract.CONTENT_URI, model.id()),
                         NotesMapper.INSTANCE.toContentValues(model), null, null));
             }
         });
@@ -77,5 +84,15 @@ public class NotesStore implements Store<Note> {
                         NotesContract.CONTENT_URI, null, null));
             }
         });
+    }
+
+    private Observable<List<Note>> query(@NonNull Uri uri, @NonNull Query query) {
+        return briteContentResolver.createQuery(uri, query.projection(),
+                query.selection(), query.selectionArgs(), query.sortOrder(), query.notifyForDescendents())
+                .mapToList(new Func1<Cursor, Note>() {
+                    @Override public Note call(Cursor cursor) {
+                        return NotesMapper.INSTANCE.toModel(cursor);
+                    }
+                });
     }
 }

@@ -24,7 +24,7 @@ final class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHolde
 
     @Override
     public NoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new NoteViewHolder(inflater.inflate(R.layout.recyclerview_note, parent, false));
+        return new NoteViewHolder(inflater.inflate(R.layout.recyclerview_item_note, parent, false));
     }
 
     @Override
