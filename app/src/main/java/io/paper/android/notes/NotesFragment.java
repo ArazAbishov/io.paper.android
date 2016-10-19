@@ -22,6 +22,7 @@ import butterknife.Unbinder;
 import io.paper.android.PaperApp;
 import io.paper.android.R;
 import io.paper.android.editnote.EditNoteActivity;
+import io.paper.android.notes.NotesAdapter.OnNoteClickListener;
 
 public final class NotesFragment extends Fragment implements NotesView {
 
@@ -64,7 +65,11 @@ public final class NotesFragment extends Fragment implements NotesView {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        notesAdapter = new NotesAdapter(LayoutInflater.from(getActivity()));
+        notesAdapter = new NotesAdapter(LayoutInflater.from(getActivity()), new OnNoteClickListener() {
+            @Override public void onNoteClick(Note note) {
+                onEditNote(note);
+            }
+        });
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(notesAdapter);
     }
@@ -109,5 +114,9 @@ public final class NotesFragment extends Fragment implements NotesView {
     @Override
     public void navigateToEditNoteView(Long noteId) {
         startActivity(EditNoteActivity.newIntent(getActivity(), noteId));
+    }
+
+    private void onEditNote(Note note) {
+        startActivity(EditNoteActivity.newIntent(getActivity(), note.id()));
     }
 }
