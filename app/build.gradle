@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+apply plugin: "com.android.application"
 
 def versions = rootProject.ext.versions
 def libraries = rootProject.ext.libraries
@@ -19,8 +19,17 @@ android {
         warningsAsErrors true
         abortOnError true
 
-        disable 'GoogleAppIndexingWarning' // App does not have deep linking.
-        disable 'InvalidPackage' // Okio references java.nio that does not presented in Android SDK.
+        disable "GoogleAppIndexingWarning" // App does not have deep linking.
+        disable "InvalidPackage" // Okio references java.nio that does not presented in Android SDK.
+    }
+
+    productFlavors {
+        internal {
+            applicationId "io.paper.android.internal"
+        }
+        production {
+            applicationId "io.paper.android"
+        }
     }
 }
 
