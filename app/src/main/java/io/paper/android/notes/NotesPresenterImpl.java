@@ -10,6 +10,8 @@ import io.paper.android.ui.View;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.Subscriptions;
 
 public class NotesPresenterImpl implements NotesPresenter {
     private final Store<Note> noteStore;
@@ -18,6 +20,7 @@ public class NotesPresenterImpl implements NotesPresenter {
 
     public NotesPresenterImpl(Store<Note> noteStore) {
         this.noteStore = noteStore;
+        this.subscriptions = Subscriptions.empty();
     }
 
     @Override
@@ -36,6 +39,25 @@ public class NotesPresenterImpl implements NotesPresenter {
     }
 
     @Override
+    public void createNote() {
+        Note note = Note.builder().title("").description("").build();
+        subscriptions = noteStore.insert(note)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Long>() {
+                    @Override public void call(Long noteId) {
+                        if (notesView != null) {
+                            notesView.navigateToEditNoteView(noteId);
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override public void call(Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+                });
+    }
+
+    @Override
     public void attachView(@NonNull View view) {
         if (view instanceof NotesView) {
             notesView = (NotesView) view;
@@ -48,8 +70,9 @@ public class NotesPresenterImpl implements NotesPresenter {
     @Override
     public void detachView() {
         // un-subscribing in order not to leak memory
-        if (subscriptions != null && !subscriptions.isUnsubscribed()) {
+        if (!subscriptions.isUnsubscribed()) {
             subscriptions.unsubscribe();
+            subscriptions = Subscriptions.empty();
         }
     }
 }

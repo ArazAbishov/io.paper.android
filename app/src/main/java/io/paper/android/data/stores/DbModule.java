@@ -11,7 +11,8 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import io.paper.android.notes.Note;
-import io.paper.android.notes.NotesStore;
+import io.paper.android.notes.NotesContract;
+import io.paper.android.notes.NotesMapper;
 import rx.schedulers.Schedulers;
 
 @Module
@@ -42,6 +43,7 @@ public final class DbModule {
     @Singleton
     Store<Note> providesNoteStore(ContentResolver contentResolver,
             BriteContentResolver briteResolver) {
-        return new NotesStore(contentResolver, briteResolver);
+        return new StoreImpl<>(contentResolver, briteResolver,
+                NotesMapper.INSTANCE, NotesContract.CONTENT_URI);
     }
 }

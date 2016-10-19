@@ -11,6 +11,7 @@ import io.paper.android.data.Model;
 public abstract class Note implements Model {
     public abstract String title();
     public abstract String description();
+    public abstract Builder toBuilder();
 
     public static Builder builder() {
         return new AutoValue_Note.Builder();

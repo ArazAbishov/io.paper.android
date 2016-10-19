@@ -21,6 +21,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.paper.android.PaperApp;
 import io.paper.android.R;
+import io.paper.android.editnote.EditNoteActivity;
 
 public final class NotesFragment extends Fragment implements NotesView {
 
@@ -97,12 +98,16 @@ public final class NotesFragment extends Fragment implements NotesView {
     @OnClick(R.id.fab_add_note)
     @SuppressWarnings("unused")
     public void onAddNote() {
-        AddNoteFragment.newInstance().show(getChildFragmentManager(),
-                NotesFragment.class.getSimpleName());
+        notesPresenter.createNote();
     }
 
     @Override
     public void renderNotes(List<Note> notes) {
         notesAdapter.swap(notes);
+    }
+
+    @Override
+    public void navigateToEditNoteView(Long noteId) {
+        startActivity(EditNoteActivity.newIntent(getActivity(), noteId));
     }
 }

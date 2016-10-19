@@ -3,5 +3,8 @@
 
     <!-- NotesFragment -->
     <string name="notes">Notes</string>
-    <string name="add_note">Add note</string>
+
+    <!-- AddNoteFragment -->
+    <string name="note_title">Title</string>
+    <string name="note_description">Description</string>
 </resources>

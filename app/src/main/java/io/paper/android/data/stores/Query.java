@@ -6,6 +6,9 @@ import android.support.annotation.Nullable;
 public final class Query {
 
     @Nullable
+    private final Long id;
+
+    @Nullable
     private final String[] projection;
 
     @Nullable
@@ -25,13 +28,19 @@ public final class Query {
         return new Builder();
     }
 
-    private Query(@Nullable String[] projection, @Nullable String selection,
+    private Query(@Nullable Long id, @Nullable String[] projection, @Nullable String selection,
             @Nullable String[] selectionArgs, @Nullable String sortOrder, boolean notify) {
+        this.id = id;
         this.projection = projection;
         this.selection = selection;
         this.selectionArgs = selectionArgs;
         this.sortOrder = sortOrder;
         this.notifyForDescendents = notify;
+    }
+
+    @Nullable
+    public Long id() {
+        return id;
     }
 
     @Nullable
@@ -59,6 +68,7 @@ public final class Query {
     }
 
     public static class Builder {
+        private Long id;
         private String[] projection;
         private String selection;
         private String[] selectionArgs;
@@ -67,6 +77,11 @@ public final class Query {
 
         Builder() {
             // explicit constructor
+        }
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
         }
 
         public Builder projection(String[] projection) {
@@ -95,7 +110,7 @@ public final class Query {
         }
 
         public Query build() {
-            return new Query(projection, selection, selectionArgs,
+            return new Query(id, projection, selection, selectionArgs,
                     sortOrder, notifyForDescendents);
         }
     }
