@@ -20,6 +20,7 @@ import butterknife.Unbinder;
 import io.paper.android.PaperApp;
 import io.paper.android.R;
 import io.paper.android.notes.Note;
+import rx.subscriptions.CompositeSubscription;
 
 public class EditNoteFragment extends Fragment implements EditNoteView {
     private static final String ARG_NOTE_ID = "arg:noteId";
@@ -35,6 +36,9 @@ public class EditNoteFragment extends Fragment implements EditNoteView {
 
     @Nullable
     Unbinder unbinder;
+
+    @Nullable
+    CompositeSubscription subscriptions;
 
     @Inject
     EditNotePresenter editNotePresenter;
@@ -68,6 +72,7 @@ public class EditNoteFragment extends Fragment implements EditNoteView {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        subscriptions = new CompositeSubscription();
         unbinder = ButterKnife.bind(this, view);
 
         // toolbar configuration
@@ -82,15 +87,15 @@ public class EditNoteFragment extends Fragment implements EditNoteView {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        editNotePresenter.detachView();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         editNotePresenter.attachView(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        editNotePresenter.detachView();
     }
 
     @Override
@@ -112,13 +117,13 @@ public class EditNoteFragment extends Fragment implements EditNoteView {
             R.id.edittext_note_title
     }, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onTitleChanged(CharSequence title) {
-        editNotePresenter.updateTitle(title);
+        editNotePresenter.updateTitle(title.toString());
     }
 
     @OnTextChanged(value = {
             R.id.edittext_note_description
     }, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onDescriptionChanged(CharSequence description) {
-        editNotePresenter.updateDescription(description);
+        editNotePresenter.updateDescription(description.toString());
     }
 }

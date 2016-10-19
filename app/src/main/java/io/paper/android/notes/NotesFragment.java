@@ -99,8 +99,6 @@ public final class NotesFragment extends Fragment implements NotesView {
     @SuppressWarnings("unused")
     public void onAddNote() {
         notesPresenter.createNote();
-//        AddNoteFragment.newInstance().show(getChildFragmentManager(),
-//                NotesFragment.class.getSimpleName());
     }
 
     @Override
