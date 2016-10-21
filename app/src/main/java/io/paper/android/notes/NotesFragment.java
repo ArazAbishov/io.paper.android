@@ -107,7 +107,7 @@ public final class NotesFragment extends Fragment implements NotesView {
     }
 
     @Override
-    public void renderNotes(List<Note> notes) {
+    public void showNotes(List<Note> notes) {
         notesAdapter.swap(notes);
     }
 

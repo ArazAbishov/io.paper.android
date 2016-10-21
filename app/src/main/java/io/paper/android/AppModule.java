@@ -11,16 +11,18 @@ import io.paper.android.data.stores.Store;
 import io.paper.android.notes.Note;
 import io.paper.android.notes.NotesPresenter;
 import io.paper.android.notes.NotesPresenterImpl;
+import io.paper.android.utils.SchedulerProvider;
+import io.paper.android.utils.SchedulersModule;
 
 @Module(
         includes = {
-                DbModule.class
+                DbModule.class, SchedulersModule.class
         }
 )
-public class AppModule {
+class AppModule {
     private final Application application;
 
-    public AppModule(Application application) {
+    AppModule(Application application) {
         this.application = application;
     }
 
@@ -32,7 +34,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    NotesPresenter providesNotesPresenter(Store<Note> noteStore) {
-        return new NotesPresenterImpl(noteStore);
+    NotesPresenter providesNotesPresenter(SchedulerProvider schedulerProvider, Store<Note> noteStore) {
+        return new NotesPresenterImpl(schedulerProvider, noteStore);
     }
 }

@@ -108,7 +108,7 @@ public class EditNoteFragment extends Fragment implements EditNoteView {
     }
 
     @Override
-    public void renderNote(@NonNull Note note) {
+    public void showNote(@NonNull Note note) {
         editTextTitle.setText(note.title());
         editTextDescription.setText(note.description());
     }

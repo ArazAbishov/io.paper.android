@@ -5,6 +5,7 @@ import dagger.Provides;
 import io.paper.android.data.stores.Store;
 import io.paper.android.notes.Note;
 import io.paper.android.ui.ActivityScope;
+import io.paper.android.utils.SchedulerProvider;
 
 @Module
 public class EditNoteModule {
@@ -16,7 +17,8 @@ public class EditNoteModule {
 
     @Provides
     @ActivityScope
-    public EditNotePresenter providesEditNotePresenter(Store<Note> noteStore) {
-        return new EditNotePresenterImpl(noteId, noteStore);
+    public EditNotePresenter providesEditNotePresenter(SchedulerProvider schedulerProvider,
+            Store<Note> noteStore) {
+        return new EditNotePresenterImpl(noteId, schedulerProvider, noteStore);
     }
 }

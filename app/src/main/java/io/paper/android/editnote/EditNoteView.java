@@ -6,5 +6,5 @@ import io.paper.android.notes.Note;
 import io.paper.android.ui.View;
 
 public interface EditNoteView extends View {
-    void renderNote(@NonNull Note note);
+    void showNote(@NonNull Note note);
 }

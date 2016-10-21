@@ -12,11 +12,10 @@ import io.paper.android.data.stores.Store;
 import io.paper.android.notes.Note;
 import io.paper.android.notes.NotesContract;
 import io.paper.android.ui.View;
+import io.paper.android.utils.SchedulerProvider;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 import rx.subscriptions.CompositeSubscription;
 
@@ -24,6 +23,9 @@ class EditNotePresenterImpl implements EditNotePresenter {
 
     @NonNull
     private final Long noteId;
+
+    @NonNull
+    private final SchedulerProvider schedulerProvider;
 
     @NonNull
     private final Store<Note> noteStore;
@@ -40,8 +42,10 @@ class EditNotePresenterImpl implements EditNotePresenter {
     @NonNull
     private CompositeSubscription subscription;
 
-    EditNotePresenterImpl(@NonNull Long noteId, @NonNull Store<Note> noteStore) {
+    EditNotePresenterImpl(@NonNull Long noteId, @NonNull SchedulerProvider schedulerProvider,
+            @NonNull Store<Note> noteStore) {
         this.noteId = noteId;
+        this.schedulerProvider = schedulerProvider;
         this.noteStore = noteStore;
         this.noteTitleSubject = PublishSubject.create();
         this.noteDescriptionSubject = PublishSubject.create();
@@ -72,12 +76,12 @@ class EditNotePresenterImpl implements EditNotePresenter {
                         }
                     })
                     .take(1)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(schedulerProvider.io())
+                    .observeOn(schedulerProvider.ui())
                     .subscribe(new Action1<Note>() {
                         @Override public void call(Note note) {
                             if (editNoteView != null) {
-                                editNoteView.renderNote(note);
+                                editNoteView.showNote(note);
                             }
                         }
                     }, new Action1<Throwable>() {

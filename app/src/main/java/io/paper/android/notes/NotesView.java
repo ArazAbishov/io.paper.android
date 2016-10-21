@@ -5,7 +5,7 @@ import java.util.List;
 import io.paper.android.ui.View;
 
 public interface NotesView extends View {
-    void renderNotes(List<Note> notes);
+    void showNotes(List<Note> notes);
 
     void navigateToEditNoteView(Long noteId);
 }

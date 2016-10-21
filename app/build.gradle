@@ -24,10 +24,10 @@ android {
     }
 
     productFlavors {
-        internal {
+        mock {
             applicationId "io.paper.android.internal"
         }
-        production {
+        prod {
             applicationId "io.paper.android"
         }
     }
@@ -58,4 +58,6 @@ dependencies {
 
     // Test dependencies
     testCompile "junit:junit:${libraries.junit}"
+    testCompile "org.assertj:assertj-core:${libraries.assertj}"
+    testCompile "org.mockito:mockito-core:${libraries.mockito}"
 }

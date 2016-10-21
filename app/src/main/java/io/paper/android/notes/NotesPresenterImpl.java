@@ -7,43 +7,28 @@ import java.util.List;
 import io.paper.android.data.stores.Query;
 import io.paper.android.data.stores.Store;
 import io.paper.android.ui.View;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
+import io.paper.android.utils.SchedulerProvider;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.Subscriptions;
+import rx.subscriptions.CompositeSubscription;
 
 public class NotesPresenterImpl implements NotesPresenter {
+    private final SchedulerProvider schedulerProvider;
     private final Store<Note> noteStore;
-    private Subscription subscriptions;
+    private CompositeSubscription subscriptions;
     private NotesView notesView;
 
-    public NotesPresenterImpl(Store<Note> noteStore) {
+    public NotesPresenterImpl(SchedulerProvider schedulerProvider, Store<Note> noteStore) {
+        this.schedulerProvider = schedulerProvider;
         this.noteStore = noteStore;
-        this.subscriptions = Subscriptions.empty();
-    }
-
-    @Override
-    public void listNotes() {
-        subscriptions = noteStore.query(Query.builder()
-                .notifyForDescendents(true).build())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Note>>() {
-                    @Override
-                    public void call(List<Note> notes) {
-                        if (notesView != null) {
-                            notesView.renderNotes(notes);
-                        }
-                    }
-                });
+        this.subscriptions = new CompositeSubscription();
     }
 
     @Override
     public void createNote() {
         Note note = Note.builder().title("").description("").build();
-        subscriptions = noteStore.insert(note)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        subscriptions.add(noteStore.insert(note)
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .subscribe(new Action1<Long>() {
                     @Override public void call(Long noteId) {
                         if (notesView != null) {
@@ -54,7 +39,7 @@ public class NotesPresenterImpl implements NotesPresenter {
                     @Override public void call(Throwable throwable) {
                         throwable.printStackTrace();
                     }
-                });
+                }));
     }
 
     @Override
@@ -63,7 +48,17 @@ public class NotesPresenterImpl implements NotesPresenter {
             notesView = (NotesView) view;
 
             // list notes
-            listNotes();
+            subscriptions.add(noteStore.query(Query.builder()
+                    .notifyForDescendents(true).build())
+                    .observeOn(schedulerProvider.ui())
+                    .subscribe(new Action1<List<Note>>() {
+                        @Override
+                        public void call(List<Note> notes) {
+                            if (notesView != null) {
+                                notesView.showNotes(notes);
+                            }
+                        }
+                    }));
         }
     }
 
@@ -72,7 +67,7 @@ public class NotesPresenterImpl implements NotesPresenter {
         // un-subscribing in order not to leak memory
         if (!subscriptions.isUnsubscribed()) {
             subscriptions.unsubscribe();
-            subscriptions = Subscriptions.empty();
+            subscriptions = new CompositeSubscription();
         }
     }
 }
