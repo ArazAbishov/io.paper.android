@@ -1,5 +1,7 @@
 package io.paper.android.notes;
 
+import android.support.annotation.Nullable;
+
 import com.google.auto.value.AutoValue;
 
 import io.paper.android.data.Model;
@@ -19,7 +21,7 @@ public abstract class Note implements Model {
 
     @AutoValue.Builder
     public abstract static class Builder {
-        public abstract Builder id(Long id);
+        public abstract Builder id(@Nullable Long id);
         public abstract Builder title(String title);
         public abstract Builder description(String description);
         public abstract Note build();

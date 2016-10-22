@@ -13,6 +13,9 @@ android {
         targetSdkVersion versions.sdk
         versionCode versions.versionCode
         versionName versions.versionName
+
+        // jUnit test runner for android
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
 
     lintOptions {
@@ -60,4 +63,8 @@ dependencies {
     testCompile "junit:junit:${libraries.junit}"
     testCompile "org.assertj:assertj-core:${libraries.assertj}"
     testCompile "org.mockito:mockito-core:${libraries.mockito}"
+    testCompile "nl.jqno.equalsverifier:equalsverifier:${libraries.equalsverifier}"
+
+    // Android test dependencies
+    androidTestCompile "com.android.support.test.espresso:espresso-core:${libraries.espresso}"
 }

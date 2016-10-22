@@ -28,14 +28,18 @@ ext {
     ]
 
     libraries = [
-            support    : "25.0.0",
-            dagger     : "2.6",
-            autovalue  : "1.2",
-            sqlbrite   : "0.7.0",
-            rxbinding  : "0.4.0",
-            butterknife: "8.2.1",
-            junit      : "4.12",
-            mockito    : "2.2.5",
-            assertj    : "3.5.2"
+            support       : "25.0.0",
+            dagger        : "2.6",
+            autovalue     : "1.2",
+            sqlbrite      : "0.7.0",
+            rxbinding     : "0.4.0",
+            butterknife   : "8.2.1",
+
+            // test dependencies
+            espresso      : "2.2.2",
+            mockito       : "2.2.5",
+            assertj       : "3.5.2",
+            junit         : "4.12",
+            equalsverifier: "2.1.6"
     ]
 }

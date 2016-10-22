@@ -64,6 +64,8 @@ public class NotesPresenterImpl implements NotesPresenter {
 
     @Override
     public void detachView() {
+        notesView = null;
+
         // un-subscribing in order not to leak memory
         if (!subscriptions.isUnsubscribed()) {
             subscriptions.unsubscribe();

@@ -44,7 +44,7 @@ public class NotesPresenterTest {
     }
 
     @Test
-    public void attachView_ShouldCallShowNotesOnView() {
+    public void attachView_shouldCallShowNotesOnView() {
         // make sure that store returns stub list of notes
         when(noteStore.query(any(Query.class))).thenReturn(Observable.just(notes));
 
@@ -53,5 +53,21 @@ public class NotesPresenterTest {
 
         // method should be called with list of given notes
         verify(notesView).showNotes(notes);
+    }
+
+    @Test
+    public void createNote_shouldCallInsertOnStore() {
+        // mock store behaviour both for attach view and create note
+        when(noteStore.query(any(Query.class))).thenReturn(Observable.just(notes));
+        when(noteStore.insert(any(Note.class))).thenReturn(Observable.just(11L));
+
+        // first we need to attach view
+        notesPresenter.attachView(notesView);
+
+        // call presenter implementation
+        notesPresenter.createNote();
+
+        // check if view is called with corresponding
+        verify(notesView).navigateToEditNoteView(11L);
     }
 }
