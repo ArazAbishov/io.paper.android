@@ -28,11 +28,16 @@ android {
 
     productFlavors {
         mock {
-            applicationId "io.paper.android.internal"
+            applicationId "io.paper.android.mock"
         }
         prod {
             applicationId "io.paper.android"
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 }
 

@@ -14,7 +14,7 @@ sudo:
   false
 
 script:
-  gradle/build.sh
+  build.sh
 
 cache:
   directories:

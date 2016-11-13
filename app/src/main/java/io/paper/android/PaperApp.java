@@ -7,6 +7,9 @@ import io.paper.android.data.stores.DbModule;
 import io.paper.android.editnote.EditNoteComponent;
 import io.paper.android.editnote.EditNoteModule;
 
+// ToDo: Implement mock flavor of the app with fake repository implementation
+// ToDo: Integrate gradle plugin for jacoco (test coverage)
+// ToDo: Integrate more plugins for static analysis (findbugs, checkstyle)
 public final class PaperApp extends Application {
     private AppComponent appComponent;
 
