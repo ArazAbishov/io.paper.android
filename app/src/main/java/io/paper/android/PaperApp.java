@@ -10,6 +10,7 @@ import io.paper.android.editnote.EditNoteModule;
 // ToDo: Implement mock flavor of the app with fake repository implementation
 // ToDo: Integrate gradle plugin for jacoco (test coverage)
 // ToDo: Integrate more plugins for static analysis (findbugs, checkstyle)
+// ToDo: Add specific configuration to VM to track unclosed cursors and database sessions
 public final class PaperApp extends Application {
     private AppComponent appComponent;
 

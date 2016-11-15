@@ -16,6 +16,7 @@ import rx.Observable;
 import rx.functions.Func0;
 import rx.functions.Func1;
 
+// ToDo: add new method which exposes cursor for memory optimization in list of entities
 class StoreImpl<T extends Model> implements Store<T> {
     private final ContentResolver contentResolver;
     private final BriteContentResolver briteContentResolver;
@@ -23,7 +24,7 @@ class StoreImpl<T extends Model> implements Store<T> {
     private final Uri modelUri;
 
     StoreImpl(ContentResolver contentResolver, BriteContentResolver briteContentResolver,
-            Mapper<T> modelMapper, Uri modelUri) {
+              Mapper<T> modelMapper, Uri modelUri) {
         this.contentResolver = contentResolver;
         this.briteContentResolver = briteContentResolver;
         this.modelMapper = modelMapper;
@@ -40,7 +41,8 @@ class StoreImpl<T extends Model> implements Store<T> {
         return briteContentResolver.createQuery(contentUri, query.projection(), query.selection(),
                 query.selectionArgs(), query.sortOrder(), query.notifyForDescendents())
                 .mapToList(new Func1<Cursor, T>() {
-                    @Override public T call(Cursor cursor) {
+                    @Override
+                    public T call(Cursor cursor) {
                         return modelMapper.toModel(cursor);
                     }
                 });
@@ -49,7 +51,8 @@ class StoreImpl<T extends Model> implements Store<T> {
     @Override
     public Observable<Long> insert(@NonNull final T model) {
         return Observable.defer(new Func0<Observable<Long>>() {
-            @Override public Observable<Long> call() {
+            @Override
+            public Observable<Long> call() {
                 long id = ContentUris.parseId(contentResolver.insert(modelUri,
                         modelMapper.toContentValues(model)));
                 return Observable.just(id);
@@ -60,7 +63,8 @@ class StoreImpl<T extends Model> implements Store<T> {
     @Override
     public Observable<Long> insert(@NonNull final ContentValues contentValues) {
         return Observable.defer(new Func0<Observable<Long>>() {
-            @Override public Observable<Long> call() {
+            @Override
+            public Observable<Long> call() {
                 long id = ContentUris.parseId(contentResolver.insert(modelUri, contentValues));
                 return Observable.just(id);
             }
@@ -70,7 +74,8 @@ class StoreImpl<T extends Model> implements Store<T> {
     @Override
     public Observable<Integer> update(@NonNull final T model) {
         return Observable.defer(new Func0<Observable<Integer>>() {
-            @Override public Observable<Integer> call() {
+            @Override
+            public Observable<Integer> call() {
                 return Observable.just(contentResolver.update(
                         ContentUris.withAppendedId(modelUri, model.id()),
                         modelMapper.toContentValues(model), null, null));
@@ -81,7 +86,8 @@ class StoreImpl<T extends Model> implements Store<T> {
     @Override
     public Observable<Integer> update(@NonNull final ContentValues contentValues) {
         return Observable.defer(new Func0<Observable<Integer>>() {
-            @Override public Observable<Integer> call() {
+            @Override
+            public Observable<Integer> call() {
                 return Observable.just(contentResolver.update(modelUri, contentValues, null, null));
             }
         });
@@ -90,7 +96,8 @@ class StoreImpl<T extends Model> implements Store<T> {
     @Override
     public Observable<Integer> update(@NonNull final T model, final @NonNull Where where) {
         return Observable.defer(new Func0<Observable<Integer>>() {
-            @Override public Observable<Integer> call() {
+            @Override
+            public Observable<Integer> call() {
                 return Observable.just(contentResolver.update(
                         ContentUris.withAppendedId(modelUri, model.id()),
                         modelMapper.toContentValues(model), where.where(), where.arguments()));
@@ -100,9 +107,10 @@ class StoreImpl<T extends Model> implements Store<T> {
 
     @Override
     public Observable<Integer> update(@NonNull final ContentValues contentValues,
-            final @NonNull Where where) {
+                                      final @NonNull Where where) {
         return Observable.defer(new Func0<Observable<Integer>>() {
-            @Override public Observable<Integer> call() {
+            @Override
+            public Observable<Integer> call() {
                 return Observable.just(contentResolver.update(modelUri, contentValues,
                         where.where(), where.arguments()));
             }
@@ -111,9 +119,10 @@ class StoreImpl<T extends Model> implements Store<T> {
 
     @Override
     public Observable<Integer> update(@NonNull final Long id,
-            @NonNull final ContentValues contentValues) {
+                                      @NonNull final ContentValues contentValues) {
         return Observable.defer(new Func0<Observable<Integer>>() {
-            @Override public Observable<Integer> call() {
+            @Override
+            public Observable<Integer> call() {
                 return Observable.just(contentResolver.update(
                         ContentUris.withAppendedId(modelUri, id), contentValues, null, null));
             }
@@ -123,7 +132,8 @@ class StoreImpl<T extends Model> implements Store<T> {
     @Override
     public Observable<Integer> delete() {
         return Observable.defer(new Func0<Observable<Integer>>() {
-            @Override public Observable<Integer> call() {
+            @Override
+            public Observable<Integer> call() {
                 return Observable.just(contentResolver.delete(modelUri, null, null));
             }
         });
@@ -136,7 +146,8 @@ class StoreImpl<T extends Model> implements Store<T> {
         }
 
         return Observable.defer(new Func0<Observable<Integer>>() {
-            @Override public Observable<Integer> call() {
+            @Override
+            public Observable<Integer> call() {
                 return Observable.just(contentResolver.delete(
                         ContentUris.withAppendedId(modelUri, model.id()), null, null));
             }
@@ -146,7 +157,8 @@ class StoreImpl<T extends Model> implements Store<T> {
     @Override
     public Observable<Integer> delete(@NonNull final Where where) {
         return Observable.defer(new Func0<Observable<Integer>>() {
-            @Override public Observable<Integer> call() {
+            @Override
+            public Observable<Integer> call() {
                 return Observable.just(contentResolver.delete(
                         modelUri, where.where(), where.arguments()));
             }

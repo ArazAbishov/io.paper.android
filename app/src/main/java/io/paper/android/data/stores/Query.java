@@ -29,7 +29,7 @@ public final class Query {
     }
 
     private Query(@Nullable Long id, @Nullable String[] projection, @Nullable String selection,
-            @Nullable String[] selectionArgs, @Nullable String sortOrder, boolean notify) {
+                  @Nullable String[] selectionArgs, @Nullable String sortOrder, boolean notify) {
         this.id = id;
         this.projection = projection;
         this.selection = selection;
@@ -39,6 +39,7 @@ public final class Query {
     }
 
     @Nullable
+    @Deprecated
     public Long id() {
         return id;
     }

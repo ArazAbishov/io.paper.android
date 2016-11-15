@@ -8,8 +8,6 @@ import org.mockito.MockitoAnnotations;
 import java.util.Arrays;
 import java.util.List;
 
-import io.paper.android.data.stores.Query;
-import io.paper.android.data.stores.Store;
 import io.paper.android.utils.ImmediateSchedulerProvider;
 import io.paper.android.utils.SchedulerProvider;
 import rx.Observable;
@@ -21,7 +19,7 @@ import static org.mockito.Mockito.when;
 public class NotesPresenterTest {
 
     @Mock
-    Store<Note> noteStore;
+    NotesRepository notesRepository;
 
     @Mock
     NotesView notesView;
@@ -40,13 +38,13 @@ public class NotesPresenterTest {
         MockitoAnnotations.initMocks(this);
 
         schedulerProvider = new ImmediateSchedulerProvider();
-        notesPresenter = new NotesPresenterImpl(schedulerProvider, noteStore);
+        notesPresenter = new NotesPresenterImpl(schedulerProvider, notesRepository);
     }
 
     @Test
     public void attachView_shouldCallShowNotesOnView() {
         // make sure that store returns stub list of notes
-        when(noteStore.query(any(Query.class))).thenReturn(Observable.just(notes));
+        when(notesRepository.list()).thenReturn(Observable.just(notes));
 
         // we need first to attach view to presenter
         notesPresenter.attachView(notesView);
@@ -58,8 +56,8 @@ public class NotesPresenterTest {
     @Test
     public void createNote_shouldCallInsertOnStore() {
         // mock store behaviour both for attach view and create note
-        when(noteStore.query(any(Query.class))).thenReturn(Observable.just(notes));
-        when(noteStore.insert(any(Note.class))).thenReturn(Observable.just(11L));
+        when(notesRepository.list()).thenReturn(Observable.just(notes));
+        when(notesRepository.add(any(Note.class))).thenReturn(Observable.just(11L));
 
         // first we need to attach view
         notesPresenter.attachView(notesView);

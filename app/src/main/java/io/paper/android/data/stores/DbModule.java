@@ -13,6 +13,8 @@ import dagger.Provides;
 import io.paper.android.notes.Note;
 import io.paper.android.notes.NotesContract;
 import io.paper.android.notes.NotesMapper;
+import io.paper.android.notes.NotesRepository;
+import io.paper.android.notes.NotesRepositoryImpl;
 import rx.schedulers.Schedulers;
 
 @Module
@@ -45,5 +47,11 @@ public final class DbModule {
             BriteContentResolver briteResolver) {
         return new StoreImpl<>(contentResolver, briteResolver,
                 NotesMapper.INSTANCE, NotesContract.CONTENT_URI);
+    }
+
+    @Provides
+    @Singleton
+    NotesRepository providesNotesRepository(Store<Note> noteStore) {
+        return new NotesRepositoryImpl(noteStore);
     }
 }

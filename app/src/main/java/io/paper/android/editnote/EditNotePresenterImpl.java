@@ -1,16 +1,12 @@
 package io.paper.android.editnote;
 
-import android.content.ContentValues;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.paper.android.data.stores.Query;
-import io.paper.android.data.stores.Store;
 import io.paper.android.notes.Note;
-import io.paper.android.notes.NotesContract;
+import io.paper.android.notes.NotesRepository;
 import io.paper.android.ui.View;
 import io.paper.android.utils.SchedulerProvider;
 import rx.Observable;
@@ -28,7 +24,7 @@ class EditNotePresenterImpl implements EditNotePresenter {
     private final SchedulerProvider schedulerProvider;
 
     @NonNull
-    private final Store<Note> noteStore;
+    private final NotesRepository notesRepository;
 
     @NonNull
     private final PublishSubject<String> noteTitleSubject;
@@ -43,10 +39,10 @@ class EditNotePresenterImpl implements EditNotePresenter {
     private CompositeSubscription subscription;
 
     EditNotePresenterImpl(@NonNull Long noteId, @NonNull SchedulerProvider schedulerProvider,
-            @NonNull Store<Note> noteStore) {
+                          @NonNull NotesRepository notesRepository) {
         this.noteId = noteId;
         this.schedulerProvider = schedulerProvider;
-        this.noteStore = noteStore;
+        this.notesRepository = notesRepository;
         this.noteTitleSubject = PublishSubject.create();
         this.noteDescriptionSubject = PublishSubject.create();
         this.subscription = new CompositeSubscription();
@@ -68,24 +64,19 @@ class EditNotePresenterImpl implements EditNotePresenter {
             editNoteView = (EditNoteView) view;
 
             // render note
-            subscription.add(noteStore.query(Query.builder()
-                    .id(noteId).notifyForDescendents(false).build())
-                    .flatMap(new Func1<List<Note>, Observable<Note>>() {
-                        @Override public Observable<Note> call(List<Note> notes) {
-                            return Observable.from(notes);
-                        }
-                    })
-                    .take(1)
+            subscription.add(notesRepository.get(noteId)
                     .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribe(new Action1<Note>() {
-                        @Override public void call(Note note) {
+                        @Override
+                        public void call(Note note) {
                             if (editNoteView != null) {
                                 editNoteView.showNote(note);
                             }
                         }
                     }, new Action1<Throwable>() {
-                        @Override public void call(Throwable throwable) {
+                        @Override
+                        public void call(Throwable throwable) {
                             throwable.printStackTrace();
                         }
                     }));
@@ -93,18 +84,19 @@ class EditNotePresenterImpl implements EditNotePresenter {
             subscription.add(noteTitleSubject
                     .debounce(256, TimeUnit.MILLISECONDS)
                     .switchMap(new Func1<String, Observable<Integer>>() {
-                        @Override public Observable<Integer> call(String title) {
-                            ContentValues contentValues = new ContentValues();
-                            contentValues.put(NotesContract.COLUMN_TITLE, title);
-                            return noteStore.update(noteId, contentValues);
+                        @Override
+                        public Observable<Integer> call(String title) {
+                            return notesRepository.putTitle(noteId, title);
                         }
                     })
                     .subscribe(new Action1<Integer>() {
-                        @Override public void call(Integer integer) {
+                        @Override
+                        public void call(Integer integer) {
                             System.out.println(integer);
                         }
                     }, new Action1<Throwable>() {
-                        @Override public void call(Throwable throwable) {
+                        @Override
+                        public void call(Throwable throwable) {
                             throwable.printStackTrace();
                         }
                     }));
@@ -112,18 +104,19 @@ class EditNotePresenterImpl implements EditNotePresenter {
             subscription.add(noteDescriptionSubject
                     .debounce(256, TimeUnit.MILLISECONDS)
                     .switchMap(new Func1<String, Observable<Integer>>() {
-                        @Override public Observable<Integer> call(String description) {
-                            ContentValues contentValues = new ContentValues();
-                            contentValues.put(NotesContract.COLUMN_DESCRIPTION, description);
-                            return noteStore.update(noteId, contentValues);
+                        @Override
+                        public Observable<Integer> call(String description) {
+                            return notesRepository.putDescription(noteId, description);
                         }
                     })
                     .subscribe(new Action1<Integer>() {
-                        @Override public void call(Integer integer) {
+                        @Override
+                        public void call(Integer integer) {
                             System.out.println(integer);
                         }
                     }, new Action1<Throwable>() {
-                        @Override public void call(Throwable throwable) {
+                        @Override
+                        public void call(Throwable throwable) {
                             throwable.printStackTrace();
                         }
                     }));
