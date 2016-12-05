@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Locale;
 
 import io.paper.android.notes.NotesContract;
-import io.paper.android.data.stores.Contract;
 
 import static android.content.ContentUris.parseId;
 import static android.content.ContentUris.withAppendedId;
@@ -245,8 +244,9 @@ public final class DbContentProvider extends ContentProvider {
     }
 
     private Contract findMatchingContract(Uri uri) {
+        String table = uri.getPathSegments().get(PATH_SEGMENT_TABLE);
+
         for (Contract contract : contracts) {
-            String table = uri.getPathSegments().get(PATH_SEGMENT_TABLE);
             if (contract.table().equals(table)) {
                 return contract;
             }

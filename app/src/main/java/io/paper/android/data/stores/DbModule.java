@@ -10,11 +10,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.paper.android.notes.Note;
-import io.paper.android.notes.NotesContract;
-import io.paper.android.notes.NotesMapper;
-import io.paper.android.notes.NotesRepository;
-import io.paper.android.notes.NotesRepositoryImpl;
 import rx.schedulers.Schedulers;
 
 @Module
@@ -39,19 +34,5 @@ public final class DbModule {
                 .wrapContentProvider(resolver, Schedulers.io());
         briteContentResolver.setLoggingEnabled(true);
         return briteContentResolver;
-    }
-
-    @Provides
-    @Singleton
-    Store<Note> providesNoteStore(ContentResolver contentResolver,
-            BriteContentResolver briteResolver) {
-        return new StoreImpl<>(contentResolver, briteResolver,
-                NotesMapper.INSTANCE, NotesContract.CONTENT_URI);
-    }
-
-    @Provides
-    @Singleton
-    NotesRepository providesNotesRepository(Store<Note> noteStore) {
-        return new NotesRepositoryImpl(noteStore);
     }
 }

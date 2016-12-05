@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import io.paper.android.data.stores.DbModule;
+import io.paper.android.notes.NotesModule;
 import io.paper.android.notes.NotesPresenter;
 import io.paper.android.notes.NotesPresenterImpl;
 import io.paper.android.notes.NotesRepository;
@@ -15,7 +16,7 @@ import io.paper.android.utils.SchedulersModule;
 
 @Module(
         includes = {
-                DbModule.class, SchedulersModule.class
+                DbModule.class, SchedulersModule.class, NotesModule.class
         }
 )
 class AppModule {

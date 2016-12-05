@@ -9,10 +9,10 @@ import io.paper.android.data.stores.Store;
 import rx.Observable;
 import rx.functions.Func1;
 
-public class NotesRepositoryImpl implements NotesRepository {
+class NotesRepositoryImpl implements NotesRepository {
     private final Store<Note> noteStore;
 
-    public NotesRepositoryImpl(Store<Note> noteStore) {
+    NotesRepositoryImpl(Store<Note> noteStore) {
         this.noteStore = noteStore;
     }
 

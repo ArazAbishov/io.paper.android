@@ -17,14 +17,14 @@ import rx.functions.Func0;
 import rx.functions.Func1;
 
 // ToDo: add new method which exposes cursor for memory optimization in list of entities
-class StoreImpl<T extends Model> implements Store<T> {
+public class StoreImpl<T extends Model> implements Store<T> {
     private final ContentResolver contentResolver;
     private final BriteContentResolver briteContentResolver;
     private final Mapper<T> modelMapper;
     private final Uri modelUri;
 
-    StoreImpl(ContentResolver contentResolver, BriteContentResolver briteContentResolver,
-              Mapper<T> modelMapper, Uri modelUri) {
+    public StoreImpl(ContentResolver contentResolver, BriteContentResolver briteContentResolver,
+                     Mapper<T> modelMapper, Uri modelUri) {
         this.contentResolver = contentResolver;
         this.briteContentResolver = briteContentResolver;
         this.modelMapper = modelMapper;
