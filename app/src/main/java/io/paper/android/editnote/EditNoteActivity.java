@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import io.paper.android.R;
 
 public class EditNoteActivity extends AppCompatActivity {
-    private static final String ARG_NOTE_ID = "arg:noteId";
+    public static final String ARG_NOTE_ID = "arg:noteId";
 
     public static Intent newIntent(Activity activity, Long noteId) {
         Intent intent = new Intent(activity, EditNoteActivity.class);
