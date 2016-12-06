@@ -28,7 +28,7 @@ ext {
     ]
 
     libraries = [
-            support       : "25.0.0",
+            support       : "25.0.1",
             dagger        : "2.6",
             autovalue     : "1.2",
             sqlbrite      : "0.7.0",

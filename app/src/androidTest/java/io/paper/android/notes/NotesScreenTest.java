@@ -24,6 +24,8 @@ import static io.paper.android.espresso.ViewActions.withItemText;
 
 @RunWith(AndroidJUnit4.class)
 public class NotesScreenTest {
+    private static final String NOTE_TITLE = "Note title";
+    private static final String NOTE_DESCRIPTION = "Note description";
 
     @Rule
     public ActivityTestRule<NotesActivity> notesActivityTestRule =
@@ -31,24 +33,24 @@ public class NotesScreenTest {
 
     @Test
     public void clickAddNoteButton_opensAddNoteUi() {
-        String newNoteTitle = "Fancy note title";
-        String newNoteDescription = "Fancy note description";
+        // String newNoteTitle = "Fancy note title";
+        // String newNoteDescription = "Fancy note description";
 
         // click on the add note button
         onView(withId(R.id.fab_add_note)).perform(click());
 
         onView(withId(R.id.edittext_note_title)).perform(
-                typeText(newNoteTitle), closeSoftKeyboard());
+                typeText(NOTE_TITLE), closeSoftKeyboard());
         onView(withId(R.id.edittext_note_description)).perform(
-                typeText(newNoteDescription), closeSoftKeyboard());
+                typeText(NOTE_DESCRIPTION), closeSoftKeyboard());
 
         // go back to the list of the notes
         Espresso.pressBack();
 
         // scroll notes list to added note, by finding its description
         onView(withId(R.id.recyclerview_notes)).perform(
-                scrollTo(hasDescendant(withText(newNoteTitle))));
+                scrollTo(hasDescendant(withText(NOTE_TITLE))));
 
-        onView(withItemText(newNoteTitle)).check(matches(isDisplayed()));
+        onView(withItemText(NOTE_TITLE)).check(matches(isDisplayed()));
     }
 }
