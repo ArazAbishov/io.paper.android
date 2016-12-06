@@ -19,7 +19,7 @@ android:
       - 'google-gdk-license-.+'
 
 script:
-  build.sh
+  bash build.sh
 
 before_script:
   - echo no | android create avd --force -n test -t android-18 --abi armeabi-v7a
