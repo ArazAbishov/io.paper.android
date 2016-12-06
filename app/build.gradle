@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: "jacoco"
 
 def versions = rootProject.ext.versions
 def libraries = rootProject.ext.libraries
