@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <provider
-            android:name=".data.stores.DbContentProvider"
+            android:name=".data.DbContentProvider"
             android:authorities="io.paper.android.provider"
             android:exported="false"/>
 

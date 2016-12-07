@@ -28,7 +28,12 @@ class FakeNotesRepositoryImpl implements NotesRepository {
         return Observable.defer(new Func0<Observable<Long>>() {
             @Override
             public Observable<Long> call() {
-                Long noteId = counter.incrementAndGet();
+                Long noteId;
+                if (note.id() != null) {
+                    noteId = note.id();
+                } else {
+                    noteId = counter.incrementAndGet();
+                }
 
                 // modify id of note
                 storage.put(noteId, note.toBuilder().id(noteId).build());
@@ -103,6 +108,20 @@ class FakeNotesRepositoryImpl implements NotesRepository {
             @Override
             public Observable<Note> call() {
                 return Observable.just(storage.get(noteId));
+            }
+        });
+    }
+
+    @Override
+    public Observable<Integer> clear() {
+        return Observable.defer(new Func0<Observable<Integer>>() {
+            @Override public Observable<Integer> call() {
+                // total count of rows
+                int count = storage.size();
+
+                storage.clear();
+
+                return Observable.just(count);
             }
         });
     }

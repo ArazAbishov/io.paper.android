@@ -1,4 +1,4 @@
-package io.paper.android.data.stores;
+package io.paper.android.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,9 +12,9 @@ final class DbOpenHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_NOTES_TABLE = "CREATE TABLE IF NOT EXISTS " +
             NotesContract.TABLE_NAME + "(" +
-            NotesContract.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-            NotesContract.COLUMN_TITLE + " TEXT," +
-            NotesContract.COLUMN_DESCRIPTION + " TEXT" + ")";
+            NotesContract.Columns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            NotesContract.Columns.TITLE + " TEXT," +
+            NotesContract.Columns.DESCRIPTION + " TEXT" + ")";
 
     private static final String DROP_NOTES_TABLE = "DROP TABLE IF EXISTS " + NotesContract.TABLE_NAME;
 

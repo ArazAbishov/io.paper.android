@@ -57,6 +57,10 @@ dependencies {
     provided "com.google.auto.value:auto-value:${libraries.autovalue}"
     annotationProcessor "com.google.auto.value:auto-value:${libraries.autovalue}"
 
+    // Auto-value extensions
+    compile "com.gabrielittner.auto.value:auto-value-cursor-annotations:${libraries.autovaluecursor}"
+    annotationProcessor "com.gabrielittner.auto.value:auto-value-cursor:${libraries.autovaluecursor}"
+
     // Square libraries
     compile "com.squareup.sqlbrite:sqlbrite:${libraries.sqlbrite}"
 

@@ -14,4 +14,6 @@ public interface NotesRepository {
     Observable<List<Note>> list();
 
     Observable<Note> get(Long noteId);
+
+    Observable<Integer> clear();
 }

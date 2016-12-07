@@ -1,4 +1,4 @@
-package io.paper.android.data.stores;
+package io.paper.android.data;
 
 import android.app.Application;
 import android.content.ContentResolver;

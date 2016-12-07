@@ -1,28 +1,28 @@
 package io.paper.android.notes;
 
+import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.support.annotation.NonNull;
 
-import io.paper.android.data.stores.Contract;
-import io.paper.android.data.stores.DbContract;
+import io.paper.android.data.DbContract;
 
-public final class NotesContract implements Contract {
-    public static final String TABLE_NAME = "notes";
-    public static final Uri CONTENT_URI = Uri.withAppendedPath(DbContract.BASE_URI, TABLE_NAME);
+public final class NotesContract {
+    public static final String TABLE_NAME = "Notes";
+    public static final String RESOURCE_NOTES = "notes";
+    public static final String RESOURCE_NOTES_ID = RESOURCE_NOTES + "/#";
+
+    public static Uri notes() {
+        return Uri.withAppendedPath(DbContract.URI_AUTHORITY, RESOURCE_NOTES);
+    }
+
+    public static Uri notes(long id) {
+        return ContentUris.withAppendedId(notes(), id);
+    }
 
     // columns
-    public static final String COLUMN_ID = BaseColumns._ID;
-    public static final String COLUMN_TITLE = "title";
-    public static final String COLUMN_DESCRIPTION = "description";
-
-    public static final String[] COLUMNS = new String[]{
-            COLUMN_ID, COLUMN_TITLE, COLUMN_DESCRIPTION
-    };
-
-    @NonNull
-    @Override
-    public String table() {
-        return TABLE_NAME;
+    public interface Columns {
+        String ID = BaseColumns._ID;
+        String TITLE = "title";
+        String DESCRIPTION = "description";
     }
 }
