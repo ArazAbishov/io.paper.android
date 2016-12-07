@@ -11,7 +11,7 @@ buildscript {
 
     dependencies {
         // android gradle plugin
-        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.android.tools.build:gradle:2.2.3'
 
         // method count plugin
         classpath "com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.1"
