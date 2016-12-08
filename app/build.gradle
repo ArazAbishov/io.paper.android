@@ -76,6 +76,10 @@ dependencies {
     testCompile "nl.jqno.equalsverifier:equalsverifier:${libraries.equalsverifier}"
 
     // Android test dependencies
+    androidTestCompile("com.google.truth:truth:${libraries.truth}") {
+        exclude group: 'junit' // Android has JUnit built in.
+    }
+
     androidTestCompile "com.android.support.test.espresso:espresso-core:${libraries.espresso}"
     androidTestCompile("com.android.support.test.espresso:espresso-contrib:${libraries.espresso}") {
         // Causes IncompatibleClassChangeError

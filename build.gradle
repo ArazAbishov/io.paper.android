@@ -54,6 +54,7 @@ ext {
             mockito        : "2.2.5",
             assertj        : "2.5.0",
             junit          : "4.12",
-            equalsverifier : "2.1.7"
+            equalsverifier : "2.1.7",
+            truth          : "0.30",
     ]
 }

@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 
 import java.util.ArrayList;
 
@@ -57,13 +58,14 @@ public final class DbContentProvider extends ContentProvider {
     public String getType(@NonNull Uri uri) {
         switch (uriMatcher.match(uri)) {
             case NOTES: {
-                return DbUtils.contentTypeDir(NotesContract.RESOURCE_NOTES);
+                return NotesContract.CONTENT_TYPE_DIR;
             }
             case NOTES_ID: {
-                return DbUtils.contentTypeItem(NotesContract.RESOURCE_NOTES);
+                return NotesContract.CONTENT_TYPE_ITEM;
             }
-            default:
+            default: {
                 throw new IllegalArgumentException("Unknown uri " + uri);
+            }
         }
     }
 
@@ -83,7 +85,7 @@ public final class DbContentProvider extends ContentProvider {
             }
             case NOTES_ID: {
                 SQLiteQueryBuilder query = new SQLiteQueryBuilder();
-                query.setTables(NotesContract.RESOURCE_NOTES_ID);
+                query.setTables(NotesContract.TABLE_NAME);
                 query.appendWhere(BaseColumns._ID + " = " + parseId(uri));
 
                 Cursor cursor = query.query(database, projection,
@@ -92,8 +94,9 @@ public final class DbContentProvider extends ContentProvider {
 
                 return cursor;
             }
-            default:
+            default: {
                 throw new IllegalArgumentException("Unsupported uri: " + uri);
+            }
         }
     }
 
@@ -112,8 +115,9 @@ public final class DbContentProvider extends ContentProvider {
                 // append row id and return it back
                 return withAppendedId(uri, databaseId);
             }
-            default:
+            default: {
                 throw new IllegalArgumentException("Unsupported uri: " + uri);
+            }
         }
     }
 
@@ -143,8 +147,9 @@ public final class DbContentProvider extends ContentProvider {
 
                 return updatedRows;
             }
-            default:
+            default: {
                 throw new IllegalArgumentException("Unsupported uri: " + uri);
+            }
         }
     }
 
@@ -174,8 +179,9 @@ public final class DbContentProvider extends ContentProvider {
 
                 return deletedRows;
             }
-            default:
+            default: {
                 throw new IllegalArgumentException("Unsupported uri: " + uri);
+            }
         }
     }
 
@@ -198,5 +204,10 @@ public final class DbContentProvider extends ContentProvider {
         } finally {
             database.endTransaction();
         }
+    }
+
+    @VisibleForTesting
+    SQLiteOpenHelper sqLiteOpenHelper() {
+        return databaseOpenHelper;
     }
 }

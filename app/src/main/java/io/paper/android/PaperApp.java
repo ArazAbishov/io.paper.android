@@ -7,7 +7,7 @@ import io.paper.android.data.DbModule;
 import io.paper.android.editnote.EditNoteComponent;
 import io.paper.android.editnote.EditNoteModule;
 
-// ToDo: Implement mock flavor of the app with fake repository implementation
+// ToDo: Add more tests for data layer (ContentProvider, Models)
 // ToDo: Integrate gradle plugin for jacoco (test coverage)
 // ToDo: Integrate more plugins for static analysis (findbugs, checkstyle)
 // ToDo: Add specific configuration to VM to track unclosed cursors and database sessions
