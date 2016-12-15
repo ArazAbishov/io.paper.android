@@ -41,7 +41,7 @@ ext {
     ]
 
     libraries = [
-            support        : "25.0.1",
+            support        : "25.1.0",
             dagger         : "2.6",
             autovalue      : "1.2",
             autovaluecursor: "1.0.1",
