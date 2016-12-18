@@ -23,8 +23,7 @@ public class NotesPresenterImpl implements NotesPresenter {
 
     @Override
     public void createNote() {
-        Note note = Note.builder().title("").description("").build();
-        subscriptions.add(notesRepository.add(note)
+        subscriptions.add(notesRepository.add("", "")
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(new Action1<Long>() {

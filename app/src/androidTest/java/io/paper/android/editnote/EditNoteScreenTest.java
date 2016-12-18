@@ -12,7 +12,6 @@ import org.junit.runner.RunWith;
 
 import io.paper.android.PaperApp;
 import io.paper.android.R;
-import io.paper.android.notes.Note;
 import io.paper.android.notes.NotesRepository;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -22,7 +21,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
 public class EditNoteScreenTest {
-    private static final Long NOTE_ID = 10L;
     private static final String NOTE_TITLE = "Fancy note title";
     private static final String NOTE_DESCRIPTION = "Fancy note description";
 
@@ -37,17 +35,13 @@ public class EditNoteScreenTest {
         // add note to fake repository synchronously
         fakeNotesRepository = PaperApp.getAppComponent(InstrumentationRegistry.getTargetContext()
                 .getApplicationContext()).notesRepository();
-        fakeNotesRepository.add(Note.builder()
-                .id(NOTE_ID)
-                .title(NOTE_TITLE)
-                .description(NOTE_DESCRIPTION)
-                .build())
+        Long noteId = fakeNotesRepository.add(NOTE_TITLE, NOTE_DESCRIPTION)
                 .toBlocking()
-                .subscribe();
+                .first();
 
         // start activity
         Intent intent = new Intent();
-        intent.putExtra(EditNoteActivity.ARG_NOTE_ID, NOTE_ID);
+        intent.putExtra(EditNoteActivity.ARG_NOTE_ID, noteId);
         editNoteActivityRule.launchActivity(intent);
     }
 

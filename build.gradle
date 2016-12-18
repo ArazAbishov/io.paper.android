@@ -45,7 +45,7 @@ ext {
             dagger         : "2.6",
             autovalue      : "1.2",
             autovaluecursor: "1.0.1",
-            sqlbrite       : "0.7.0",
+            sqlbrite       : "1.1.0",
             rxbinding      : "0.4.0",
             butterknife    : "8.2.1",
 

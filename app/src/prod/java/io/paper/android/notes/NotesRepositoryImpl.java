@@ -1,12 +1,9 @@
 package io.paper.android.notes;
 
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.database.Cursor;
-import android.net.Uri;
+import android.database.sqlite.SQLiteStatement;
 
-import com.squareup.sqlbrite.BriteContentResolver;
+import com.squareup.sqlbrite.BriteDatabase;
 
 import java.util.List;
 
@@ -15,21 +12,51 @@ import rx.functions.Func0;
 import rx.functions.Func1;
 
 class NotesRepositoryImpl implements NotesRepository {
-    private final ContentResolver contentResolver;
-    private final BriteContentResolver briteContentResolver;
+    private static final String QUERY_STATEMENT = "SELECT " +
+            NotesContract.Columns.ID + "," +
+            NotesContract.Columns.TITLE + "," +
+            NotesContract.Columns.DESCRIPTION + " FROM " + NotesContract.TABLE_NAME;
+    private static final String QUERY_STATEMENT_BY_ID = QUERY_STATEMENT +
+            " WHERE " + NotesContract.Columns.ID + " = ?";
+    private static final String INSERT_STATEMENT = "INSERT INTO " + NotesContract.TABLE_NAME + "(" +
+            NotesContract.Columns.TITLE + ", " +
+            NotesContract.Columns.DESCRIPTION + ")" +
+            " VALUES (?, ?);";
+    private static final String UPDATE_TITLE_STATEMENT = "UPDATE " + NotesContract.TABLE_NAME + " SET " +
+            NotesContract.Columns.TITLE + " = ?" + " WHERE " + NotesContract.Columns.ID + " = ? " + ";";
+    private static final String UPDATE_DESCRIPTION_STATEMENT = "UPDATE " + NotesContract.TABLE_NAME + " SET " +
+            NotesContract.Columns.DESCRIPTION + " = ?" + " WHERE " + NotesContract.Columns.ID + " = ? " + ";";
+    private static final String DELETE_STATEMENT = "DELETE FROM " + NotesContract.TABLE_NAME + ";";
 
-    NotesRepositoryImpl(ContentResolver contentResolver, BriteContentResolver briteContentResolver) {
-        this.contentResolver = contentResolver;
-        this.briteContentResolver = briteContentResolver;
+    private final BriteDatabase briteDatabase;
+    private final SQLiteStatement insertStatement;
+    private final SQLiteStatement updateTitleStatement;
+    private final SQLiteStatement updateDescriptionStatement;
+    private final SQLiteStatement deleteStatement;
+
+    public NotesRepositoryImpl(BriteDatabase briteDatabase) {
+        this.briteDatabase = briteDatabase;
+        this.insertStatement = briteDatabase.getWriteableDatabase()
+                .compileStatement(INSERT_STATEMENT);
+        this.updateTitleStatement = briteDatabase.getWriteableDatabase()
+                .compileStatement(UPDATE_TITLE_STATEMENT);
+        this.updateDescriptionStatement = briteDatabase.getWriteableDatabase()
+                .compileStatement(UPDATE_DESCRIPTION_STATEMENT);
+        this.deleteStatement = briteDatabase.getWriteableDatabase()
+                .compileStatement(DELETE_STATEMENT);
     }
 
     @Override
-    public Observable<Long> add(final Note note) {
+    public Observable<Long> add(final String title, final String description) {
         return Observable.defer(new Func0<Observable<Long>>() {
             @Override public Observable<Long> call() {
-                Uri noteUri = contentResolver.insert(NotesContract.notes(),
-                        note.toContentValues());
-                return Observable.just(ContentUris.parseId(noteUri));
+                insertStatement.clearBindings();
+
+                insertStatement.bindString(1, title);
+                insertStatement.bindString(2, description);
+
+                return Observable.just(briteDatabase.executeInsert(
+                        NotesContract.TABLE_NAME, insertStatement));
             }
         });
     }
@@ -38,11 +65,13 @@ class NotesRepositoryImpl implements NotesRepository {
     public Observable<Integer> putTitle(final Long noteId, final String title) {
         return Observable.defer(new Func0<Observable<Integer>>() {
             @Override public Observable<Integer> call() {
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(NotesContract.Columns.TITLE, title);
+                updateTitleStatement.clearBindings();
 
-                return Observable.just(contentResolver.update(
-                        NotesContract.notes(noteId), contentValues, null, null));
+                updateTitleStatement.bindString(1, title);
+                updateTitleStatement.bindLong(2, noteId);
+
+                return Observable.just(briteDatabase.executeUpdateDelete(
+                        NotesContract.TABLE_NAME, updateTitleStatement));
             }
         });
     }
@@ -51,18 +80,20 @@ class NotesRepositoryImpl implements NotesRepository {
     public Observable<Integer> putDescription(final Long noteId, final String description) {
         return Observable.defer(new Func0<Observable<Integer>>() {
             @Override public Observable<Integer> call() {
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(NotesContract.Columns.DESCRIPTION, description);
+                updateDescriptionStatement.clearBindings();
 
-                return Observable.just(contentResolver.update(NotesContract.notes(noteId),
-                        contentValues, null, null));
+                updateDescriptionStatement.bindString(1, description);
+                updateDescriptionStatement.bindLong(2, noteId);
+
+                return Observable.just(briteDatabase.executeUpdateDelete(
+                        NotesContract.TABLE_NAME, updateDescriptionStatement));
             }
         });
     }
 
     @Override
     public Observable<List<Note>> list() {
-        return briteContentResolver.createQuery(NotesContract.notes(), null, null, null, null, true)
+        return briteDatabase.createQuery(NotesContract.TABLE_NAME, QUERY_STATEMENT)
                 .mapToList(new Func1<Cursor, Note>() {
                     @Override public Note call(Cursor cursor) {
                         return Note.create(cursor);
@@ -72,7 +103,8 @@ class NotesRepositoryImpl implements NotesRepository {
 
     @Override
     public Observable<Note> get(Long noteId) {
-        return briteContentResolver.createQuery(NotesContract.notes(), null, null, null, null, false)
+        return briteDatabase.createQuery(NotesContract.TABLE_NAME,
+                QUERY_STATEMENT_BY_ID, String.valueOf(noteId))
                 .mapToList(new Func1<Cursor, Note>() {
                     @Override public Note call(Cursor cursor) {
                         return Note.create(cursor);
@@ -90,7 +122,8 @@ class NotesRepositoryImpl implements NotesRepository {
     public Observable<Integer> clear() {
         return Observable.defer(new Func0<Observable<Integer>>() {
             @Override public Observable<Integer> call() {
-                return Observable.just(contentResolver.delete(NotesContract.notes(), null, null));
+                return Observable.just(briteDatabase.executeUpdateDelete(
+                        NotesContract.TABLE_NAME, deleteStatement));
             }
         });
     }

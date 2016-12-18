@@ -20,23 +20,19 @@ class FakeNotesRepositoryImpl implements NotesRepository {
     }
 
     @Override
-    public Observable<Long> add(final Note note) {
-        if (storage.containsKey(note.id())) {
-            throw new RuntimeException("Unique key constraint: id = " + note.id());
-        }
-
+    public Observable<Long> add(final String title, final String description) {
         return Observable.defer(new Func0<Observable<Long>>() {
             @Override
             public Observable<Long> call() {
-                Long noteId;
-                if (note.id() != null) {
-                    noteId = note.id();
-                } else {
-                    noteId = counter.incrementAndGet();
-                }
+                Long noteId = counter.incrementAndGet();
 
+                Note note = Note.builder()
+                        .id(noteId)
+                        .title(title)
+                        .description(description)
+                        .build();
                 // modify id of note
-                storage.put(noteId, note.toBuilder().id(noteId).build());
+                storage.put(noteId, note);
 
                 // put note into storage
                 return Observable.just(noteId);

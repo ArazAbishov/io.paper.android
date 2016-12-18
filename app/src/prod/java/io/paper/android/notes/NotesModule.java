@@ -1,8 +1,6 @@
 package io.paper.android.notes;
 
-import android.content.ContentResolver;
-
-import com.squareup.sqlbrite.BriteContentResolver;
+import com.squareup.sqlbrite.BriteDatabase;
 
 import javax.inject.Singleton;
 
@@ -14,8 +12,7 @@ public final class NotesModule {
 
     @Provides
     @Singleton
-    NotesRepository providesNotesRepository(ContentResolver contentResolver,
-            BriteContentResolver briteResolver) {
-        return new NotesRepositoryImpl(contentResolver, briteResolver);
+    NotesRepository providesNotesRepository(BriteDatabase briteDatabase) {
+        return new NotesRepositoryImpl(briteDatabase);
     }
 }

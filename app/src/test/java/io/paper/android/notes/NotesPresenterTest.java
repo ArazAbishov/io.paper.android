@@ -57,7 +57,7 @@ public class NotesPresenterTest {
     public void createNote_shouldCallInsertOnStore() {
         // mock store behaviour both for attach view and create note
         when(notesRepository.list()).thenReturn(Observable.just(notes));
-        when(notesRepository.add(any(Note.class))).thenReturn(Observable.just(11L));
+        when(notesRepository.add(any(String.class), any(String.class))).thenReturn(Observable.just(11L));
 
         // first we need to attach view
         notesPresenter.attachView(notesView);
