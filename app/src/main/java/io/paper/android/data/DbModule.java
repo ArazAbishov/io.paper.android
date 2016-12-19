@@ -18,7 +18,7 @@ public final class DbModule {
     @Provides
     @Singleton
     SqlBrite providesSqlBrite() {
-        return SqlBrite.create();
+        return new SqlBrite.Builder().build();
     }
 
     @Provides

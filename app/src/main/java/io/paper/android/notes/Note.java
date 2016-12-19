@@ -2,6 +2,7 @@ package io.paper.android.notes;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
 
 import com.gabrielittner.auto.value.cursor.ColumnName;
@@ -14,13 +15,21 @@ import io.paper.android.data.Model;
  */
 @AutoValue
 public abstract class Note implements Model {
+    public static final String TABLE_NAME = "Notes";
+
+    // columns
+    public interface Columns {
+        String ID = BaseColumns._ID;
+        String TITLE = "title";
+        String DESCRIPTION = "description";
+    }
 
     @Nullable
-    @ColumnName(NotesContract.Columns.TITLE)
+    @ColumnName(Columns.TITLE)
     public abstract String title();
 
     @Nullable
-    @ColumnName(NotesContract.Columns.DESCRIPTION)
+    @ColumnName(Columns.DESCRIPTION)
     public abstract String description();
 
     public abstract Builder toBuilder();

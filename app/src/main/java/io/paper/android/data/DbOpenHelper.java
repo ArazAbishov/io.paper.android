@@ -4,19 +4,19 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import io.paper.android.notes.NotesContract;
+import io.paper.android.notes.Note;
 
 final class DbOpenHelper extends SQLiteOpenHelper {
     private static final String NAME = "Paper.db";
     private static final int VERSION = 1;
 
     private static final String CREATE_NOTES_TABLE = "CREATE TABLE IF NOT EXISTS " +
-            NotesContract.TABLE_NAME + "(" +
-            NotesContract.Columns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-            NotesContract.Columns.TITLE + " TEXT," +
-            NotesContract.Columns.DESCRIPTION + " TEXT" + ")";
+            Note.TABLE_NAME + "(" +
+            Note.Columns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            Note.Columns.TITLE + " TEXT," +
+            Note.Columns.DESCRIPTION + " TEXT" + ")";
 
-    private static final String DROP_NOTES_TABLE = "DROP TABLE IF EXISTS " + NotesContract.TABLE_NAME;
+    private static final String DROP_NOTES_TABLE = "DROP TABLE IF EXISTS " + Note.TABLE_NAME;
 
     public DbOpenHelper(Context context) {
         super(context, NAME, null, VERSION);

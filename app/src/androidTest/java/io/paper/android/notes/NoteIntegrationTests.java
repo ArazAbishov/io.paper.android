@@ -24,17 +24,17 @@ public class NoteIntegrationTests {
                 .build();
 
         ContentValues contentValues = note.toContentValues();
-        assertThat(contentValues.getAsLong(NotesContract.Columns.ID)).isEqualTo(ID);
-        assertThat(contentValues.getAsString(NotesContract.Columns.TITLE)).isEqualTo(TITLE);
-        assertThat(contentValues.getAsString(NotesContract.Columns.DESCRIPTION)).isEqualTo(DESCRIPTION);
+        assertThat(contentValues.getAsLong(Note.Columns.ID)).isEqualTo(ID);
+        assertThat(contentValues.getAsString(Note.Columns.TITLE)).isEqualTo(TITLE);
+        assertThat(contentValues.getAsString(Note.Columns.DESCRIPTION)).isEqualTo(DESCRIPTION);
     }
 
     @Test
     public void create_shouldMapFromCursor() {
         MatrixCursor matrixCursor = new MatrixCursor(new String[]{
-                NotesContract.Columns.ID,
-                NotesContract.Columns.TITLE,
-                NotesContract.Columns.DESCRIPTION
+                Note.Columns.ID,
+                Note.Columns.TITLE,
+                Note.Columns.DESCRIPTION
         });
 
         matrixCursor.addRow(new Object[]{

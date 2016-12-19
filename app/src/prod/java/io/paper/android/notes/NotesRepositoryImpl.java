@@ -13,20 +13,20 @@ import rx.functions.Func1;
 
 class NotesRepositoryImpl implements NotesRepository {
     private static final String QUERY_STATEMENT = "SELECT " +
-            NotesContract.Columns.ID + "," +
-            NotesContract.Columns.TITLE + "," +
-            NotesContract.Columns.DESCRIPTION + " FROM " + NotesContract.TABLE_NAME;
+            Note.Columns.ID + "," +
+            Note.Columns.TITLE + "," +
+            Note.Columns.DESCRIPTION + " FROM " + Note.TABLE_NAME;
     private static final String QUERY_STATEMENT_BY_ID = QUERY_STATEMENT +
-            " WHERE " + NotesContract.Columns.ID + " = ?";
-    private static final String INSERT_STATEMENT = "INSERT INTO " + NotesContract.TABLE_NAME + "(" +
-            NotesContract.Columns.TITLE + ", " +
-            NotesContract.Columns.DESCRIPTION + ")" +
+            " WHERE " + Note.Columns.ID + " = ?";
+    private static final String INSERT_STATEMENT = "INSERT INTO " + Note.TABLE_NAME + "(" +
+            Note.Columns.TITLE + ", " +
+            Note.Columns.DESCRIPTION + ")" +
             " VALUES (?, ?);";
-    private static final String UPDATE_TITLE_STATEMENT = "UPDATE " + NotesContract.TABLE_NAME + " SET " +
-            NotesContract.Columns.TITLE + " = ?" + " WHERE " + NotesContract.Columns.ID + " = ? " + ";";
-    private static final String UPDATE_DESCRIPTION_STATEMENT = "UPDATE " + NotesContract.TABLE_NAME + " SET " +
-            NotesContract.Columns.DESCRIPTION + " = ?" + " WHERE " + NotesContract.Columns.ID + " = ? " + ";";
-    private static final String DELETE_STATEMENT = "DELETE FROM " + NotesContract.TABLE_NAME + ";";
+    private static final String UPDATE_TITLE_STATEMENT = "UPDATE " + Note.TABLE_NAME + " SET " +
+            Note.Columns.TITLE + " = ?" + " WHERE " + Note.Columns.ID + " = ? " + ";";
+    private static final String UPDATE_DESCRIPTION_STATEMENT = "UPDATE " + Note.TABLE_NAME + " SET " +
+            Note.Columns.DESCRIPTION + " = ?" + " WHERE " + Note.Columns.ID + " = ? " + ";";
+    private static final String DELETE_STATEMENT = "DELETE FROM " + Note.TABLE_NAME + ";";
 
     private final BriteDatabase briteDatabase;
     private final SQLiteStatement insertStatement;
@@ -56,7 +56,7 @@ class NotesRepositoryImpl implements NotesRepository {
                 insertStatement.bindString(2, description);
 
                 return Observable.just(briteDatabase.executeInsert(
-                        NotesContract.TABLE_NAME, insertStatement));
+                        Note.TABLE_NAME, insertStatement));
             }
         });
     }
@@ -71,7 +71,7 @@ class NotesRepositoryImpl implements NotesRepository {
                 updateTitleStatement.bindLong(2, noteId);
 
                 return Observable.just(briteDatabase.executeUpdateDelete(
-                        NotesContract.TABLE_NAME, updateTitleStatement));
+                        Note.TABLE_NAME, updateTitleStatement));
             }
         });
     }
@@ -86,14 +86,14 @@ class NotesRepositoryImpl implements NotesRepository {
                 updateDescriptionStatement.bindLong(2, noteId);
 
                 return Observable.just(briteDatabase.executeUpdateDelete(
-                        NotesContract.TABLE_NAME, updateDescriptionStatement));
+                        Note.TABLE_NAME, updateDescriptionStatement));
             }
         });
     }
 
     @Override
     public Observable<List<Note>> list() {
-        return briteDatabase.createQuery(NotesContract.TABLE_NAME, QUERY_STATEMENT)
+        return briteDatabase.createQuery(Note.TABLE_NAME, QUERY_STATEMENT)
                 .mapToList(new Func1<Cursor, Note>() {
                     @Override public Note call(Cursor cursor) {
                         return Note.create(cursor);
@@ -103,7 +103,7 @@ class NotesRepositoryImpl implements NotesRepository {
 
     @Override
     public Observable<Note> get(Long noteId) {
-        return briteDatabase.createQuery(NotesContract.TABLE_NAME,
+        return briteDatabase.createQuery(Note.TABLE_NAME,
                 QUERY_STATEMENT_BY_ID, String.valueOf(noteId))
                 .mapToList(new Func1<Cursor, Note>() {
                     @Override public Note call(Cursor cursor) {
@@ -123,7 +123,7 @@ class NotesRepositoryImpl implements NotesRepository {
         return Observable.defer(new Func0<Observable<Integer>>() {
             @Override public Observable<Integer> call() {
                 return Observable.just(briteDatabase.executeUpdateDelete(
-                        NotesContract.TABLE_NAME, deleteStatement));
+                        Note.TABLE_NAME, deleteStatement));
             }
         });
     }
