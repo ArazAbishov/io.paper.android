@@ -16,7 +16,7 @@ android {
         versionName versions.versionName
 
         // jUnit test runner for android
-        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+        testInstrumentationRunner "io.paper.android.PaperInstrumentationTestsRunner"
     }
 
     lintOptions {
@@ -25,15 +25,6 @@ android {
 
         disable "GoogleAppIndexingWarning" // App does not have deep linking.
         disable "InvalidPackage" // Okio references java.nio that does not presented in Android SDK.
-    }
-
-    productFlavors {
-        mock {
-            applicationId "io.paper.android.mock"
-        }
-        prod {
-            applicationId "io.paper.android"
-        }
     }
 
     compileOptions {

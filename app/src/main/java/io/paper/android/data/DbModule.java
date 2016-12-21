@@ -2,6 +2,7 @@ package io.paper.android.data;
 
 import android.app.Application;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.Nullable;
 
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
@@ -15,6 +16,13 @@ import rx.schedulers.Schedulers;
 @Module
 public final class DbModule {
 
+    @Nullable
+    private final String databaseName;
+
+    public DbModule(@Nullable String databaseName) {
+        this.databaseName = databaseName;
+    }
+
     @Provides
     @Singleton
     SqlBrite providesSqlBrite() {
@@ -24,7 +32,7 @@ public final class DbModule {
     @Provides
     @Singleton
     SQLiteOpenHelper providesSqlLiteOpenHelper(Application application) {
-        return new DbOpenHelper(application);
+        return new DbOpenHelper(application, databaseName);
     }
 
     @Provides

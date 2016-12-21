@@ -24,7 +24,7 @@ public class EditNoteScreenTest {
     private static final String NOTE_TITLE = "Fancy note title";
     private static final String NOTE_DESCRIPTION = "Fancy note description";
 
-    private NotesRepository fakeNotesRepository;
+    private NotesRepository notesRepository;
 
     @Rule
     public ActivityTestRule<EditNoteActivity> editNoteActivityRule =
@@ -33,9 +33,9 @@ public class EditNoteScreenTest {
     @Before
     public void setUp() {
         // add note to fake repository synchronously
-        fakeNotesRepository = PaperApp.getAppComponent(InstrumentationRegistry.getTargetContext()
+        notesRepository = PaperApp.getAppComponent(InstrumentationRegistry.getTargetContext()
                 .getApplicationContext()).notesRepository();
-        Long noteId = fakeNotesRepository.add(NOTE_TITLE, NOTE_DESCRIPTION)
+        Long noteId = notesRepository.add(NOTE_TITLE, NOTE_DESCRIPTION)
                 .toBlocking()
                 .first();
 
