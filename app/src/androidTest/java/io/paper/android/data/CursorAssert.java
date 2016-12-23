@@ -5,11 +5,11 @@ import android.support.annotation.NonNull;
 
 import static com.google.common.truth.Truth.assertThat;
 
-final class CursorAssert {
+public final class CursorAssert {
     private final Cursor cursor;
     private int row;
 
-    static CursorAssert assertThatCursor(Cursor cursor) {
+    public static CursorAssert assertThatCursor(Cursor cursor) {
         return new CursorAssert(cursor);
     }
 
@@ -21,7 +21,7 @@ final class CursorAssert {
     }
 
     @NonNull
-    CursorAssert hasRow(@NonNull Object... values) {
+    public CursorAssert hasRow(@NonNull Object... values) {
         assertThat(cursor.moveToNext()).named("row " + (row + 1) + " exists").isTrue();
         row = row + 1;
 
@@ -35,7 +35,7 @@ final class CursorAssert {
         return this;
     }
 
-    void isExhausted() {
+    public void isExhausted() {
         if (cursor.moveToNext()) {
             StringBuilder data = new StringBuilder();
             for (int i = 0; i < cursor.getColumnCount(); i++) {
