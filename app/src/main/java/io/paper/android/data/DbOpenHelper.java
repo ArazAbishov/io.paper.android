@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 
 import io.paper.android.notes.Note;
 
-final class DbOpenHelper extends SQLiteOpenHelper {
+public final class DbOpenHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
 
     private static final String CREATE_NOTES_TABLE = "CREATE TABLE IF NOT EXISTS " +

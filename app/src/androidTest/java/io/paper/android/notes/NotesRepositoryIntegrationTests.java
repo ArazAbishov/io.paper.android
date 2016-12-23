@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import io.paper.android.PaperApp;
+import io.paper.android.data.DbOpenHelper;
 import rx.schedulers.Schedulers;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -31,14 +32,15 @@ public class NotesRepositoryIntegrationTests {
     };
 
     private SQLiteDatabase database;
+    private SQLiteOpenHelper sqLiteOpenHelper;
     private NotesRepository notesRepository;
 
     @Before
     public void setUp() {
         SqlBrite sqlBrite = PaperApp.getAppComponent(InstrumentationRegistry
                 .getTargetContext()).sqlBrite();
-        SQLiteOpenHelper sqLiteOpenHelper = PaperApp.getAppComponent(InstrumentationRegistry
-                .getTargetContext()).sqliteOpenHelper();
+        sqLiteOpenHelper = new DbOpenHelper(
+                InstrumentationRegistry.getTargetContext(), null);
 
         // setting immediate scheduler in order to have synchronous behaviour
         BriteDatabase briteDatabase = sqlBrite.wrapDatabaseHelper(
@@ -161,11 +163,12 @@ public class NotesRepositoryIntegrationTests {
 
         assertThat(deletedRows).isEqualTo(1);
         assertThatCursor(cursor).isExhausted();
-
     }
 
     @After
     public void tearDown() {
-        database.close();
+        // erase contents of in-memory database
+        // and close connection to it
+        sqLiteOpenHelper.close();
     }
 }
