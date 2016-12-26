@@ -1,0 +1,34 @@
+apply plugin: "findbugs"
+
+afterEvaluate {
+    android.applicationVariants.each { variant ->
+        def findBugsTask = tasks.create("findBugs${variant.name.capitalize()}", FindBugs)
+
+        findBugsTask.group = "verification"
+        findBugsTask.description = "Run FindBugs for the ${variant.name}"
+
+        // Fail early.
+        findBugsTask.ignoreFailures = false
+
+        // Aggressive inspection.
+        findBugsTask.effort = "max"
+
+        // Fail build on high priority warnings.
+        findBugsTask.reportLevel = "high"
+
+        // Only html reports.
+        findBugsTask.reports {
+            html.enabled true
+            xml.enabled false
+        }
+
+        def compileTask = variant.javaCompile
+        findBugsTask.source = compileTask.source
+        findBugsTask.classes = fileTree(compileTask.destinationDir)
+        findBugsTask.classpath = compileTask.classpath.plus(project.files(android.bootClasspath))
+        findBugsTask.dependsOn(compileTask)
+
+        def checkTask = tasks.getByName("check")
+        checkTask.dependsOn(findBugsTask)
+    }
+}
