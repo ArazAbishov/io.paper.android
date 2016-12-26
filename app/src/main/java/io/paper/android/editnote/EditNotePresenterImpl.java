@@ -2,7 +2,9 @@ package io.paper.android.editnote;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import io.paper.android.notes.Note;
@@ -16,6 +18,7 @@ import rx.subjects.PublishSubject;
 import rx.subscriptions.CompositeSubscription;
 
 class EditNotePresenterImpl implements EditNotePresenter {
+    private static final String TAG = EditNotePresenterImpl.class.getSimpleName();
 
     @NonNull
     private final Long noteId;
@@ -39,7 +42,7 @@ class EditNotePresenterImpl implements EditNotePresenter {
     private CompositeSubscription subscription;
 
     EditNotePresenterImpl(@NonNull Long noteId, @NonNull SchedulerProvider schedulerProvider,
-                          @NonNull NotesRepository notesRepository) {
+            @NonNull NotesRepository notesRepository) {
         this.noteId = noteId;
         this.schedulerProvider = schedulerProvider;
         this.notesRepository = notesRepository;
@@ -77,7 +80,7 @@ class EditNotePresenterImpl implements EditNotePresenter {
                     }, new Action1<Throwable>() {
                         @Override
                         public void call(Throwable throwable) {
-                            throwable.printStackTrace();
+                            Log.e(TAG, throwable.getMessage(), throwable);
                         }
                     }));
 
@@ -91,13 +94,13 @@ class EditNotePresenterImpl implements EditNotePresenter {
                     })
                     .subscribe(new Action1<Integer>() {
                         @Override
-                        public void call(Integer integer) {
-                            System.out.println(integer);
+                        public void call(Integer updated) {
+                            Log.i(TAG, String.format(Locale.US, "%d notes were updated", updated));
                         }
                     }, new Action1<Throwable>() {
                         @Override
                         public void call(Throwable throwable) {
-                            throwable.printStackTrace();
+                            Log.e(TAG, throwable.getMessage(), throwable);
                         }
                     }));
 
@@ -111,13 +114,13 @@ class EditNotePresenterImpl implements EditNotePresenter {
                     })
                     .subscribe(new Action1<Integer>() {
                         @Override
-                        public void call(Integer integer) {
-                            System.out.println(integer);
+                        public void call(Integer updated) {
+                            Log.i(TAG, String.format(Locale.US, "%d notes were updated", updated));
                         }
                     }, new Action1<Throwable>() {
                         @Override
                         public void call(Throwable throwable) {
-                            throwable.printStackTrace();
+                            Log.e(TAG, throwable.getMessage(), throwable);
                         }
                     }));
 

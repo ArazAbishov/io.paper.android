@@ -18,10 +18,10 @@ public abstract class Note implements Model {
     public static final String TABLE_NAME = "Notes";
 
     // columns
-    public interface Columns {
-        String ID = BaseColumns._ID;
-        String TITLE = "title";
-        String DESCRIPTION = "description";
+    public static final class Columns {
+        public static final String ID = BaseColumns._ID;
+        public static final String TITLE = "title";
+        public static final String DESCRIPTION = "description";
     }
 
     @Nullable

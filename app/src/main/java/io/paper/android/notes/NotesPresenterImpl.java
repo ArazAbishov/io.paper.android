@@ -1,6 +1,7 @@
 package io.paper.android.notes;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
 public class NotesPresenterImpl implements NotesPresenter {
+    private static final String TAG = NotesPresenterImpl.class.getSimpleName();
     private final SchedulerProvider schedulerProvider;
     private final NotesRepository notesRepository;
     private CompositeSubscription subscriptions;
@@ -36,7 +38,7 @@ public class NotesPresenterImpl implements NotesPresenter {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        throwable.printStackTrace();
+                        Log.e(TAG, throwable.getMessage(), throwable);
                     }
                 }));
     }

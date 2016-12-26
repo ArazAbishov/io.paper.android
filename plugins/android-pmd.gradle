@@ -1,0 +1,41 @@
+apply plugin: "pmd"
+
+afterEvaluate {
+    // ToDo: consider running pmd only for main sourceSet
+    android.applicationVariants.each { variant ->
+        def pmdTask = tasks.create("pmd${variant.name.capitalize()}", Pmd)
+
+        pmdTask.group = "verification"
+        pmdTask.description = "Run Pmd for the ${variant.name}"
+
+        // Fail early.
+        pmdTask.ignoreFailures = false
+
+        // Only html reports.
+        pmdTask.reports {
+            html.enabled true
+            xml.enabled false
+        }
+
+        // ToDo: add more rulesets
+        pmdTask.ruleSets = [
+                "java-typeresolution",
+                "java-logging-java",
+                "java-unnecessary",
+                "java-unusedcode",
+                "java-strings",
+                "java-imports",
+                "java-design",
+                "java-braces",
+                "java-junit",
+                "java-basic"
+        ]
+
+        def compileTask = variant.javaCompile
+        pmdTask.source = compileTask.source
+        pmdTask.dependsOn(compileTask)
+
+        def checkTask = tasks.getByName("check")
+        checkTask.dependsOn(pmdTask)
+    }
+}
