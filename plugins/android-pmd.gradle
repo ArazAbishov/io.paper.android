@@ -1,7 +1,11 @@
 apply plugin: "pmd"
 
+pmd {
+    toolVersion = "5.5.2"
+}
+
 afterEvaluate {
-    // ToDo: consider running pmd only for main sourceSet
+    // ToDo: consider running pmd only for the main sourceSet
     android.applicationVariants.each { variant ->
         def pmdTask = tasks.create("pmd${variant.name.capitalize()}", Pmd)
 
@@ -17,18 +21,29 @@ afterEvaluate {
             xml.enabled false
         }
 
-        // ToDo: add more rulesets
+        pmdTask.exclude(
+                "**/R.java"
+        )
+
+        // see: https://pmd.github.io/pmd-5.5.2/pmd-java/rules/index.html
         pmdTask.ruleSets = [
-                "java-typeresolution",
-                "java-logging-java",
-                "java-unnecessary",
-                "java-unusedcode",
-                "java-strings",
-                "java-imports",
-                "java-design",
+                "java-android",
+                "java-basic",
                 "java-braces",
+                "java-clone",
+                "java-codesize",
+                "java-coupling",
+                "java-design",
+                "java-empty",
+                "java-imports",
+                "java-logging-java",
                 "java-junit",
-                "java-basic"
+                "java-optimizations",
+                "java-sunsecure",
+                "java-strings",
+                "java-typeresolution",
+                "java-unnecessary",
+                "java-unusedcode"
         ]
 
         def compileTask = variant.javaCompile

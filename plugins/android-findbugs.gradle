@@ -14,7 +14,7 @@ afterEvaluate {
         findBugsTask.effort = "max"
 
         // ToDo: lower the report level
-        // ToDo: set explicit findbug filters
+        // ToDo: set explicit findbugs filters
         // Fail build on high priority warnings.
         findBugsTask.reportLevel = "high"
 
