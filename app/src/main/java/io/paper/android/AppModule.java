@@ -22,7 +22,7 @@ import io.paper.android.utils.SchedulersModule;
 class AppModule {
     private final Application application;
 
-    AppModule(final Application application) {
+    AppModule(Application application) {
         this.application = application;
     }
 
@@ -34,8 +34,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    NotesPresenter providesNotesPresenter(final SchedulerProvider schedulerProvider,
-            final NotesRepository notesRepository) {
+    NotesPresenter providesNotesPresenter(SchedulerProvider schedulerProvider,
+            NotesRepository notesRepository) {
         return new NotesPresenterImpl(schedulerProvider, notesRepository);
     }
 }

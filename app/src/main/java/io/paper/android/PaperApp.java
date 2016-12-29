@@ -20,8 +20,7 @@ public class PaperApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        appComponent = prepareAppComponent()
-                .build();
+        appComponent = prepareAppComponent().build();
     }
 
     protected DaggerAppComponent.Builder prepareAppComponent() {

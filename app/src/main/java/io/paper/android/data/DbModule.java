@@ -38,7 +38,8 @@ public final class DbModule {
     @Provides
     @Singleton
     BriteDatabase providesBriteDatabase(SQLiteOpenHelper databaseOpenHelper, SqlBrite sqlBrite) {
-        BriteDatabase briteDatabase = sqlBrite.wrapDatabaseHelper(databaseOpenHelper, Schedulers.io());
+        BriteDatabase briteDatabase = sqlBrite.wrapDatabaseHelper(
+                databaseOpenHelper, Schedulers.io());
         briteDatabase.setLoggingEnabled(true);
         return briteDatabase;
     }

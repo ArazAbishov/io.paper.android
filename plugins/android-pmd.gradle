@@ -21,30 +21,13 @@ afterEvaluate {
             xml.enabled false
         }
 
-        pmdTask.exclude(
-                "**/R.java"
+        // see: https://pmd.github.io/pmd-5.5.2/pmd-java/rules/index.html
+        pmdTask.ruleSetFiles = rootProject.files(
+                "plugins/android-pmd-rules.xml"
         )
 
-        // see: https://pmd.github.io/pmd-5.5.2/pmd-java/rules/index.html
-        pmdTask.ruleSets = [
-                "java-android",
-                "java-basic",
-                "java-braces",
-                "java-clone",
-                "java-codesize",
-                "java-coupling",
-                "java-design",
-                "java-empty",
-                "java-imports",
-                "java-logging-java",
-                "java-junit",
-                "java-optimizations",
-                "java-sunsecure",
-                "java-strings",
-                "java-typeresolution",
-                "java-unnecessary",
-                "java-unusedcode"
-        ]
+        // setting list of rule sets explicitly to empty list
+        pmdTask.ruleSets = []
 
         def compileTask = variant.javaCompile
         pmdTask.source = compileTask.source
