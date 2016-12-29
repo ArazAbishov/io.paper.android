@@ -16,13 +16,17 @@ afterEvaluate {
         // ToDo: lower the report level
         // ToDo: set explicit findbugs filters
         // Fail build on high priority warnings.
-        findBugsTask.reportLevel = "high"
+        findBugsTask.reportLevel = "low"
 
         // Only html reports.
         findBugsTask.reports {
             html.enabled true
             xml.enabled false
         }
+
+        findBugsTask.excludeFilter = rootProject.file(
+                "plugins/android-findbugs-filter.xml"
+        )
 
         def compileTask = variant.javaCompile
         findBugsTask.source = compileTask.source
