@@ -7,25 +7,26 @@ import com.squareup.sqlbrite.BriteDatabase;
 
 import java.util.List;
 
+import io.paper.android.notes.Note.Columns;
 import rx.Observable;
 import rx.functions.Func0;
 import rx.functions.Func1;
 
 class NotesRepositoryImpl implements NotesRepository {
     private static final String QUERY_STATEMENT = "SELECT " +
-            Note.Columns.ID + "," +
-            Note.Columns.TITLE + "," +
-            Note.Columns.DESCRIPTION + " FROM " + Note.TABLE_NAME;
+            Columns.ID + "," +
+            Columns.TITLE + "," +
+            Columns.DESCRIPTION + " FROM " + Note.TABLE_NAME;
     private static final String QUERY_STATEMENT_BY_ID = QUERY_STATEMENT +
-            " WHERE " + Note.Columns.ID + " = ?";
+            " WHERE " + Columns.ID + " = ?";
     private static final String INSERT_STATEMENT = "INSERT INTO " + Note.TABLE_NAME + "(" +
-            Note.Columns.TITLE + ", " +
-            Note.Columns.DESCRIPTION + ")" +
+            Columns.TITLE + ", " +
+            Columns.DESCRIPTION + ")" +
             " VALUES (?, ?);";
-    private static final String UPDATE_TITLE_STATEMENT = "UPDATE " + Note.TABLE_NAME + " SET " +
-            Note.Columns.TITLE + " = ?" + " WHERE " + Note.Columns.ID + " = ? " + ";";
-    private static final String UPDATE_DESCRIPTION_STATEMENT = "UPDATE " + Note.TABLE_NAME + " SET " +
-            Note.Columns.DESCRIPTION + " = ?" + " WHERE " + Note.Columns.ID + " = ? " + ";";
+    private static final String UPDATE_TITLE_STATEMENT = "UPDATE " + Note.TABLE_NAME +
+            " SET " + Columns.TITLE + " = ?" + " WHERE " + Columns.ID + " = ? " + ";";
+    private static final String UPDATE_DESCRIPTION_STATEMENT = "UPDATE " + Note.TABLE_NAME +
+            " SET " + Columns.DESCRIPTION + " = ?" + " WHERE " + Columns.ID + " = ? " + ";";
     private static final String DELETE_STATEMENT = "DELETE FROM " + Note.TABLE_NAME + ";";
 
     private final BriteDatabase briteDatabase;

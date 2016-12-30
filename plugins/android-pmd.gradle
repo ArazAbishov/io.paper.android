@@ -17,8 +17,8 @@ afterEvaluate {
 
         // Only html reports.
         pmdTask.reports {
-            html.enabled true
-            xml.enabled false
+            html.enabled = true
+            xml.enabled = false
         }
 
         // see: https://pmd.github.io/pmd-5.5.2/pmd-java/rules/index.html

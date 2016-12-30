@@ -18,8 +18,8 @@ afterEvaluate {
 
         // Only html reports.
         findBugsTask.reports {
-            html.enabled true
-            xml.enabled false
+            html.enabled = true
+            xml.enabled = false
         }
 
         findBugsTask.excludeFilter = rootProject.file(

@@ -17,7 +17,8 @@ public class NotesPresenterImpl implements NotesPresenter {
     private CompositeSubscription subscriptions;
     private NotesView notesView;
 
-    public NotesPresenterImpl(SchedulerProvider schedulerProvider, NotesRepository notesRepository) {
+    public NotesPresenterImpl(SchedulerProvider schedulerProvider,
+            NotesRepository notesRepository) {
         this.schedulerProvider = schedulerProvider;
         this.notesRepository = notesRepository;
         this.subscriptions = new CompositeSubscription();
