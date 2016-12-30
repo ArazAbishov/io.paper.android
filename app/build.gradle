@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "jacoco"
+apply from: rootProject.file("plugins/android-checkstyle.gradle")
 apply from: rootProject.file("plugins/android-findbugs.gradle")
 apply from: rootProject.file("plugins/android-pmd.gradle")
 

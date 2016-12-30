@@ -1,0 +1,38 @@
+apply plugin: "checkstyle"
+
+afterEvaluate {
+    android.applicationVariants.each { variant ->
+        def checkstyleTask = tasks.create("checkstyle${variant.name.capitalize()}", Checkstyle)
+
+        checkstyleTask.group = "verification"
+        checkstyleTask.description = "Run Checkstyle for the ${variant.name}"
+
+        // Fail early.
+        checkstyleTask.ignoreFailures = false
+
+        // Do not output results into console.
+        checkstyleTask.showViolations = false
+
+        // Only html reports.
+        checkstyleTask.reports {
+            html.enabled = true
+            xml.enabled = false
+        }
+
+        checkstyleTask.configFile = rootProject.file(
+                "plugins/android-checkstyle-style.xml"
+        )
+
+        // checkstyleTask.include "**/*.java"
+        // checkstyleTask.exclude "**/R.java"
+        // checkstyleTask.exclude "**/generated/**"
+
+        def compileTask = variant.javaCompile
+        checkstyleTask.source = compileTask.source
+        checkstyleTask.classpath = compileTask.classpath.plus(project.files(android.bootClasspath))
+        checkstyleTask.dependsOn(compileTask)
+
+        def checkTask = tasks.getByName("check")
+        checkTask.dependsOn(checkstyleTask)
+    }
+}
