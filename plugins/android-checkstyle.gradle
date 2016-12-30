@@ -13,12 +13,6 @@ afterEvaluate {
         // Do not output results into console.
         checkstyleTask.showViolations = false
 
-        // Only html reports.
-        checkstyleTask.reports {
-            html.enabled = true
-            xml.enabled = false
-        }
-
         checkstyleTask.configFile = rootProject.file(
                 "plugins/android-checkstyle-style.xml"
         )
