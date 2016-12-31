@@ -17,16 +17,20 @@ afterEvaluate {
                 "plugins/android-checkstyle-style.xml"
         )
 
+        checkstyleTask.include(
+                "**/*.java"
+        )
+
+        checkstyleTask.exclude(
+                "**/R.java", "**/BuildConfig.java"
+        )
+
         def compileTask = variant.javaCompile
-        def checkTask = tasks.getByName("check")
-
+        checkstyleTask.source = compileTask.source
         checkstyleTask.classpath = compileTask.classpath.plus(project.files(android.bootClasspath))
-        checkstyleTask.source = compileTask.source.findAll {
-            // ignore all directories with generated sources
-            !it.absolutePath.find(".*generated.*")
-        }
-
         checkstyleTask.dependsOn(compileTask)
+
+        def checkTask = tasks.getByName("check")
         checkTask.dependsOn(checkstyleTask)
     }
 }
