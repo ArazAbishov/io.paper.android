@@ -9,9 +9,6 @@ buildscript {
 
         // method count plugin
         classpath "com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.1"
-
-        // jacoco test coverage plugin
-        classpath "org.jacoco:org.jacoco.core:0.7.7.201606060606"
     }
 }
 
