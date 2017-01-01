@@ -2,7 +2,9 @@ package io.paper.android.editnote;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import io.paper.android.notes.Note;
@@ -16,6 +18,7 @@ import rx.subjects.PublishSubject;
 import rx.subscriptions.CompositeSubscription;
 
 class EditNotePresenterImpl implements EditNotePresenter {
+    private static final String TAG = EditNotePresenterImpl.class.getSimpleName();
 
     @NonNull
     private final Long noteId;
@@ -38,8 +41,9 @@ class EditNotePresenterImpl implements EditNotePresenter {
     @NonNull
     private CompositeSubscription subscription;
 
-    EditNotePresenterImpl(@NonNull Long noteId, @NonNull SchedulerProvider schedulerProvider,
-                          @NonNull NotesRepository notesRepository) {
+    EditNotePresenterImpl(@NonNull Long noteId,
+            @NonNull SchedulerProvider schedulerProvider,
+            @NonNull NotesRepository notesRepository) {
         this.noteId = noteId;
         this.schedulerProvider = schedulerProvider;
         this.notesRepository = notesRepository;
@@ -49,12 +53,12 @@ class EditNotePresenterImpl implements EditNotePresenter {
     }
 
     @Override
-    public void updateTitle(@NonNull final String title) {
+    public void updateTitle(@NonNull String title) {
         noteTitleSubject.onNext(title);
     }
 
     @Override
-    public void updateDescription(@NonNull final String description) {
+    public void updateDescription(@NonNull String description) {
         noteDescriptionSubject.onNext(description);
     }
 
@@ -77,50 +81,12 @@ class EditNotePresenterImpl implements EditNotePresenter {
                     }, new Action1<Throwable>() {
                         @Override
                         public void call(Throwable throwable) {
-                            throwable.printStackTrace();
+                            Log.e(TAG, throwable.getMessage(), throwable);
                         }
                     }));
 
-            subscription.add(noteTitleSubject
-                    .debounce(256, TimeUnit.MILLISECONDS)
-                    .switchMap(new Func1<String, Observable<Integer>>() {
-                        @Override
-                        public Observable<Integer> call(String title) {
-                            return notesRepository.putTitle(noteId, title);
-                        }
-                    })
-                    .subscribe(new Action1<Integer>() {
-                        @Override
-                        public void call(Integer integer) {
-                            System.out.println(integer);
-                        }
-                    }, new Action1<Throwable>() {
-                        @Override
-                        public void call(Throwable throwable) {
-                            throwable.printStackTrace();
-                        }
-                    }));
-
-            subscription.add(noteDescriptionSubject
-                    .debounce(256, TimeUnit.MILLISECONDS)
-                    .switchMap(new Func1<String, Observable<Integer>>() {
-                        @Override
-                        public Observable<Integer> call(String description) {
-                            return notesRepository.putDescription(noteId, description);
-                        }
-                    })
-                    .subscribe(new Action1<Integer>() {
-                        @Override
-                        public void call(Integer integer) {
-                            System.out.println(integer);
-                        }
-                    }, new Action1<Throwable>() {
-                        @Override
-                        public void call(Throwable throwable) {
-                            throwable.printStackTrace();
-                        }
-                    }));
-
+            observeNoteTitleChanges();
+            observeNoteDescriptionChanges();
         }
     }
 
@@ -132,5 +98,49 @@ class EditNotePresenterImpl implements EditNotePresenter {
             subscription.unsubscribe();
             subscription = new CompositeSubscription();
         }
+    }
+
+    private void observeNoteTitleChanges() {
+        subscription.add(noteTitleSubject
+                .debounce(256, TimeUnit.MILLISECONDS)
+                .switchMap(new Func1<String, Observable<Integer>>() {
+                    @Override
+                    public Observable<Integer> call(String title) {
+                        return notesRepository.putTitle(noteId, title);
+                    }
+                })
+                .subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer updated) {
+                        Log.i(TAG, String.format(Locale.US, "%d notes were updated", updated));
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.e(TAG, throwable.getMessage(), throwable);
+                    }
+                }));
+    }
+
+    private void observeNoteDescriptionChanges() {
+        subscription.add(noteDescriptionSubject
+                .debounce(256, TimeUnit.MILLISECONDS)
+                .switchMap(new Func1<String, Observable<Integer>>() {
+                    @Override
+                    public Observable<Integer> call(String description) {
+                        return notesRepository.putDescription(noteId, description);
+                    }
+                })
+                .subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer updated) {
+                        Log.i(TAG, String.format(Locale.US, "%d notes were updated", updated));
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.e(TAG, throwable.getMessage(), throwable);
+                    }
+                }));
     }
 }

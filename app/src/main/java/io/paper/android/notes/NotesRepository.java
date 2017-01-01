@@ -5,7 +5,7 @@ import java.util.List;
 import rx.Observable;
 
 public interface NotesRepository {
-    Observable<Long> add(Note note);
+    Observable<Long> add(String title, String description);
 
     Observable<Integer> putTitle(Long noteId, String title);
 
@@ -14,4 +14,6 @@ public interface NotesRepository {
     Observable<List<Note>> list();
 
     Observable<Note> get(Long noteId);
+
+    Observable<Integer> clear();
 }

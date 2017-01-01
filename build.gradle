@@ -1,23 +1,19 @@
+apply plugin: "com.gradle.build-scan"
+
 buildscript {
     repositories {
         jcenter()
 
-        // gradle plugin repository
-        // (required for java apt plugin)
+        // Required by build scan plugin.
         maven {
-            url "https://plugins.gradle.org/m2/"
+            url("https://plugins.gradle.org/m2/")
         }
     }
 
     dependencies {
-        // android gradle plugin
-        classpath 'com.android.tools.build:gradle:2.2.2'
-
-        // method count plugin
+        classpath "com.android.tools.build:gradle:2.2.3"
         classpath "com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.1"
-
-        // jacoco test coverage plugin
-        classpath "org.jacoco:org.jacoco.core:0.7.7.201606060606"
+        classpath "com.gradle:build-scan-plugin:1.3"
     }
 }
 
@@ -31,6 +27,11 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+buildScan {
+    licenseAgreementUrl = "https://gradle.com/terms-of-service"
+    licenseAgree = "yes"
+}
+
 ext {
     versions = [
             sdk        : 24,
@@ -41,18 +42,20 @@ ext {
     ]
 
     libraries = [
-            support       : "25.0.1",
-            dagger        : "2.6",
-            autovalue     : "1.2",
-            sqlbrite      : "0.7.0",
-            rxbinding     : "0.4.0",
-            butterknife   : "8.2.1",
+            support        : "25.1.0",
+            dagger         : "2.6",
+            autovalue      : "1.2",
+            autovaluecursor: "1.0.1",
+            sqlbrite       : "1.1.0",
+            rxbinding      : "0.4.0",
+            butterknife    : "8.2.1",
 
             // test dependencies
-            espresso      : "2.2.2",
-            mockito       : "2.2.5",
-            assertj       : "2.5.0",
-            junit         : "4.12",
-            equalsverifier: "2.1.6"
+            espresso       : "2.2.2",
+            mockito        : "2.2.5",
+            assertj        : "2.5.0",
+            junit          : "4.12",
+            equalsverifier : "2.1.7",
+            truth          : "0.30",
     ]
 }

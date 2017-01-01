@@ -1,5 +1,9 @@
 package io.paper.android;
 
+import android.database.sqlite.SQLiteOpenHelper;
+
+import com.squareup.sqlbrite.SqlBrite;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -16,5 +20,9 @@ public interface AppComponent {
     EditNoteComponent plus(EditNoteModule editNoteModule);
 
     // dependencies exposed for testing purposes
+    SqlBrite sqlBrite();
+
+    SQLiteOpenHelper sqliteOpenHelper();
+
     NotesRepository notesRepository();
 }

@@ -1,12 +1,12 @@
-package io.paper.android.data.stores;
+package io.paper.android.data;
 
 import android.database.Cursor;
 
-public final class Db {
+public final class DbUtils {
     public static final int BOOLEAN_FALSE = 0;
     public static final int BOOLEAN_TRUE = 1;
 
-    private Db() {
+    private DbUtils() {
         throw new AssertionError("No instances.");
     }
 

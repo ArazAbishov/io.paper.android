@@ -65,11 +65,12 @@ public final class NotesFragment extends Fragment implements NotesView {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        notesAdapter = new NotesAdapter(LayoutInflater.from(getActivity()), new OnNoteClickListener() {
-            @Override public void onNoteClick(Note note) {
-                onEditNote(note);
-            }
-        });
+        notesAdapter = new NotesAdapter(LayoutInflater.from(getActivity()),
+                new OnNoteClickListener() {
+                    @Override public void onNoteClick(Note note) {
+                        onEditNote(note);
+                    }
+                });
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(notesAdapter);
     }

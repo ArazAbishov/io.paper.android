@@ -6,7 +6,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.paper.android.data.stores.DbModule;
+import io.paper.android.data.DbModule;
 import io.paper.android.notes.NotesModule;
 import io.paper.android.notes.NotesPresenter;
 import io.paper.android.notes.NotesPresenterImpl;
@@ -35,7 +35,7 @@ class AppModule {
     @Provides
     @Singleton
     NotesPresenter providesNotesPresenter(SchedulerProvider schedulerProvider,
-                                          NotesRepository notesRepository) {
+            NotesRepository notesRepository) {
         return new NotesPresenterImpl(schedulerProvider, notesRepository);
     }
 }

@@ -1,5 +1,6 @@
 package io.paper.android.notes;
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -8,6 +9,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import io.paper.android.PaperApp;
 import io.paper.android.R;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -29,13 +31,18 @@ public class NotesScreenTest {
 
     @Rule
     public ActivityTestRule<NotesActivity> notesActivityTestRule =
-            new ActivityTestRule<>(NotesActivity.class);
+            new ActivityTestRule<NotesActivity>(NotesActivity.class) {
+                @Override protected void beforeActivityLaunched() {
+                    super.beforeActivityLaunched();
+
+                    // remove all notes before starting activity
+                    PaperApp.getAppComponent(InstrumentationRegistry.getTargetContext()
+                            .getApplicationContext()).notesRepository().clear().toBlocking().subscribe();
+                }
+            };
 
     @Test
     public void clickAddNoteButton_opensAddNoteUi() {
-        // String newNoteTitle = "Fancy note title";
-        // String newNoteDescription = "Fancy note description";
-
         // click on the add note button
         onView(withId(R.id.fab_add_note)).perform(click());
 
@@ -52,5 +59,12 @@ public class NotesScreenTest {
                 scrollTo(hasDescendant(withText(NOTE_TITLE))));
 
         onView(withItemText(NOTE_TITLE)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void tearDown() {
+        // we need to make sure that repository does not contain any state from execution of other tests
+        PaperApp.getAppComponent(InstrumentationRegistry.getTargetContext()
+                .getApplicationContext()).notesRepository().clear().toBlocking().subscribe();
     }
 }

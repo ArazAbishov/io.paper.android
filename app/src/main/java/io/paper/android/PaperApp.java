@@ -3,25 +3,30 @@ package io.paper.android;
 import android.app.Application;
 import android.content.Context;
 
-import io.paper.android.data.stores.DbModule;
+import io.paper.android.data.DbModule;
 import io.paper.android.editnote.EditNoteComponent;
 import io.paper.android.editnote.EditNoteModule;
 
-// ToDo: Implement mock flavor of the app with fake repository implementation
+// ToDo: Add more tests for data layer (ContentProvider, Models)
 // ToDo: Integrate gradle plugin for jacoco (test coverage)
 // ToDo: Integrate more plugins for static analysis (findbugs, checkstyle)
 // ToDo: Add specific configuration to VM to track unclosed cursors and database sessions
-public final class PaperApp extends Application {
+public class PaperApp extends Application {
+    private static final String DATABASE_NAME = "paper.db";
+
     private AppComponent appComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        appComponent = DaggerAppComponent.builder()
+        appComponent = prepareAppComponent().build();
+    }
+
+    protected DaggerAppComponent.Builder prepareAppComponent() {
+        return DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
-                .dbModule(new DbModule())
-                .build();
+                .dbModule(new DbModule(DATABASE_NAME));
     }
 
     public static AppComponent getAppComponent(Context context) {

@@ -1,5 +1,7 @@
 apply plugin: "com.android.application"
-apply plugin: "jacoco"
+apply from: rootProject.file("plugins/android-checkstyle.gradle")
+apply from: rootProject.file("plugins/android-findbugs.gradle")
+apply from: rootProject.file("plugins/android-pmd.gradle")
 
 def versions = rootProject.ext.versions
 def libraries = rootProject.ext.libraries
@@ -16,7 +18,7 @@ android {
         versionName versions.versionName
 
         // jUnit test runner for android
-        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+        testInstrumentationRunner "io.paper.android.PaperInstrumentationTestsRunner"
     }
 
     lintOptions {
@@ -24,21 +26,18 @@ android {
         abortOnError true
 
         disable "GoogleAppIndexingWarning" // App does not have deep linking.
-        disable "InvalidPackage" // Okio references java.nio that does not presented in Android SDK.
-    }
-
-    productFlavors {
-        mock {
-            applicationId "io.paper.android.mock"
-        }
-        prod {
-            applicationId "io.paper.android"
-        }
+        warning "InvalidPackage" // Okio references java.nio that does not presented in Android SDK.
     }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    buildTypes {
+        debug {
+            testCoverageEnabled = true
+        }
     }
 }
 
@@ -57,6 +56,10 @@ dependencies {
     provided "com.google.auto.value:auto-value:${libraries.autovalue}"
     annotationProcessor "com.google.auto.value:auto-value:${libraries.autovalue}"
 
+    // Auto-value extensions
+    compile "com.gabrielittner.auto.value:auto-value-cursor-annotations:${libraries.autovaluecursor}"
+    annotationProcessor "com.gabrielittner.auto.value:auto-value-cursor:${libraries.autovaluecursor}"
+
     // Square libraries
     compile "com.squareup.sqlbrite:sqlbrite:${libraries.sqlbrite}"
 
@@ -72,6 +75,10 @@ dependencies {
     testCompile "nl.jqno.equalsverifier:equalsverifier:${libraries.equalsverifier}"
 
     // Android test dependencies
+    androidTestCompile("com.google.truth:truth:${libraries.truth}") {
+        exclude group: 'junit' // Android has JUnit built in.
+    }
+
     androidTestCompile "com.android.support.test.espresso:espresso-core:${libraries.espresso}"
     androidTestCompile("com.android.support.test.espresso:espresso-contrib:${libraries.espresso}") {
         // Causes IncompatibleClassChangeError

@@ -20,7 +20,6 @@ import butterknife.Unbinder;
 import io.paper.android.PaperApp;
 import io.paper.android.R;
 import io.paper.android.notes.Note;
-import rx.subscriptions.CompositeSubscription;
 
 public class EditNoteFragment extends Fragment implements EditNoteView {
     private static final String ARG_NOTE_ID = "arg:noteId";
@@ -36,9 +35,6 @@ public class EditNoteFragment extends Fragment implements EditNoteView {
 
     @Nullable
     Unbinder unbinder;
-
-    @Nullable
-    CompositeSubscription subscriptions;
 
     @Inject
     EditNotePresenter editNotePresenter;
@@ -72,7 +68,6 @@ public class EditNoteFragment extends Fragment implements EditNoteView {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        subscriptions = new CompositeSubscription();
         unbinder = ButterKnife.bind(this, view);
 
         // toolbar configuration

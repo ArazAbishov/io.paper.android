@@ -9,10 +9,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <provider
-            android:name=".data.stores.DbContentProvider"
-            android:authorities="io.paper.android.provider"
-            android:exported="false"/>
 
         <activity android:name=".notes.NotesActivity">
             <intent-filter>
@@ -21,8 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".editnote.EditNoteActivity">
-        </activity>
+
+        <activity android:name=".editnote.EditNoteActivity"/>
     </application>
 
 </manifest>
