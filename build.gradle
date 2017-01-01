@@ -4,7 +4,7 @@ buildscript {
     repositories {
         jcenter()
 
-        // Required by build scan plugin.
+        // Required by build-scan and error-prone plugins.
         maven {
             url("https://plugins.gradle.org/m2/")
         }
@@ -13,6 +13,7 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:2.2.3"
         classpath "com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.1"
+        classpath "net.ltgt.gradle:gradle-errorprone-plugin:0.0.8"
         classpath "com.gradle:build-scan-plugin:1.3"
     }
 }
@@ -57,5 +58,8 @@ ext {
             junit          : "4.12",
             equalsverifier : "2.1.7",
             truth          : "0.30",
+
+            // plugins
+            errorpronecore : "2.0.15"
     ]
 }
