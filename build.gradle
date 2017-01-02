@@ -14,6 +14,7 @@ buildscript {
         classpath "com.android.tools.build:gradle:2.2.3"
         classpath "com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.1"
         classpath "net.ltgt.gradle:gradle-errorprone-plugin:0.0.8"
+        classpath "hu.supercluster:paperwork-plugin:1.2.7"
         classpath "com.gradle:build-scan-plugin:1.3"
     }
 }

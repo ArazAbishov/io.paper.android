@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 apply from: rootProject.file("plugins/android-checkstyle.gradle")
 apply from: rootProject.file("plugins/android-errorprone.gradle")
+apply from: rootProject.file("plugins/android-paperwork.gradle")
 apply from: rootProject.file("plugins/android-findbugs.gradle")
 apply from: rootProject.file("plugins/android-pmd.gradle")
 
@@ -43,6 +44,8 @@ android {
 }
 
 dependencies {
+    compile 'hu.supercluster:paperwork:1.2.7'
+
     // Support libraries
     compile "com.android.support:design:${libraries.support}"
     compile "com.android.support:appcompat-v7:${libraries.support}"
