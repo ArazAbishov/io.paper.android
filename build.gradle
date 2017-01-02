@@ -12,9 +12,19 @@ buildscript {
 
     dependencies {
         classpath "com.android.tools.build:gradle:2.2.3"
+
+        // provides insight on how many method references
+        // are present in dex file
         classpath "com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.1"
+
+        // semantic, static analysis of the source code
         classpath "net.ltgt.gradle:gradle-errorprone-plugin:0.0.8"
+
+        // allows to set BuildConfig fields during compilation
+        // without breaking incremental compilation
         classpath "hu.supercluster:paperwork-plugin:1.2.7"
+
+        // enables cloud features of gradle plugin
         classpath "com.gradle:build-scan-plugin:1.3"
     }
 }
