@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="io.paper.android">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".PaperApp"
         android:allowBackup="false"
@@ -13,12 +15,14 @@
         <activity android:name=".notes.NotesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
         <activity android:name=".editnote.EditNoteActivity"/>
-    </application>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="${fabricKey}"/>
+    </application>
 </manifest>

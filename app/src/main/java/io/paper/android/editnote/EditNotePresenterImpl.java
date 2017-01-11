@@ -2,9 +2,7 @@ package io.paper.android.editnote;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import io.paper.android.notes.Note;
@@ -16,9 +14,9 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.subjects.PublishSubject;
 import rx.subscriptions.CompositeSubscription;
+import timber.log.Timber;
 
 class EditNotePresenterImpl implements EditNotePresenter {
-    private static final String TAG = EditNotePresenterImpl.class.getSimpleName();
 
     @NonNull
     private final Long noteId;
@@ -81,7 +79,7 @@ class EditNotePresenterImpl implements EditNotePresenter {
                     }, new Action1<Throwable>() {
                         @Override
                         public void call(Throwable throwable) {
-                            Log.e(TAG, throwable.getMessage(), throwable);
+                            Timber.e(throwable);
                         }
                     }));
 
@@ -112,12 +110,12 @@ class EditNotePresenterImpl implements EditNotePresenter {
                 .subscribe(new Action1<Integer>() {
                     @Override
                     public void call(Integer updated) {
-                        Log.i(TAG, String.format(Locale.US, "%d notes were updated", updated));
+                        Timber.i("%d notes were updated", updated);
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        Log.e(TAG, throwable.getMessage(), throwable);
+                        Timber.e(throwable);
                     }
                 }));
     }
@@ -134,12 +132,12 @@ class EditNotePresenterImpl implements EditNotePresenter {
                 .subscribe(new Action1<Integer>() {
                     @Override
                     public void call(Integer updated) {
-                        Log.i(TAG, String.format(Locale.US, "%d notes were updated", updated));
+                        Timber.i("%d notes were updated", updated);
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        Log.e(TAG, throwable.getMessage(), throwable);
+                        Timber.e(throwable);
                     }
                 }));
     }

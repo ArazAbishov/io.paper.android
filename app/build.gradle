@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: "io.fabric"
 apply from: rootProject.file("plugins/android-checkstyle.gradle")
 apply from: rootProject.file("plugins/android-errorprone.gradle")
 apply from: rootProject.file("plugins/android-paperwork.gradle")
@@ -7,6 +8,26 @@ apply from: rootProject.file("plugins/android-pmd.gradle")
 
 def versions = rootProject.ext.versions
 def libraries = rootProject.ext.libraries
+
+// required by crashlytics
+repositories {
+    maven {
+        url("https://maven.fabric.io/public")
+    }
+}
+
+def getFabricKey = {
+    def fabricPropertiesFile = file("fabric.properties")
+
+    // retrieve api key from file, otherwise look for a key in environment
+    if (fabricPropertiesFile.exists()) {
+        Properties properties = new Properties()
+        properties.load(fabricPropertiesFile.newDataInputStream())
+        return properties.getProperty("apiKey")
+    } else {
+        return System.getenv("PAPER_FABRIC_KEY")
+    }
+}
 
 android {
     compileSdkVersion versions.sdk
@@ -21,6 +42,11 @@ android {
 
         // jUnit test runner for android
         testInstrumentationRunner "io.paper.android.PaperInstrumentationTestsRunner"
+
+        // Fabric API key
+        manifestPlaceholders = [
+                fabricKey: getFabricKey()
+        ]
     }
 
     lintOptions {
@@ -38,13 +64,22 @@ android {
 
     buildTypes {
         debug {
+            // jacoco test coverage reports both for
+            // androidTest and test source sets
             testCoverageEnabled = true
+
+            // Disable fabric build ID generation for debug builds
+            ext.enableCrashlytics = false
+        }
+        release {
+            // enabling crashlytics for debug builds
+            ext.enableCrashlytics = true
         }
     }
 }
 
 dependencies {
-    compile 'hu.supercluster:paperwork:1.2.7'
+    compile "hu.supercluster:paperwork:${libraries.paperwork}"
 
     // Support libraries
     compile "com.android.support:design:${libraries.support}"
@@ -68,9 +103,15 @@ dependencies {
     compile "com.squareup.sqlbrite:sqlbrite:${libraries.sqlbrite}"
 
     // Jake Wharton libraries
+    compile "com.jakewharton.timber:timber:${libraries.timber}"
     compile "com.jakewharton.rxbinding:rxbinding:${libraries.rxbinding}"
     compile "com.jakewharton:butterknife:${libraries.butterknife}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${libraries.butterknife}"
+
+    // Fabric tools
+    compile("com.crashlytics.sdk.android:crashlytics:${libraries.crashlytics}@aar") {
+        transitive = true;
+    }
 
     // Test dependencies
     testCompile "junit:junit:${libraries.junit}"
