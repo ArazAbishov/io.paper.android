@@ -5,7 +5,6 @@ pmd {
 }
 
 afterEvaluate {
-    // ToDo: consider running pmd only for the main sourceSet
     android.applicationVariants.each { variant ->
         def pmdTask = tasks.create("pmd${variant.name.capitalize()}", Pmd)
 
