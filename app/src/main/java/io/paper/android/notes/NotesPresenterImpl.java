@@ -2,11 +2,8 @@ package io.paper.android.notes;
 
 import android.support.annotation.NonNull;
 
-import java.util.List;
-
 import io.paper.android.ui.View;
 import io.paper.android.utils.SchedulerProvider;
-import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -28,19 +25,12 @@ public class NotesPresenterImpl implements NotesPresenter {
         subscriptions.add(notesRepository.add("", "")
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .subscribe(new Action1<Long>() {
-                    @Override
-                    public void call(Long noteId) {
-                        if (notesView != null) {
-                            notesView.navigateToEditNoteView(noteId);
-                        }
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        Timber.e(throwable);
-                    }
-                }));
+                .subscribe((noteId) -> {
+                            if (notesView != null) {
+                                notesView.navigateToEditNoteView(noteId);
+                            }
+                        }, Timber::e
+                ));
     }
 
     @Override
@@ -51,12 +41,9 @@ public class NotesPresenterImpl implements NotesPresenter {
             // list notes
             subscriptions.add(notesRepository.list()
                     .observeOn(schedulerProvider.ui())
-                    .subscribe(new Action1<List<Note>>() {
-                        @Override
-                        public void call(List<Note> notes) {
-                            if (notesView != null) {
-                                notesView.showNotes(notes);
-                            }
+                    .subscribe((notes) -> {
+                        if (notesView != null) {
+                            notesView.showNotes(notes);
                         }
                     }));
         }
