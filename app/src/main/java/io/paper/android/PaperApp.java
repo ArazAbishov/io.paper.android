@@ -2,6 +2,7 @@ package io.paper.android;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.StrictMode;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
@@ -39,6 +40,7 @@ public class PaperApp extends Application {
 
         setUpFabric();
         setUpTimber();
+        setStrictMode();
     }
 
     private RefWatcher setUpLeakCanary() {
@@ -72,6 +74,21 @@ public class PaperApp extends Application {
             Timber.plant(new Timber.DebugTree());
         } else {
             Timber.plant(new CrashReportingTree());
+        }
+    }
+
+    private void setStrictMode() {
+        if (BuildConfig.DEBUG) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build());
         }
     }
 
