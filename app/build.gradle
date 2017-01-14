@@ -70,6 +70,15 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
     }
 
+    signingConfigs {
+        paper {
+            storeFile file("paper.jks")
+            storePassword "android"
+            keyAlias "android"
+            keyPassword "android"
+        }
+    }
+
     buildTypes {
         debug {
             // custom application suffix which allows to
@@ -82,6 +91,9 @@ android {
 
             // Disable fabric build ID generation for debug builds
             ext.enableCrashlytics = false
+
+            // Using paper.jks to sign debug build type.
+            signingConfig = signingConfigs.paper
         }
         release {
             // enabling crashlytics for debug builds
