@@ -53,6 +53,8 @@ android {
         manifestPlaceholders = [
                 fabricKey: getFabricKey()
         ]
+        // Make generated apks contain version name and code.
+        archivesBaseName = "app-${versions.name}-${versions.code}"
     }
 
     lintOptions {
