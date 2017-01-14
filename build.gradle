@@ -72,6 +72,7 @@ ext {
             timber         : "4.5.0",
             crashlytics    : "2.6.5",
             paperwork      : "1.2.7",
+            leakcanary     : "1.5",
 
             // test dependencies
             espresso       : "2.2.2",

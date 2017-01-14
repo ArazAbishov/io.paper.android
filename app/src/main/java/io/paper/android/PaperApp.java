@@ -6,6 +6,8 @@ import android.content.Context;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.core.CrashlyticsCore;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import io.fabric.sdk.android.Fabric;
 import io.paper.android.data.DbModule;
@@ -20,14 +22,35 @@ public class PaperApp extends Application {
     private static final String DATABASE_NAME = "paper.db";
 
     private AppComponent appComponent;
+    private RefWatcher refWatcher;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
 
+        appComponent = prepareAppComponent().build();
+        refWatcher = setUpLeakCanary();
+
+        setUpFabric();
+        setUpTimber();
+    }
+
+    private RefWatcher setUpLeakCanary() {
+        if (BuildConfig.DEBUG) {
+            return LeakCanary.install(this);
+        } else {
+            return RefWatcher.DISABLED;
+        }
+    }
+
+    private void setUpFabric() {
+        if (BuildConfig.DEBUG) {
             // Set up Crashlytics, disabled for debug builds
             Crashlytics crashlyticsKit = new Crashlytics.Builder()
                     .core(new CrashlyticsCore.Builder()
@@ -40,11 +63,16 @@ public class PaperApp extends Application {
         } else {
             Fabric.with(this, new Crashlytics());
             Fabric.with(this, new Answers());
+        }
+    }
 
+    private void setUpTimber() {
+        if (BuildConfig.DEBUG) {
+            // Verbose logging for debug builds.
+            Timber.plant(new Timber.DebugTree());
+        } else {
             Timber.plant(new CrashReportingTree());
         }
-
-        appComponent = prepareAppComponent().build();
     }
 
     protected DaggerAppComponent.Builder prepareAppComponent() {
@@ -60,5 +88,9 @@ public class PaperApp extends Application {
     public static EditNoteComponent getEditNoteComponent(Context context, Long noteId) {
         return ((PaperApp) context.getApplicationContext())
                 .appComponent.plus(new EditNoteModule(noteId));
+    }
+
+    public static RefWatcher refWatcher(Context context) {
+        return ((PaperApp) context.getApplicationContext()).refWatcher;
     }
 }

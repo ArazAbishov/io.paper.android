@@ -3,7 +3,6 @@ package io.paper.android.notes;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -23,8 +22,9 @@ import io.paper.android.PaperApp;
 import io.paper.android.R;
 import io.paper.android.editnote.EditNoteActivity;
 import io.paper.android.notes.NotesAdapter.OnNoteClickListener;
+import io.paper.android.ui.BaseFragment;
 
-public final class NotesFragment extends Fragment implements NotesView {
+public final class NotesFragment extends BaseFragment implements NotesView {
 
     @BindView(R.id.toolbar_notes)
     Toolbar toolbar;
