@@ -30,6 +30,11 @@ def getFabricKey = {
     }
 }
 
+def versionMajor = 0
+def versionMinor = 1
+def versionPatch = 0
+def versionBuild = 0
+
 android {
     compileSdkVersion versions.sdk
     buildToolsVersion versions.tools
@@ -38,8 +43,8 @@ android {
         applicationId "io.paper.android"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.sdk
-        versionCode versions.versionCode
-        versionName versions.versionName
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
         // jUnit test runner for android
         testInstrumentationRunner "io.paper.android.PaperInstrumentationTestsRunner"
@@ -65,6 +70,10 @@ android {
 
     buildTypes {
         debug {
+            // custom application suffix which allows to
+            // install debug and release builds at the same time
+            applicationIdSuffix = ".debug"
+
             // jacoco test coverage reports both for
             // androidTest and test source sets
             testCoverageEnabled = true
