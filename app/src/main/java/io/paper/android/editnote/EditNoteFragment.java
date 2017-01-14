@@ -72,13 +72,12 @@ public class EditNoteFragment extends BaseFragment implements EditNoteView {
 
         // toolbar configuration
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View view) {
-                if (isAdded() && getActivity() != null) {
-                    getActivity().onBackPressed();
+        toolbar.setNavigationOnClickListener((toolbar) -> {
+                    if (isAdded() && getActivity() != null) {
+                        getActivity().onBackPressed();
+                    }
                 }
-            }
-        });
+        );
     }
 
     @Override

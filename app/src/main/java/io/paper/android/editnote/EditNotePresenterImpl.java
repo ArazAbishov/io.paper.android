@@ -5,12 +5,10 @@ import android.support.annotation.Nullable;
 
 import java.util.concurrent.TimeUnit;
 
-import io.paper.android.notes.Note;
 import io.paper.android.notes.NotesRepository;
 import io.paper.android.ui.View;
 import io.paper.android.utils.SchedulerProvider;
 import rx.Observable;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.subjects.PublishSubject;
 import rx.subscriptions.CompositeSubscription;
@@ -69,19 +67,11 @@ class EditNotePresenterImpl implements EditNotePresenter {
             subscription.add(notesRepository.get(noteId)
                     .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
-                    .subscribe(new Action1<Note>() {
-                        @Override
-                        public void call(Note note) {
-                            if (editNoteView != null) {
-                                editNoteView.showNote(note);
-                            }
+                    .subscribe((note) -> {
+                        if (editNoteView != null) {
+                            editNoteView.showNote(note);
                         }
-                    }, new Action1<Throwable>() {
-                        @Override
-                        public void call(Throwable throwable) {
-                            Timber.e(throwable);
-                        }
-                    }));
+                    }, Timber::e));
 
             observeNoteTitleChanges();
             observeNoteDescriptionChanges();
@@ -107,17 +97,8 @@ class EditNotePresenterImpl implements EditNotePresenter {
                         return notesRepository.putTitle(noteId, title);
                     }
                 })
-                .subscribe(new Action1<Integer>() {
-                    @Override
-                    public void call(Integer updated) {
-                        Timber.i("%d notes were updated", updated);
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        Timber.e(throwable);
-                    }
-                }));
+                .subscribe((updated) -> Timber.i("%d notes were updated", updated), Timber::e)
+        );
     }
 
     private void observeNoteDescriptionChanges() {
@@ -129,16 +110,6 @@ class EditNotePresenterImpl implements EditNotePresenter {
                         return notesRepository.putDescription(noteId, description);
                     }
                 })
-                .subscribe(new Action1<Integer>() {
-                    @Override
-                    public void call(Integer updated) {
-                        Timber.i("%d notes were updated", updated);
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        Timber.e(throwable);
-                    }
-                }));
+                .subscribe((updated) -> Timber.i("%d notes were updated", updated), Timber::e));
     }
 }

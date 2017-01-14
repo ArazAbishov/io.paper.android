@@ -1,6 +1,5 @@
 package io.paper.android.notes;
 
-import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
 
 import com.squareup.sqlbrite.BriteDatabase;
@@ -9,8 +8,6 @@ import java.util.List;
 
 import io.paper.android.notes.Note.Columns;
 import rx.Observable;
-import rx.functions.Func0;
-import rx.functions.Func1;
 
 class NotesRepositoryImpl implements NotesRepository {
     private static final String QUERY_STATEMENT = "SELECT " +
@@ -49,83 +46,62 @@ class NotesRepositoryImpl implements NotesRepository {
 
     @Override
     public Observable<Long> add(final String title, final String description) {
-        return Observable.defer(new Func0<Observable<Long>>() {
-            @Override public Observable<Long> call() {
-                insertStatement.clearBindings();
+        return Observable.defer(() -> {
+            insertStatement.clearBindings();
 
-                insertStatement.bindString(1, title);
-                insertStatement.bindString(2, description);
+            insertStatement.bindString(1, title);
+            insertStatement.bindString(2, description);
 
-                return Observable.just(briteDatabase.executeInsert(
-                        Note.TABLE_NAME, insertStatement));
-            }
+            return Observable.just(briteDatabase.executeInsert(
+                    Note.TABLE_NAME, insertStatement));
         });
     }
 
     @Override
     public Observable<Integer> putTitle(final Long noteId, final String title) {
-        return Observable.defer(new Func0<Observable<Integer>>() {
-            @Override public Observable<Integer> call() {
-                updateTitleStatement.clearBindings();
+        return Observable.defer(() -> {
+            updateTitleStatement.clearBindings();
 
-                updateTitleStatement.bindString(1, title);
-                updateTitleStatement.bindLong(2, noteId);
+            updateTitleStatement.bindString(1, title);
+            updateTitleStatement.bindLong(2, noteId);
 
-                return Observable.just(briteDatabase.executeUpdateDelete(
-                        Note.TABLE_NAME, updateTitleStatement));
-            }
+            return Observable.just(briteDatabase.executeUpdateDelete(
+                    Note.TABLE_NAME, updateTitleStatement));
         });
     }
 
     @Override
     public Observable<Integer> putDescription(final Long noteId, final String description) {
-        return Observable.defer(new Func0<Observable<Integer>>() {
-            @Override public Observable<Integer> call() {
-                updateDescriptionStatement.clearBindings();
+        return Observable.defer(() -> {
+            updateDescriptionStatement.clearBindings();
 
-                updateDescriptionStatement.bindString(1, description);
-                updateDescriptionStatement.bindLong(2, noteId);
+            updateDescriptionStatement.bindString(1, description);
+            updateDescriptionStatement.bindLong(2, noteId);
 
-                return Observable.just(briteDatabase.executeUpdateDelete(
-                        Note.TABLE_NAME, updateDescriptionStatement));
-            }
+            return Observable.just(briteDatabase.executeUpdateDelete(
+                    Note.TABLE_NAME, updateDescriptionStatement));
         });
     }
 
     @Override
     public Observable<List<Note>> list() {
         return briteDatabase.createQuery(Note.TABLE_NAME, QUERY_STATEMENT)
-                .mapToList(new Func1<Cursor, Note>() {
-                    @Override public Note call(Cursor cursor) {
-                        return Note.create(cursor);
-                    }
-                });
+                .mapToList(Note::create);
     }
 
     @Override
     public Observable<Note> get(Long noteId) {
         return briteDatabase.createQuery(Note.TABLE_NAME,
                 QUERY_STATEMENT_BY_ID, String.valueOf(noteId))
-                .mapToList(new Func1<Cursor, Note>() {
-                    @Override public Note call(Cursor cursor) {
-                        return Note.create(cursor);
-                    }
-                })
-                .flatMap(new Func1<List<Note>, Observable<Note>>() {
-                    @Override public Observable<Note> call(List<Note> notes) {
-                        return Observable.from(notes);
-                    }
-                })
+                .mapToList(Note::create)
+                .flatMap(Observable::from)
                 .take(1);
     }
 
     @Override
     public Observable<Integer> clear() {
-        return Observable.defer(new Func0<Observable<Integer>>() {
-            @Override public Observable<Integer> call() {
-                return Observable.just(briteDatabase.executeUpdateDelete(
-                        Note.TABLE_NAME, deleteStatement));
-            }
-        });
+        return Observable.defer(() -> Observable.just(briteDatabase
+                .executeUpdateDelete(Note.TABLE_NAME, deleteStatement))
+        );
     }
 }
