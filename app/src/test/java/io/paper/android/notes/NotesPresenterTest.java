@@ -30,7 +30,7 @@ public class NotesPresenterTest {
 
     List<Note> notes = Arrays.asList(
             Note.builder().id(1L).title("TitleOne").description("DescriptionOne").build(),
-            Note.builder().id(1L).title("TitleTwo").description("DescriptionTwo").build()
+            Note.builder().id(2L).title("TitleTwo").description("DescriptionTwo").build()
     );
 
     @Before
