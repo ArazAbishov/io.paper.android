@@ -3,6 +3,7 @@ package io.paper.android;
 import android.app.Application;
 import android.content.Context;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
@@ -10,6 +11,7 @@ import com.crashlytics.android.core.CrashlyticsCore;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
+import hu.supercluster.paperwork.Paperwork;
 import io.fabric.sdk.android.Fabric;
 import io.paper.android.data.DbModule;
 import io.paper.android.editnote.EditNoteComponent;
@@ -17,10 +19,12 @@ import io.paper.android.editnote.EditNoteModule;
 import io.paper.android.utils.CrashReportingTree;
 import timber.log.Timber;
 
-// ToDo: Add more tests for data layer (ContentProvider, Models)
+// ToDo: Add more tests for data layer (Stores, Models)
 // ToDo: Add specific configuration to VM to track unclosed cursors and database sessions
 public class PaperApp extends Application {
     private static final String DATABASE_NAME = "paper.db";
+    private static final String GIT_SHA = "gitSha";
+    private static final String BUILD_DATE = "buildDate";
 
     private AppComponent appComponent;
     private RefWatcher refWatcher;
@@ -38,11 +42,13 @@ public class PaperApp extends Application {
         appComponent = prepareAppComponent().build();
         refWatcher = setUpLeakCanary();
 
-        setUpFabric();
+        Paperwork paperwork = setUpPaperwork();
+        setUpFabric(paperwork);
         setUpTimber();
         setStrictMode();
     }
 
+    @NonNull
     private RefWatcher setUpLeakCanary() {
         if (BuildConfig.DEBUG) {
             return LeakCanary.install(this);
@@ -51,7 +57,12 @@ public class PaperApp extends Application {
         }
     }
 
-    private void setUpFabric() {
+    @NonNull
+    private Paperwork setUpPaperwork() {
+        return new Paperwork(this);
+    }
+
+    private void setUpFabric(@NonNull Paperwork paperwork) {
         if (BuildConfig.DEBUG) {
             // Set up Crashlytics, disabled for debug builds
             Crashlytics crashlyticsKit = new Crashlytics.Builder()
@@ -63,6 +74,10 @@ public class PaperApp extends Application {
             // Initialize Fabric with the debug-disabled crashlytics.
             Fabric.with(this, crashlyticsKit);
         } else {
+            Crashlytics crashlytics = new Crashlytics();
+            crashlytics.core.setString(GIT_SHA, paperwork.get(GIT_SHA));
+            crashlytics.core.setString(BUILD_DATE, paperwork.get(BUILD_DATE));
+
             Fabric.with(this, new Crashlytics());
             Fabric.with(this, new Answers());
         }
