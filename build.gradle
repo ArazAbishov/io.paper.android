@@ -43,6 +43,9 @@ buildscript {
 
         // generates test reports with screenshots
         classpath "com.stanfy.spoon:spoon-gradle-plugin:1.2.2"
+
+        // static analysis tool
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.2.1"
     }
 }
 
