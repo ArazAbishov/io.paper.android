@@ -61,7 +61,7 @@ android {
                 fabricKey: getFabricKey()
         ]
         // Make generated apks contain version name and code.
-        archivesBaseName = "app-${versions.name}-${versions.code}"
+        archivesBaseName = "app-${versionName}-${versionCode}"
     }
 
     lintOptions {
