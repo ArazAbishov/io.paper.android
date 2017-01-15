@@ -5,6 +5,8 @@ import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.squareup.spoon.Spoon;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,6 +45,8 @@ public class NotesScreenTest {
 
     @Test
     public void clickAddNoteButton_opensAddNoteUi() {
+        Spoon.screenshot(notesActivityTestRule.getActivity(), "state_before_adding_note");
+
         // click on the add note button
         onView(withId(R.id.fab_add_note)).perform(click());
 
@@ -59,6 +63,8 @@ public class NotesScreenTest {
                 scrollTo(hasDescendant(withText(NOTE_TITLE))));
 
         onView(withItemText(NOTE_TITLE)).check(matches(isDisplayed()));
+
+        Spoon.screenshot(notesActivityTestRule.getActivity(), "state_after_adding_note");
     }
 
     @Test

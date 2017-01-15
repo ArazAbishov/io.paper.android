@@ -40,6 +40,9 @@ buildscript {
 
         // provides missing implementation of lambdas from java 8
         classpath "me.tatarka:gradle-retrolambda:3.4.0"
+
+        // generates test reports with screenshots
+        classpath "com.stanfy.spoon:spoon-gradle-plugin:1.2.2"
     }
 }
 
@@ -60,9 +63,9 @@ buildScan {
 
 ext {
     versions = [
-            sdk        : 25,
-            tools      : "25.0.2",
-            minSdk     : 15
+            sdk   : 25,
+            tools : "25.0.2",
+            minSdk: 15
     ]
 
     libraries = [
@@ -85,6 +88,7 @@ ext {
             junit          : "4.12",
             equalsverifier : "2.1.7",
             truth          : "0.30",
+            spoon          : "1.7.0",
 
             // plugins
             errorpronecore : "2.0.15"

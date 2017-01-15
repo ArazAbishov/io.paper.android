@@ -5,6 +5,8 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.squareup.spoon.Spoon;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -50,6 +52,8 @@ public class EditNoteScreenTest {
         // Check that the note title are description are displayed
         onView(withId(R.id.edittext_note_title)).check(matches(withText(NOTE_TITLE)));
         onView(withId(R.id.edittext_note_description)).check(matches(withText(NOTE_DESCRIPTION)));
+
+        Spoon.screenshot(editNoteActivityRule.getActivity(), "current_state_of_the_note");
     }
 
     @Test

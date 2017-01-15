@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "io.fabric"
 apply plugin: "me.tatarka.retrolambda"
+apply plugin: "spoon"
 apply from: rootProject.file("plugins/android-checkstyle.gradle")
 apply from: rootProject.file("plugins/android-errorprone.gradle")
 apply from: rootProject.file("plugins/android-paperwork.gradle")
@@ -155,6 +156,9 @@ dependencies {
     androidTestCompile("com.google.truth:truth:${libraries.truth}") {
         exclude group: 'junit' // Android has JUnit built in.
     }
+
+    // Spoon client which allows to capture screenshots
+    androidTestCompile "com.squareup.spoon:spoon-client:${libraries.spoon}"
 
     androidTestCompile "com.android.support.test.espresso:espresso-core:${libraries.espresso}"
     androidTestCompile("com.android.support.test.espresso:espresso-contrib:${libraries.espresso}") {
