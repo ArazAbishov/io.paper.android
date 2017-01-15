@@ -34,13 +34,13 @@ class NotesRepositoryImpl implements NotesRepository {
 
     public NotesRepositoryImpl(BriteDatabase briteDatabase) {
         this.briteDatabase = briteDatabase;
-        this.insertStatement = briteDatabase.getWriteableDatabase()
+        this.insertStatement = briteDatabase.getWritableDatabase()
                 .compileStatement(INSERT_STATEMENT);
-        this.updateTitleStatement = briteDatabase.getWriteableDatabase()
+        this.updateTitleStatement = briteDatabase.getWritableDatabase()
                 .compileStatement(UPDATE_TITLE_STATEMENT);
-        this.updateDescriptionStatement = briteDatabase.getWriteableDatabase()
+        this.updateDescriptionStatement = briteDatabase.getWritableDatabase()
                 .compileStatement(UPDATE_DESCRIPTION_STATEMENT);
-        this.deleteStatement = briteDatabase.getWriteableDatabase()
+        this.deleteStatement = briteDatabase.getWritableDatabase()
                 .compileStatement(DELETE_STATEMENT);
     }
 
