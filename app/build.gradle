@@ -13,8 +13,8 @@ apply from: rootProject.file("plugins/android-pmd.gradle")
 def versions = rootProject.ext.versions
 def libraries = rootProject.ext.libraries
 
-// required by crashlytics
 repositories {
+    // required by crashlytics
     maven {
         url("https://maven.fabric.io/public")
     }
@@ -61,6 +61,7 @@ android {
         manifestPlaceholders = [
                 fabricKey: getFabricKey()
         ]
+
         // Make generated apks contain version name and code.
         archivesBaseName = "app-${versionName}-${versionCode}"
     }
