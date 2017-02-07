@@ -13,13 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import io.paper.android.PaperApp;
-import io.paper.android.R;
 import io.paper.android.notes.NotesRepository;
-
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
 public class EditNoteScreenTest {
@@ -27,6 +21,7 @@ public class EditNoteScreenTest {
     private static final String NOTE_DESCRIPTION = "Fancy note description";
 
     private NotesRepository notesRepository;
+    private EditNoteScreenRobot editNoteScreenRobot;
 
     @Rule
     public ActivityTestRule<EditNoteActivity> editNoteActivityRule =
@@ -34,6 +29,8 @@ public class EditNoteScreenTest {
 
     @Before
     public void setUp() {
+        editNoteScreenRobot = new EditNoteScreenRobot();
+
         // add note to fake repository synchronously
         notesRepository = PaperApp.getAppComponent(InstrumentationRegistry.getTargetContext()
                 .getApplicationContext()).notesRepository();
@@ -47,9 +44,9 @@ public class EditNoteScreenTest {
 
     @Test
     public void noteDetails_displayedInUi() {
-        // Check that the note title are description are displayed
-        onView(withId(R.id.edittext_note_title)).check(matches(withText(NOTE_TITLE)));
-        onView(withId(R.id.edittext_note_description)).check(matches(withText(NOTE_DESCRIPTION)));
+        editNoteScreenRobot
+                .checkTitle(NOTE_TITLE)
+                .checkDescription(NOTE_DESCRIPTION);
 
         Spoon.screenshot(editNoteActivityRule.getActivity(), "current_state_of_the_note");
     }
