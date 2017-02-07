@@ -8,10 +8,8 @@ import java.util.concurrent.TimeUnit;
 import io.paper.android.notes.NotesRepository;
 import io.paper.android.ui.View;
 import io.paper.android.utils.SchedulerProvider;
-import rx.Observable;
-import rx.functions.Func1;
-import rx.subjects.PublishSubject;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.subjects.PublishSubject;
 import timber.log.Timber;
 
 class EditNotePresenterImpl implements EditNotePresenter {
@@ -31,11 +29,11 @@ class EditNotePresenterImpl implements EditNotePresenter {
     @NonNull
     private final PublishSubject<String> noteDescriptionSubject;
 
+    @NonNull
+    private final CompositeDisposable disposable;
+
     @Nullable
     private EditNoteView editNoteView;
-
-    @NonNull
-    private CompositeSubscription subscription;
 
     EditNotePresenterImpl(@NonNull Long noteId,
             @NonNull SchedulerProvider schedulerProvider,
@@ -45,7 +43,7 @@ class EditNotePresenterImpl implements EditNotePresenter {
         this.notesRepository = notesRepository;
         this.noteTitleSubject = PublishSubject.create();
         this.noteDescriptionSubject = PublishSubject.create();
-        this.subscription = new CompositeSubscription();
+        this.disposable = new CompositeDisposable();
     }
 
     @Override
@@ -64,7 +62,7 @@ class EditNotePresenterImpl implements EditNotePresenter {
             editNoteView = (EditNoteView) view;
 
             // render note
-            subscription.add(notesRepository.get(noteId)
+            disposable.add(notesRepository.get(noteId)
                     .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribe((note) -> {
@@ -81,35 +79,21 @@ class EditNotePresenterImpl implements EditNotePresenter {
     @Override
     public void detachView() {
         editNoteView = null;
-
-        if (!subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-            subscription = new CompositeSubscription();
-        }
+        disposable.clear();
     }
 
     private void observeNoteTitleChanges() {
-        subscription.add(noteTitleSubject
+        disposable.add(noteTitleSubject
                 .debounce(256, TimeUnit.MILLISECONDS)
-                .switchMap(new Func1<String, Observable<Integer>>() {
-                    @Override
-                    public Observable<Integer> call(String title) {
-                        return notesRepository.putTitle(noteId, title);
-                    }
-                })
+                .switchMap((title) -> notesRepository.putTitle(noteId, title))
                 .subscribe((updated) -> Timber.i("%d notes were updated", updated), Timber::e)
         );
     }
 
     private void observeNoteDescriptionChanges() {
-        subscription.add(noteDescriptionSubject
+        disposable.add(noteDescriptionSubject
                 .debounce(256, TimeUnit.MILLISECONDS)
-                .switchMap(new Func1<String, Observable<Integer>>() {
-                    @Override
-                    public Observable<Integer> call(String description) {
-                        return notesRepository.putDescription(noteId, description);
-                    }
-                })
+                .switchMap((description) -> notesRepository.putDescription(noteId, description))
                 .subscribe((updated) -> Timber.i("%d notes were updated", updated), Timber::e));
     }
 }

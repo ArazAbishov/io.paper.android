@@ -6,8 +6,9 @@ import com.squareup.sqlbrite.BriteDatabase;
 
 import java.util.List;
 
+import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.paper.android.notes.Note.Columns;
-import rx.Observable;
+import io.reactivex.Observable;
 
 class NotesRepositoryImpl implements NotesRepository {
     private static final String QUERY_STATEMENT = "SELECT " +
@@ -85,16 +86,17 @@ class NotesRepositoryImpl implements NotesRepository {
 
     @Override
     public Observable<List<Note>> list() {
-        return briteDatabase.createQuery(Note.TABLE_NAME, QUERY_STATEMENT)
-                .mapToList(Note::create);
+        return RxJavaInterop.toV2Observable(briteDatabase.createQuery(
+                Note.TABLE_NAME, QUERY_STATEMENT)
+                .mapToList(Note::create));
     }
 
     @Override
     public Observable<Note> get(Long noteId) {
-        return briteDatabase.createQuery(Note.TABLE_NAME,
+        return RxJavaInterop.toV2Observable(briteDatabase.createQuery(Note.TABLE_NAME,
                 QUERY_STATEMENT_BY_ID, String.valueOf(noteId))
-                .mapToList(Note::create)
-                .flatMap(Observable::from)
+                .mapToList(Note::create))
+                .flatMap(Observable::fromIterable)
                 .take(1);
     }
 

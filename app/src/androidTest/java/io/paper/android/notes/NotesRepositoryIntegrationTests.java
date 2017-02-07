@@ -55,7 +55,7 @@ public class NotesRepositoryIntegrationTests {
         Long noteId = notesRepository.add(
                 "test_note_title",
                 "test_note_description"
-        ).toBlocking().first();
+        ).blockingFirst();
 
         Cursor cursor = database.query(Note.TABLE_NAME, PROJECTION,
                 null, null, null, null, null);
@@ -77,7 +77,7 @@ public class NotesRepositoryIntegrationTests {
 
         Integer updatedRows = notesRepository.putTitle(
                 10L, "test_new_note_title"
-        ).toBlocking().first();
+        ).blockingFirst();
 
         Cursor cursor = database.query(Note.TABLE_NAME, PROJECTION,
                 null, null, null, null, null);
@@ -99,7 +99,7 @@ public class NotesRepositoryIntegrationTests {
 
         Integer updatedRows = notesRepository.putDescription(
                 10L, "test_new_note_description"
-        ).toBlocking().first();
+        ).blockingFirst();
 
         Cursor cursor = database.query(Note.TABLE_NAME, PROJECTION,
                 null, null, null, null, null);
@@ -121,7 +121,7 @@ public class NotesRepositoryIntegrationTests {
         database.insert(Note.TABLE_NAME, null, note.toContentValues());
 
         Note persistedNote = notesRepository.list()
-                .toBlocking().first().get(0);
+                .blockingFirst().get(0);
 
         assertThat(persistedNote.id()).isEqualTo(10L);
         assertThat(persistedNote.title()).isEqualTo("test_note_title");
@@ -139,7 +139,7 @@ public class NotesRepositoryIntegrationTests {
         database.insert(Note.TABLE_NAME, null, note.toContentValues());
 
         Note persistedNote = notesRepository.get(10L)
-                .toBlocking().first();
+                .blockingFirst();
 
         assertThat(persistedNote.id()).isEqualTo(10L);
         assertThat(persistedNote.title()).isEqualTo("test_note_title");
@@ -156,7 +156,7 @@ public class NotesRepositoryIntegrationTests {
 
         database.insert(Note.TABLE_NAME, null, note.toContentValues());
 
-        Integer deletedRows = notesRepository.clear().toBlocking().first();
+        Integer deletedRows = notesRepository.clear().blockingFirst();
 
         Cursor cursor = database.query(Note.TABLE_NAME, PROJECTION,
                 null, null, null, null, null);

@@ -88,6 +88,10 @@ android {
         }
     }
 
+    packagingOptions {
+        exclude "META-INF/rxjava.properties"
+    }
+
     buildTypes {
         debug {
             // custom application suffix which allows to
@@ -132,6 +136,11 @@ dependencies {
     compile "com.gabrielittner.auto.value:auto-value-cursor-annotations:${libraries.autovaluecursor}"
     annotationProcessor "com.gabrielittner.auto.value:auto-value-cursor:${libraries.autovaluecursor}"
 
+    // ReactiveX
+    compile "io.reactivex.rxjava2:rxjava:${libraries.rxjava}"
+    compile "io.reactivex.rxjava2:rxandroid:${libraries.rxandroid}"
+    compile "com.github.akarnokd:rxjava2-interop:${libraries.rxjavainteroperop}"
+
     // Square libraries
     compile "com.squareup.sqlbrite:sqlbrite:${libraries.sqlbrite}"
     debugCompile "com.squareup.leakcanary:leakcanary-android:${libraries.leakcanary}"
@@ -139,7 +148,6 @@ dependencies {
 
     // Jake Wharton libraries
     compile "com.jakewharton.timber:timber:${libraries.timber}"
-    compile "com.jakewharton.rxbinding:rxbinding:${libraries.rxbinding}"
     compile "com.jakewharton:butterknife:${libraries.butterknife}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${libraries.butterknife}"
 

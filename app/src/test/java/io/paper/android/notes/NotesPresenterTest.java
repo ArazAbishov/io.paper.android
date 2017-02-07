@@ -10,7 +10,7 @@ import java.util.List;
 
 import io.paper.android.utils.ImmediateSchedulerProvider;
 import io.paper.android.utils.SchedulerProvider;
-import rx.Observable;
+import io.reactivex.Observable;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;

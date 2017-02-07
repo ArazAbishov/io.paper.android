@@ -2,23 +2,26 @@ package io.paper.android.utils;
 
 import android.support.annotation.NonNull;
 
-import rx.Scheduler;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 class SchedulersProviderImpl implements SchedulerProvider {
 
-    @NonNull @Override
+    @NonNull
+    @Override
     public Scheduler computation() {
         return Schedulers.computation();
     }
 
-    @NonNull @Override
+    @NonNull
+    @Override
     public Scheduler io() {
         return Schedulers.io();
     }
 
-    @NonNull @Override
+    @NonNull
+    @Override
     public Scheduler ui() {
         return AndroidSchedulers.mainThread();
     }

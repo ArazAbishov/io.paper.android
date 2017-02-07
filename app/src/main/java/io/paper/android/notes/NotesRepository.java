@@ -2,7 +2,7 @@ package io.paper.android.notes;
 
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public interface NotesRepository {
     Observable<Long> add(String title, String description);

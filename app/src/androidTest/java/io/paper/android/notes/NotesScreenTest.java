@@ -32,6 +32,7 @@ public class NotesScreenTest {
     private static final String NOTE_DESCRIPTION = "Note description";
 
     @Rule
+    @SuppressWarnings("CheckReturnValue")
     public ActivityTestRule<NotesActivity> notesActivityTestRule =
             new ActivityTestRule<NotesActivity>(NotesActivity.class) {
                 @Override protected void beforeActivityLaunched() {
@@ -39,7 +40,7 @@ public class NotesScreenTest {
 
                     // remove all notes before starting activity
                     PaperApp.getAppComponent(InstrumentationRegistry.getTargetContext()
-                            .getApplicationContext()).notesRepository().clear().toBlocking().subscribe();
+                            .getApplicationContext()).notesRepository().clear().blockingFirst();
                 }
             };
 
@@ -68,9 +69,10 @@ public class NotesScreenTest {
     }
 
     @Test
+    @SuppressWarnings("CheckReturnValue")
     public void tearDown() {
         // we need to make sure that repository does not contain any state from execution of other tests
         PaperApp.getAppComponent(InstrumentationRegistry.getTargetContext()
-                .getApplicationContext()).notesRepository().clear().toBlocking().subscribe();
+                .getApplicationContext()).notesRepository().clear().blockingFirst();
     }
 }

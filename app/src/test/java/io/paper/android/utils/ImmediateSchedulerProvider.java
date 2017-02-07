@@ -2,23 +2,34 @@ package io.paper.android.utils;
 
 import android.support.annotation.NonNull;
 
-import rx.Scheduler;
-import rx.schedulers.Schedulers;
+import java.util.concurrent.Executor;
+
+import io.reactivex.Scheduler;
+import io.reactivex.schedulers.Schedulers;
+
 
 public class ImmediateSchedulerProvider implements SchedulerProvider {
+    private final Executor currentThreadExecutor;
 
-    @NonNull @Override
+    public ImmediateSchedulerProvider() {
+        this.currentThreadExecutor = Runnable::run;
+    }
+
+    @NonNull
+    @Override
     public Scheduler computation() {
-        return Schedulers.immediate();
+        return Schedulers.from(currentThreadExecutor);
     }
 
-    @NonNull @Override
+    @NonNull
+    @Override
     public Scheduler io() {
-        return Schedulers.immediate();
+        return Schedulers.from(currentThreadExecutor);
     }
 
-    @NonNull @Override
+    @NonNull
+    @Override
     public Scheduler ui() {
-        return Schedulers.immediate();
+        return Schedulers.from(currentThreadExecutor);
     }
 }

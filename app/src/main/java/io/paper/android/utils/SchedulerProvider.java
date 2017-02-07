@@ -2,7 +2,7 @@ package io.paper.android.utils;
 
 import android.support.annotation.NonNull;
 
-import rx.Scheduler;
+import io.reactivex.Scheduler;
 
 public interface SchedulerProvider {
     @NonNull

@@ -37,9 +37,7 @@ public class EditNoteScreenTest {
         // add note to fake repository synchronously
         notesRepository = PaperApp.getAppComponent(InstrumentationRegistry.getTargetContext()
                 .getApplicationContext()).notesRepository();
-        Long noteId = notesRepository.add(NOTE_TITLE, NOTE_DESCRIPTION)
-                .toBlocking()
-                .first();
+        Long noteId = notesRepository.add(NOTE_TITLE, NOTE_DESCRIPTION).blockingFirst();
 
         // start activity
         Intent intent = new Intent();
@@ -57,9 +55,10 @@ public class EditNoteScreenTest {
     }
 
     @Test
+    @SuppressWarnings("CheckReturnValue")
     public void tearDown() {
         // we need to make sure that repository does not contain any state from execution of other tests
         PaperApp.getAppComponent(InstrumentationRegistry.getTargetContext()
-                .getApplicationContext()).notesRepository().clear().toBlocking().subscribe();
+                .getApplicationContext()).notesRepository().clear().blockingFirst();
     }
 }
