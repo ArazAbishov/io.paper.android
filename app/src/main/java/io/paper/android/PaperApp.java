@@ -17,6 +17,8 @@ import io.paper.android.data.DbModule;
 import io.paper.android.editnote.EditNoteComponent;
 import io.paper.android.editnote.EditNoteModule;
 import io.paper.android.utils.CrashReportingTree;
+import io.paper.android.utils.SchedulersModule;
+import io.paper.android.utils.SchedulersProviderImpl;
 import timber.log.Timber;
 
 // ToDo: Add more tests for data layer (Stores, Models)
@@ -63,7 +65,8 @@ public class PaperApp extends Application {
     protected DaggerAppComponent.Builder prepareAppComponent() {
         return DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
-                .dbModule(new DbModule(DATABASE_NAME));
+                .dbModule(new DbModule(DATABASE_NAME))
+                .schedulersModule(new SchedulersModule(new SchedulersProviderImpl()));
     }
 
     @NonNull
