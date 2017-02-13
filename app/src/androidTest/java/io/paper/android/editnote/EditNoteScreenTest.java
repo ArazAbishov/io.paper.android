@@ -49,16 +49,13 @@ public class EditNoteScreenTest {
                 .checkDescription(NOTE_DESCRIPTION);
 
         Screenshot.capture(editNoteActivityRule.getActivity(), "current_state_of_the_note");
-
-        // ScreenShotter.takeScreenshot("aa", editNoteActivityRule.getActivity());
-        // Spoon.screenshot(editNoteActivityRule.getActivity(), "");
     }
 
     @After
     @SuppressWarnings("CheckReturnValue")
     public void tearDown() {
-        // we need to make sure that repository does not contain any state from execution of other tests
-        PaperApp.getAppComponent(InstrumentationRegistry.getTargetContext()
-                .getApplicationContext()).notesRepository().clear().blockingFirst();
+        // we need to make sure that repository does not contain
+        // any state from execution of other tests
+        notesRepository.clear();
     }
 }
