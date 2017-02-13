@@ -122,6 +122,9 @@ android {
 spoon {
     // for debug output
     debug = true
+
+    // test coverage
+    codeCoverage = true
 }
 
 dependencies {

@@ -4,6 +4,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -51,7 +52,7 @@ public class NotesScreenTest {
         Screenshot.capture(notesActivityTestRule.getActivity(), "state_after_adding_note");
     }
 
-    @Test
+    @After
     @SuppressWarnings("CheckReturnValue")
     public void tearDown() {
         // we need to make sure that repository does not contain any state from execution of other tests
