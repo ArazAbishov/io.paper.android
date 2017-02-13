@@ -5,8 +5,6 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.squareup.spoon.Spoon;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -14,6 +12,7 @@ import org.junit.runner.RunWith;
 
 import io.paper.android.PaperApp;
 import io.paper.android.notes.NotesRepository;
+import io.paper.android.utils.Screenshot;
 
 @RunWith(AndroidJUnit4.class)
 public class EditNoteScreenTest {
@@ -48,7 +47,10 @@ public class EditNoteScreenTest {
                 .checkTitle(NOTE_TITLE)
                 .checkDescription(NOTE_DESCRIPTION);
 
-        Spoon.screenshot(editNoteActivityRule.getActivity(), "current_state_of_the_note");
+        Screenshot.capture(editNoteActivityRule.getActivity(), "current_state_of_the_note");
+
+        // ScreenShotter.takeScreenshot("aa", editNoteActivityRule.getActivity());
+        // Spoon.screenshot(editNoteActivityRule.getActivity(), "");
     }
 
     @Test

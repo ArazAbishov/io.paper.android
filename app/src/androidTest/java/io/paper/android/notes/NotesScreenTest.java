@@ -4,14 +4,13 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.squareup.spoon.Spoon;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import io.paper.android.PaperApp;
+import io.paper.android.utils.Screenshot;
 
 @RunWith(AndroidJUnit4.class)
 public class NotesScreenTest {
@@ -41,7 +40,7 @@ public class NotesScreenTest {
 
     @Test
     public void clickAddNoteButton_opensAddNoteUi() {
-        Spoon.screenshot(notesActivityTestRule.getActivity(), "state_before_adding_note");
+        Screenshot.capture(notesActivityTestRule.getActivity(), "state_before_adding_note");
 
         notesScreenRobot.addNewNote()
                 .enterTitle(NOTE_TITLE)
@@ -49,7 +48,7 @@ public class NotesScreenTest {
                 .pressBack()
                 .lookForNote(NOTE_TITLE);
 
-        Spoon.screenshot(notesActivityTestRule.getActivity(), "state_after_adding_note");
+        Screenshot.capture(notesActivityTestRule.getActivity(), "state_after_adding_note");
     }
 
     @Test

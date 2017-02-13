@@ -23,6 +23,10 @@ repositories {
     maven {
         url("https://oss.sonatype.org/content/repositories/snapshots")
     }
+
+    flatDir {
+        dirs "libs"
+    }
 }
 
 def getFabricKey = {
@@ -115,6 +119,11 @@ android {
     }
 }
 
+spoon {
+    // for debug output
+    debug = true
+}
+
 dependencies {
     compile "hu.supercluster:paperwork:${libraries.paperwork}"
 
@@ -166,6 +175,9 @@ dependencies {
     androidTestCompile("com.google.truth:truth:${libraries.truth}") {
         exclude group: 'junit' // Android has JUnit built in.
     }
+
+    // Firebase lib to capture screenshots
+    androidTestCompile(name: "firebase", ext: "aar")
 
     // Spoon client which allows to capture screenshots
     androidTestCompile "com.squareup.spoon:spoon-client:${libraries.spoon}"
