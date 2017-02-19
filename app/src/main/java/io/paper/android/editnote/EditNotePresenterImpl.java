@@ -4,9 +4,9 @@ import android.support.annotation.NonNull;
 
 import java.util.concurrent.TimeUnit;
 
-import io.paper.android.notes.NotesRepository;
-import io.paper.android.commons.views.View;
 import io.paper.android.commons.schedulers.SchedulerProvider;
+import io.paper.android.commons.views.View;
+import io.paper.android.notes.NotesRepository;
 import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
