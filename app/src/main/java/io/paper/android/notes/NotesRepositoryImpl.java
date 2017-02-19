@@ -10,7 +10,7 @@ import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.paper.android.notes.Note.Columns;
 import io.reactivex.Observable;
 
-public class NotesRepositoryImpl implements NotesRepository {
+class NotesRepositoryImpl implements NotesRepository {
     private static final String QUERY_STATEMENT = "SELECT " +
             Columns.ID + "," +
             Columns.TITLE + "," +
@@ -33,7 +33,7 @@ public class NotesRepositoryImpl implements NotesRepository {
     private final SQLiteStatement updateDescriptionStatement;
     private final SQLiteStatement deleteStatement;
 
-    public NotesRepositoryImpl(BriteDatabase briteDatabase) {
+    NotesRepositoryImpl(BriteDatabase briteDatabase) {
         this.briteDatabase = briteDatabase;
         this.insertStatement = briteDatabase.getWritableDatabase()
                 .compileStatement(INSERT_STATEMENT);
