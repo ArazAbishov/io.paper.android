@@ -1,8 +1,8 @@
 package io.paper.android;
 
-import io.paper.android.data.DbModule;
-import io.paper.android.utils.IdlingSchedulerProvider;
-import io.paper.android.utils.SchedulersModule;
+import io.paper.android.commons.database.DbModule;
+import io.paper.android.commons.schedulers.IdlingSchedulerProvider;
+import io.paper.android.commons.schedulers.SchedulersModule;
 
 public class PaperInstrumentationTestApp extends PaperApp {
 
