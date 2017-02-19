@@ -2,6 +2,8 @@ package io.paper.android.notes;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -16,7 +18,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class NotesPresenterTest {
+@RunWith(JUnit4.class)
+public class NotesPresenterTests {
 
     @Mock
     NotesRepository notesRepository;
