@@ -1,4 +1,4 @@
-package io.paper.android.data;
+package io.paper.android.commons.database;
 
 import android.app.Application;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -25,19 +25,19 @@ public final class DbModule {
 
     @Provides
     @Singleton
-    SqlBrite providesSqlBrite() {
+    SqlBrite sqlBrite() {
         return new SqlBrite.Builder().build();
     }
 
     @Provides
     @Singleton
-    SQLiteOpenHelper providesSqlLiteOpenHelper(Application application) {
+    SQLiteOpenHelper sqlLiteOpenHelper(Application application) {
         return new DbOpenHelper(application, databaseName);
     }
 
     @Provides
     @Singleton
-    BriteDatabase providesBriteDatabase(SQLiteOpenHelper databaseOpenHelper, SqlBrite sqlBrite) {
+    BriteDatabase briteDatabase(SQLiteOpenHelper databaseOpenHelper, SqlBrite sqlBrite) {
         BriteDatabase briteDatabase = sqlBrite.wrapDatabaseHelper(
                 databaseOpenHelper, Schedulers.io());
         briteDatabase.setLoggingEnabled(true);

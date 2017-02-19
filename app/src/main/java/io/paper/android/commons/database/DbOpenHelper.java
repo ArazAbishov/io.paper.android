@@ -1,4 +1,4 @@
-package io.paper.android.data;
+package io.paper.android.commons.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
