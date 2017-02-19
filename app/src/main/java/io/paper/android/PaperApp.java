@@ -1,9 +1,9 @@
 package io.paper.android;
 
 import android.app.Application;
-import android.content.Context;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
@@ -11,23 +11,31 @@ import com.crashlytics.android.core.CrashlyticsCore;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
+import javax.inject.Singleton;
+
 import hu.supercluster.paperwork.Paperwork;
 import io.fabric.sdk.android.Fabric;
-import io.paper.android.data.DbModule;
-import io.paper.android.editnote.EditNoteComponent;
-import io.paper.android.editnote.EditNoteModule;
-import io.paper.android.utils.CrashReportingTree;
-import io.paper.android.utils.SchedulersModule;
-import io.paper.android.utils.SchedulersProviderImpl;
+import io.paper.android.commons.CrashReportingTree;
+import io.paper.android.commons.dagger.PerSession;
+import io.paper.android.commons.database.DbModule;
+import io.paper.android.commons.schedulers.SchedulersModule;
+import io.paper.android.commons.schedulers.SchedulersProviderImpl;
+import io.paper.android.notes.NotesComponent;
+import io.paper.android.notes.NotesModule;
 import timber.log.Timber;
 
-// ToDo: Add more tests for data layer (Stores, Models)
 public class PaperApp extends Application {
     private static final String DATABASE_NAME = "paper.db";
     private static final String GIT_SHA = "gitSha";
     private static final String BUILD_DATE = "buildDate";
 
+    @Singleton
     private AppComponent appComponent;
+
+    @PerSession
+    private NotesComponent notesComponent;
+
+    @Nullable
     private RefWatcher refWatcher;
 
     @Override
@@ -40,26 +48,27 @@ public class PaperApp extends Application {
             return;
         }
 
-        appComponent = prepareAppComponent().build();
         refWatcher = setUpLeakCanary();
+        appComponent = prepareAppComponent().build();
+        notesComponent = setUpNotesComponent();
 
         Paperwork paperwork = setUpPaperwork();
         setUpFabric(paperwork);
         setUpTimber();
-        setStrictMode();
+
+        setUpStrictMode();
     }
 
-    public static AppComponent getAppComponent(Context context) {
-        return ((PaperApp) context.getApplicationContext()).appComponent;
+    public RefWatcher refWatcher() {
+        return refWatcher;
     }
 
-    public static EditNoteComponent getEditNoteComponent(Context context, Long noteId) {
-        return ((PaperApp) context.getApplicationContext())
-                .appComponent.plus(new EditNoteModule(noteId));
+    public AppComponent appComponent() {
+        return appComponent;
     }
 
-    public static RefWatcher refWatcher(Context context) {
-        return ((PaperApp) context.getApplicationContext()).refWatcher;
+    public NotesComponent notesComponent() {
+        return notesComponent;
     }
 
     protected DaggerAppComponent.Builder prepareAppComponent() {
@@ -81,6 +90,11 @@ public class PaperApp extends Application {
     @NonNull
     private Paperwork setUpPaperwork() {
         return new Paperwork(this);
+    }
+
+    @NonNull
+    private NotesComponent setUpNotesComponent() {
+        return appComponent.plus(new NotesModule());
     }
 
     private void setUpFabric(@NonNull Paperwork paperwork) {
@@ -113,7 +127,7 @@ public class PaperApp extends Application {
         }
     }
 
-    private void setStrictMode() {
+    private void setUpStrictMode() {
         if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                     .detectAll()
