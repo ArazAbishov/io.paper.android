@@ -1,4 +1,4 @@
-package io.paper.android.notes;
+package io.paper.android.listnotes;
 
 import android.support.annotation.NonNull;
 import android.support.test.espresso.Espresso;

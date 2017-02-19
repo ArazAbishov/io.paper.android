@@ -1,4 +1,4 @@
-package io.paper.android.notes;
+package io.paper.android.listnotes;
 
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
@@ -27,15 +27,16 @@ public class NotesScreenTest {
 
     @Rule
     @SuppressWarnings("CheckReturnValue")
-    public ActivityTestRule<NotesActivity> notesActivityTestRule =
-            new ActivityTestRule<NotesActivity>(NotesActivity.class) {
+    public ActivityTestRule<ListNotesActivity> notesActivityTestRule =
+            new ActivityTestRule<ListNotesActivity>(ListNotesActivity.class) {
                 @Override
                 protected void beforeActivityLaunched() {
                     super.beforeActivityLaunched();
 
                     // remove all notes before starting activity
-                    PaperApp.getAppComponent(InstrumentationRegistry.getTargetContext()
-                            .getApplicationContext()).notesRepository().clear().blockingFirst();
+                    PaperApp paperApp = (PaperApp) InstrumentationRegistry
+                            .getTargetContext().getApplicationContext();
+                    paperApp.notesComponent().notesRepository().clear().blockingFirst();
                 }
             };
 
@@ -56,7 +57,8 @@ public class NotesScreenTest {
     @SuppressWarnings("CheckReturnValue")
     public void tearDown() {
         // we need to make sure that repository does not contain any state from execution of other tests
-        PaperApp.getAppComponent(InstrumentationRegistry.getTargetContext()
-                .getApplicationContext()).notesRepository().clear().blockingFirst();
+        PaperApp paperApp = (PaperApp) InstrumentationRegistry
+                .getTargetContext().getApplicationContext();
+        paperApp.notesComponent().notesRepository().clear();
     }
 }
