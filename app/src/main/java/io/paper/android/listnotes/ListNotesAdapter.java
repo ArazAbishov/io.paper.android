@@ -1,4 +1,4 @@
-package io.paper.android.notes;
+package io.paper.android.listnotes;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,13 +13,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.paper.android.R;
+import io.paper.android.notes.Note;
 
-final class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHolder> {
+final class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.NoteViewHolder> {
     private final LayoutInflater inflater;
     private final List<Note> notes;
     private final OnNoteClickListener onNoteClickListener;
 
-    NotesAdapter(LayoutInflater inflater, OnNoteClickListener onNoteClickListener) {
+    ListNotesAdapter(LayoutInflater inflater, OnNoteClickListener onNoteClickListener) {
         this.inflater = inflater;
         this.notes = new ArrayList<>();
         this.onNoteClickListener = onNoteClickListener;

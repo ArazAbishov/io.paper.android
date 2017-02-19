@@ -16,7 +16,6 @@ import com.jakewharton.rxbinding2.widget.RxTextView;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.paper.android.PaperApp;
 import io.paper.android.R;
 import io.paper.android.commons.views.BaseFragment;
@@ -69,7 +68,7 @@ public class EditNoteFragment extends BaseFragment implements EditNoteView {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        unbinder(ButterKnife.bind(this, view));
+        bind(this, view);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
     }
 

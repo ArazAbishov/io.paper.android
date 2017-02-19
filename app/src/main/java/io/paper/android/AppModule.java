@@ -14,7 +14,7 @@ import io.paper.android.commons.schedulers.SchedulersModule;
                 DbModule.class, SchedulersModule.class
         }
 )
-public final class AppModule {
+final class AppModule {
     private final Application application;
 
     AppModule(Application application) {

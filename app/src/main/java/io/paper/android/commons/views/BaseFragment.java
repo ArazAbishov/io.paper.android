@@ -1,7 +1,9 @@
 package io.paper.android.commons.views;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
+import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.paper.android.PaperApp;
 
@@ -19,7 +21,7 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    protected void unbinder(Unbinder unbinder) {
-        this.unbinder = unbinder;
+    protected void bind(@NonNull Object target, @NonNull android.view.View view) {
+        this.unbinder = ButterKnife.bind(target, view);
     }
 }

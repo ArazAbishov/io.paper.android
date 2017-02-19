@@ -7,6 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.squareup.spoon.Spoon;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -53,7 +54,7 @@ public class EditNoteScreenTest {
         Spoon.screenshot(editNoteActivityRule.getActivity(), "current_state_of_the_note");
     }
 
-    @Test
+    @After
     @SuppressWarnings("CheckReturnValue")
     public void tearDown() {
         // we need to make sure that repository does not contain any state from execution of other tests

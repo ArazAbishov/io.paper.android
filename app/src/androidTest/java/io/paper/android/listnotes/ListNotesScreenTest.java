@@ -6,6 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.squareup.spoon.Spoon;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -14,15 +15,15 @@ import org.junit.runner.RunWith;
 import io.paper.android.PaperApp;
 
 @RunWith(AndroidJUnit4.class)
-public class NotesScreenTest {
+public class ListNotesScreenTest {
     private static final String NOTE_TITLE = "Note title";
     private static final String NOTE_DESCRIPTION = "Note description";
 
-    private NotesScreenRobot notesScreenRobot;
+    private ListNotesScreenRobot listNotesScreenRobot;
 
     @Before
     public void setUp() throws Exception {
-        notesScreenRobot = new NotesScreenRobot();
+        listNotesScreenRobot = new ListNotesScreenRobot();
     }
 
     @Rule
@@ -44,7 +45,7 @@ public class NotesScreenTest {
     public void clickAddNoteButton_opensAddNoteUi() {
         Spoon.screenshot(notesActivityTestRule.getActivity(), "state_before_adding_note");
 
-        notesScreenRobot.addNewNote()
+        listNotesScreenRobot.addNewNote()
                 .enterTitle(NOTE_TITLE)
                 .enterDescription(NOTE_DESCRIPTION)
                 .pressBack()
@@ -53,7 +54,7 @@ public class NotesScreenTest {
         Spoon.screenshot(notesActivityTestRule.getActivity(), "state_after_adding_note");
     }
 
-    @Test
+    @After
     @SuppressWarnings("CheckReturnValue")
     public void tearDown() {
         // we need to make sure that repository does not contain any state from execution of other tests

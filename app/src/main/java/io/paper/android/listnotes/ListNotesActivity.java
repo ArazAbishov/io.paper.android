@@ -1,11 +1,11 @@
-package io.paper.android.notes;
+package io.paper.android.listnotes;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import io.paper.android.R;
 
-public class NotesActivity extends AppCompatActivity {
+public class ListNotesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -13,10 +13,10 @@ public class NotesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_content);
 
         // replacing content with fragment only on first start of activity,
-        // in order not to lose state of NotesFragment afterwards
+        // in order not to lose state of ListNotesFragment afterwards
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.framelayout_content, new NotesFragment())
+                    .replace(R.id.framelayout_content, new ListNotesFragment())
                     .commit();
         }
     }

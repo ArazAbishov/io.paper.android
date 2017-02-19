@@ -17,40 +17,40 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static io.paper.android.espresso.ViewActions.withItemText;
 
-public class NotesScreenRobot {
-    public NotesScreenRobot() {
+final class ListNotesScreenRobot {
+    ListNotesScreenRobot() {
         // explicit empty constructor
     }
 
     @NonNull
-    public NotesScreenRobot addNewNote() {
+    ListNotesScreenRobot addNewNote() {
         // click on the add note button
         onView(withId(R.id.fab_add_note)).perform(click());
         return this;
     }
 
     @NonNull
-    public NotesScreenRobot enterTitle(@NonNull String title) {
+    ListNotesScreenRobot enterTitle(@NonNull String title) {
         onView(withId(R.id.edittext_note_title)).perform(
                 typeText(title), closeSoftKeyboard());
         return this;
     }
 
     @NonNull
-    public NotesScreenRobot enterDescription(@NonNull String description) {
+    ListNotesScreenRobot enterDescription(@NonNull String description) {
         onView(withId(R.id.edittext_note_description)).perform(
                 typeText(description), closeSoftKeyboard());
         return this;
     }
 
     @NonNull
-    public NotesScreenRobot pressBack() {
+    ListNotesScreenRobot pressBack() {
         Espresso.pressBack();
         return this;
     }
 
     @NonNull
-    public NotesScreenRobot lookForNote(@NonNull String title) {
+    ListNotesScreenRobot lookForNote(@NonNull String title) {
         onView(withId(R.id.recyclerview_notes)).perform(
                 scrollTo(hasDescendant(withText(title))));
         onView(withItemText(title)).check(matches(isDisplayed()));

@@ -11,7 +11,7 @@ import nl.jqno.equalsverifier.Warning;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(JUnit4.class)
-public class NotesTest {
+public class ListNotesTest {
 
     @Test
     public void equals_shouldConformToContract() {
