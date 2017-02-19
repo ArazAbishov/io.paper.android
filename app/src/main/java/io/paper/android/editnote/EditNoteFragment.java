@@ -17,11 +17,10 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import io.paper.android.PaperApp;
 import io.paper.android.R;
+import io.paper.android.commons.views.BaseFragment;
 import io.paper.android.notes.Note;
-import io.paper.android.ui.BaseFragment;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 
@@ -36,9 +35,6 @@ public class EditNoteFragment extends BaseFragment implements EditNoteView {
 
     @BindView(R.id.edittext_note_description)
     EditText editTextDescription;
-
-    @Nullable
-    Unbinder unbinder;
 
     @Inject
     EditNotePresenter editNotePresenter;
@@ -58,7 +54,10 @@ public class EditNoteFragment extends BaseFragment implements EditNoteView {
         super.onAttach(context);
 
         Long noteId = getArguments().getLong(ARG_NOTE_ID);
-        PaperApp.getEditNoteComponent(context, noteId).inject(this);
+
+        ((PaperApp) getActivity().getApplicationContext()).notesComponent()
+                .plus(new EditNoteModule(noteId))
+                .inject(this);
     }
 
     @Nullable
@@ -70,7 +69,7 @@ public class EditNoteFragment extends BaseFragment implements EditNoteView {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        unbinder = ButterKnife.bind(this, view);
+        unbinder(ButterKnife.bind(this, view));
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
     }
 
@@ -86,31 +85,22 @@ public class EditNoteFragment extends BaseFragment implements EditNoteView {
         editNotePresenter.detachView();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        if (unbinder != null) {
-            unbinder.unbind();
-        }
-    }
-
     @NonNull
     @Override
-    public Observable<Object> toolbar() {
+    public Observable<Object> toolbarNavigationButtonClicks() {
         return RxToolbar.navigationClicks(toolbar);
     }
 
     @NonNull
     @Override
-    public Observable<String> noteTitle() {
+    public Observable<String> noteTitleFieldChanges() {
         return RxTextView.textChanges(editTextTitle)
                 .map(CharSequence::toString);
     }
 
     @NonNull
     @Override
-    public Observable<String> noteDescription() {
+    public Observable<String> noteDescriptionFieldChanges() {
         return RxTextView.textChanges(editTextDescription)
                 .map(CharSequence::toString);
     }

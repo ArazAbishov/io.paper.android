@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 import java.util.concurrent.TimeUnit;
 
 import io.paper.android.notes.NotesRepository;
-import io.paper.android.ui.View;
-import io.paper.android.utils.SchedulerProvider;
+import io.paper.android.commons.views.View;
+import io.paper.android.commons.schedulers.SchedulerProvider;
 import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
@@ -38,19 +38,19 @@ class EditNotePresenterImpl implements EditNotePresenter {
         if (view instanceof EditNoteView) {
             EditNoteView editNoteView = (EditNoteView) view;
 
-            disposable.add(editNoteView.toolbar()
+            disposable.add(editNoteView.toolbarNavigationButtonClicks()
                     .subscribeOn(schedulerProvider.ui())
                     .observeOn(schedulerProvider.ui())
                     .subscribe(editNoteView.navigateUp(), Timber::e));
 
-            disposable.add(editNoteView.noteTitle()
+            disposable.add(editNoteView.noteTitleFieldChanges()
                     .debounce(256, TimeUnit.MILLISECONDS, schedulerProvider.computation())
                     .switchMap((title) -> notesRepository.putTitle(noteId, title))
                     .subscribeOn(schedulerProvider.ui())
                     .observeOn(schedulerProvider.io())
                     .subscribe((updated) -> Timber.i("%d notes were updated", updated), Timber::e));
 
-            disposable.add(editNoteView.noteDescription()
+            disposable.add(editNoteView.noteDescriptionFieldChanges()
                     .debounce(256, TimeUnit.MILLISECONDS, schedulerProvider.computation())
                     .switchMap((description) -> notesRepository.putDescription(noteId, description))
                     .subscribeOn(schedulerProvider.ui())

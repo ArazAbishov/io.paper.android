@@ -1,6 +1,6 @@
 package io.paper.android.editnote;
 
-import io.paper.android.ui.Presenter;
+import io.paper.android.commons.views.Presenter;
 
-public interface EditNotePresenter extends Presenter {
+interface EditNotePresenter extends Presenter {
 }

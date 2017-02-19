@@ -3,8 +3,8 @@ package io.paper.android.editnote;
 import dagger.Module;
 import dagger.Provides;
 import io.paper.android.notes.NotesRepository;
-import io.paper.android.ui.ActivityScope;
-import io.paper.android.utils.SchedulerProvider;
+import io.paper.android.commons.dagger.PerView;
+import io.paper.android.commons.schedulers.SchedulerProvider;
 
 @Module
 public class EditNoteModule {
@@ -15,8 +15,8 @@ public class EditNoteModule {
     }
 
     @Provides
-    @ActivityScope
-    public EditNotePresenter providesEditNotePresenter(
+    @PerView
+    EditNotePresenter providesEditNotePresenter(
             SchedulerProvider schedulerProvider, NotesRepository notesRepository) {
         return new EditNotePresenterImpl(noteId, schedulerProvider, notesRepository);
     }

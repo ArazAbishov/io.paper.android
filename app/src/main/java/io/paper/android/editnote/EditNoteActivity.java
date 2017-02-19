@@ -22,7 +22,7 @@ public class EditNoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_content);
 
         // replacing content with fragment only on first start of activity,
-        // in order not to lose state of NotesFragment afterwards
+        // in order not to lose state of ListNotesFragment afterwards
         if (savedInstanceState == null) {
             Long noteId = getIntent().getExtras().getLong(ARG_NOTE_ID);
             getSupportFragmentManager().beginTransaction()

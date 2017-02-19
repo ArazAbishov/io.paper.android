@@ -11,7 +11,7 @@ import org.mockito.MockitoAnnotations;
 
 import io.paper.android.notes.Note;
 import io.paper.android.notes.NotesRepository;
-import io.paper.android.utils.ImmediateSchedulerProvider;
+import io.paper.android.commons.schedulers.ImmediateSchedulerProvider;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
@@ -51,20 +51,20 @@ public class EditNotePresenterTests {
                 .description("test_note_description")
                 .build();
 
-        when(editNoteView.noteTitle()).thenReturn(noteTitleSubject);
-        when(editNoteView.noteDescription()).thenReturn(noteDescriptionSubject);
-        when(editNoteView.toolbar()).thenReturn(toolbarNavigationClicks);
+        when(editNoteView.noteTitleFieldChanges()).thenReturn(noteTitleSubject);
+        when(editNoteView.noteDescriptionFieldChanges()).thenReturn(noteDescriptionSubject);
+        when(editNoteView.toolbarNavigationButtonClicks()).thenReturn(toolbarNavigationClicks);
 
         when(notesRepository.get(any())).thenReturn(Observable.just(note));
     }
 
     @Test
-    public void onAttachShouldRenderNote() throws Exception {
+    public void attachViewShouldRenderNote() throws Exception {
         ArgumentCaptor<Note> showNoteConsumer = ArgumentCaptor.forClass(Note.class);
         editNotePresenter.attachView(editNoteView);
 
-        verify(editNoteView).noteTitle();
-        verify(editNoteView).noteDescription();
+        verify(editNoteView).noteTitleFieldChanges();
+        verify(editNoteView).noteDescriptionFieldChanges();
         verify(editNoteView.showNote()).accept(showNoteConsumer.capture());
         verify(notesRepository).get(11L);
 
@@ -76,7 +76,7 @@ public class EditNotePresenterTests {
         when(notesRepository.putTitle(any(), any())).thenReturn(Observable.just(1));
 
         editNotePresenter.attachView(editNoteView);
-        verify(editNoteView).noteTitle();
+        verify(editNoteView).noteTitleFieldChanges();
 
         noteTitleSubject.onNext("test_note_another_title");
         verify(notesRepository).putTitle(11L, "test_note_another_title");
@@ -90,7 +90,7 @@ public class EditNotePresenterTests {
         when(notesRepository.putDescription(any(), any())).thenReturn(Observable.just(1));
 
         editNotePresenter.attachView(editNoteView);
-        verify(editNoteView).noteDescription();
+        verify(editNoteView).noteDescriptionFieldChanges();
 
         noteDescriptionSubject.onNext("test_note_another_description");
         verify(notesRepository).putDescription(11L, "test_note_another_description");
@@ -111,7 +111,7 @@ public class EditNotePresenterTests {
     }
 
     @Test
-    public void onDetachShouldUnsubscribeFromViews() {
+    public void detachViewShouldUnsubscribeFromViews() {
         editNotePresenter.attachView(editNoteView);
         assertThat(noteTitleSubject.hasObservers()).isTrue();
         assertThat(noteDescriptionSubject.hasObservers()).isTrue();
