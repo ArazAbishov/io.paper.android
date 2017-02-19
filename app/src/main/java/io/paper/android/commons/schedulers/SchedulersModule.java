@@ -1,4 +1,4 @@
-package io.paper.android.utils;
+package io.paper.android.commons.schedulers;
 
 import android.support.annotation.NonNull;
 
@@ -17,7 +17,7 @@ public class SchedulersModule {
 
     @Provides
     @Singleton
-    SchedulerProvider providesSchedulerProvider() {
+    SchedulerProvider schedulerProvider() {
         return schedulerProvider;
     }
 }
