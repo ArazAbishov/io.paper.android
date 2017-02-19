@@ -1,11 +1,6 @@
 package io.paper.android.editnote;
 
-import android.support.annotation.NonNull;
+import io.paper.android.commons.views.Presenter;
 
-import io.paper.android.ui.Presenter;
-
-public interface EditNotePresenter extends Presenter {
-    void updateTitle(@NonNull String title);
-
-    void updateDescription(@NonNull String description);
+interface EditNotePresenter extends Presenter {
 }

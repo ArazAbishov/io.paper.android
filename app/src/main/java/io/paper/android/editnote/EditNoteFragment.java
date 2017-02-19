@@ -10,16 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
+import com.jakewharton.rxbinding2.widget.RxTextView;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnTextChanged;
-import butterknife.Unbinder;
 import io.paper.android.PaperApp;
 import io.paper.android.R;
+import io.paper.android.commons.views.BaseFragment;
 import io.paper.android.notes.Note;
-import io.paper.android.ui.BaseFragment;
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 
 public class EditNoteFragment extends BaseFragment implements EditNoteView {
     private static final String ARG_NOTE_ID = "arg:noteId";
@@ -32,9 +34,6 @@ public class EditNoteFragment extends BaseFragment implements EditNoteView {
 
     @BindView(R.id.edittext_note_description)
     EditText editTextDescription;
-
-    @Nullable
-    Unbinder unbinder;
 
     @Inject
     EditNotePresenter editNotePresenter;
@@ -53,14 +52,15 @@ public class EditNoteFragment extends BaseFragment implements EditNoteView {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        // note id
         Long noteId = getArguments().getLong(ARG_NOTE_ID);
 
-        // inject dependencies
-        PaperApp.getEditNoteComponent(context, noteId).inject(this);
+        ((PaperApp) getActivity().getApplicationContext()).notesComponent()
+                .plus(new EditNoteModule(noteId))
+                .inject(this);
     }
 
-    @Nullable @Override
+    @Nullable
+    @Override
     public View onCreateView(LayoutInflater inflater,
             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_edit_note, container, false);
@@ -68,16 +68,8 @@ public class EditNoteFragment extends BaseFragment implements EditNoteView {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        unbinder = ButterKnife.bind(this, view);
-
-        // toolbar configuration
+        bind(this, view);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        toolbar.setNavigationOnClickListener((toolbar) -> {
-                    if (isAdded() && getActivity() != null) {
-                        getActivity().onBackPressed();
-                    }
-                }
-        );
     }
 
     @Override
@@ -92,32 +84,42 @@ public class EditNoteFragment extends BaseFragment implements EditNoteView {
         editNotePresenter.detachView();
     }
 
+    @NonNull
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        if (unbinder != null) {
-            unbinder.unbind();
-        }
+    public Observable<Object> toolbarNavigationButtonClicks() {
+        return RxToolbar.navigationClicks(toolbar);
     }
 
+    @NonNull
     @Override
-    public void showNote(@NonNull Note note) {
-        editTextTitle.setText(note.title());
-        editTextDescription.setText(note.description());
+    public Observable<String> noteTitleFieldChanges() {
+        return RxTextView.textChanges(editTextTitle)
+                .map(CharSequence::toString);
     }
 
-    @OnTextChanged(value = {
-            R.id.edittext_note_title
-    }, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
-    public void onTitleChanged(CharSequence title) {
-        editNotePresenter.updateTitle(title.toString());
+    @NonNull
+    @Override
+    public Observable<String> noteDescriptionFieldChanges() {
+        return RxTextView.textChanges(editTextDescription)
+                .map(CharSequence::toString);
     }
 
-    @OnTextChanged(value = {
-            R.id.edittext_note_description
-    }, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
-    public void onDescriptionChanged(CharSequence description) {
-        editNotePresenter.updateDescription(description.toString());
+    @NonNull
+    @Override
+    public Consumer<Note> showNote() {
+        return (note) -> {
+            editTextTitle.setText(note.title());
+            editTextDescription.setText(note.description());
+        };
+    }
+
+    @NonNull
+    @Override
+    public Consumer<Object> navigateUp() {
+        return (event) -> {
+            if (isAdded() && getActivity() != null) {
+                getActivity().onBackPressed();
+            }
+        };
     }
 }

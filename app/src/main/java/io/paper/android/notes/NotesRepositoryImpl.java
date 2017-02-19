@@ -33,7 +33,7 @@ class NotesRepositoryImpl implements NotesRepository {
     private final SQLiteStatement updateDescriptionStatement;
     private final SQLiteStatement deleteStatement;
 
-    public NotesRepositoryImpl(BriteDatabase briteDatabase) {
+    NotesRepositoryImpl(BriteDatabase briteDatabase) {
         this.briteDatabase = briteDatabase;
         this.insertStatement = briteDatabase.getWritableDatabase()
                 .compileStatement(INSERT_STATEMENT);

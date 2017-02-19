@@ -7,6 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.squareup.spoon.Spoon;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,9 +32,11 @@ public class EditNoteScreenTest {
     public void setUp() {
         editNoteScreenRobot = new EditNoteScreenRobot();
 
+        PaperApp paperApp = (PaperApp) InstrumentationRegistry
+                .getTargetContext().getApplicationContext();
+
         // add note to fake repository synchronously
-        notesRepository = PaperApp.getAppComponent(InstrumentationRegistry.getTargetContext()
-                .getApplicationContext()).notesRepository();
+        notesRepository = paperApp.notesComponent().notesRepository();
         Long noteId = notesRepository.add(NOTE_TITLE, NOTE_DESCRIPTION).blockingFirst();
 
         // start activity
@@ -51,11 +54,12 @@ public class EditNoteScreenTest {
         Spoon.screenshot(editNoteActivityRule.getActivity(), "current_state_of_the_note");
     }
 
-    @Test
+    @After
     @SuppressWarnings("CheckReturnValue")
     public void tearDown() {
         // we need to make sure that repository does not contain any state from execution of other tests
-        PaperApp.getAppComponent(InstrumentationRegistry.getTargetContext()
-                .getApplicationContext()).notesRepository().clear().blockingFirst();
+        PaperApp paperApp = (PaperApp) InstrumentationRegistry
+                .getTargetContext().getApplicationContext();
+        paperApp.notesComponent().notesRepository().clear();
     }
 }

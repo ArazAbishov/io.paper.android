@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Paper</string>
 
-    <!-- NotesFragment -->
+    <!-- ListNotesFragment -->
     <string name="notes">Notes</string>
 
     <!-- AddNoteFragment -->

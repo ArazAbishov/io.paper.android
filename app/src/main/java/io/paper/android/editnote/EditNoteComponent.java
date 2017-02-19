@@ -1,9 +1,9 @@
 package io.paper.android.editnote;
 
 import dagger.Subcomponent;
-import io.paper.android.ui.ActivityScope;
+import io.paper.android.commons.dagger.PerView;
 
-@ActivityScope
+@PerView
 @Subcomponent(modules = {
         EditNoteModule.class
 })

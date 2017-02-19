@@ -3,7 +3,6 @@ package io.paper.android.notes;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -15,13 +14,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import io.paper.android.PaperApp;
-import io.paper.android.data.DbOpenHelper;
+import io.paper.android.commons.database.DbOpenHelper;
+import io.paper.android.notes.Note;
+import io.paper.android.notes.NotesRepository;
+import io.paper.android.notes.NotesRepositoryImpl;
 import rx.schedulers.Schedulers;
 
 import static com.google.common.truth.Truth.assertThat;
-import static io.paper.android.data.CursorAssert.assertThatCursor;
-
+import static io.paper.android.commons.database.CursorAssert.assertThatCursor;
 
 @RunWith(AndroidJUnit4.class)
 public class NotesRepositoryIntegrationTests {
@@ -32,26 +32,24 @@ public class NotesRepositoryIntegrationTests {
     };
 
     private SQLiteDatabase database;
-    private SQLiteOpenHelper sqLiteOpenHelper;
+    private BriteDatabase briteDatabase;
     private NotesRepository notesRepository;
 
     @Before
     public void setUp() {
-        SqlBrite sqlBrite = PaperApp.getAppComponent(InstrumentationRegistry
-                .getTargetContext()).sqlBrite();
-        sqLiteOpenHelper = new DbOpenHelper(
+        SqlBrite sqlBrite = new SqlBrite.Builder().build();
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(
                 InstrumentationRegistry.getTargetContext(), null);
 
         // setting immediate scheduler in order to have synchronous behaviour
-        BriteDatabase briteDatabase = sqlBrite.wrapDatabaseHelper(
-                sqLiteOpenHelper, Schedulers.immediate());
-
-        database = sqLiteOpenHelper.getWritableDatabase();
+        briteDatabase = sqlBrite.wrapDatabaseHelper(
+                dbOpenHelper, Schedulers.immediate());
+        database = briteDatabase.getWritableDatabase();
         notesRepository = new NotesRepositoryImpl(briteDatabase);
     }
 
     @Test
-    public void add_shouldPersistNoteInDatabase() {
+    public void addShouldPersistNoteInDatabase() {
         Long noteId = notesRepository.add(
                 "test_note_title",
                 "test_note_description"
@@ -67,7 +65,7 @@ public class NotesRepositoryIntegrationTests {
     }
 
     @Test
-    public void putTitle_shouldUpdateExistingRowInDatabase() {
+    public void putTitleShouldUpdateExistingRowInDatabase() {
         ContentValues contentValues = new ContentValues();
         contentValues.put(Note.Columns.ID, 10L);
         contentValues.put(Note.Columns.TITLE, "test_note_title");
@@ -89,7 +87,7 @@ public class NotesRepositoryIntegrationTests {
     }
 
     @Test
-    public void putDescription_shouldUpdateExistingRowInDatabase() {
+    public void putDescriptionShouldUpdateExistingRowInDatabase() {
         ContentValues contentValues = new ContentValues();
         contentValues.put(Note.Columns.ID, 10L);
         contentValues.put(Note.Columns.TITLE, "test_note_title");
@@ -111,7 +109,7 @@ public class NotesRepositoryIntegrationTests {
     }
 
     @Test
-    public void list_shouldReturnPersistedNotes() {
+    public void listShouldReturnPersistedNotes() {
         Note note = Note.builder()
                 .id(10L)
                 .title("test_note_title")
@@ -129,7 +127,7 @@ public class NotesRepositoryIntegrationTests {
     }
 
     @Test
-    public void get_shouldReturnPersistedNote() {
+    public void getShouldReturnPersistedNote() {
         Note note = Note.builder()
                 .id(10L)
                 .title("test_note_title")
@@ -147,7 +145,7 @@ public class NotesRepositoryIntegrationTests {
     }
 
     @Test
-    public void clear_shouldDeleteAllPersistedRows() {
+    public void clearShouldDeleteAllPersistedRows() {
         Note note = Note.builder()
                 .id(10L)
                 .title("test_note_title")
@@ -169,6 +167,6 @@ public class NotesRepositoryIntegrationTests {
     public void tearDown() {
         // erase contents of in-memory database
         // and close connection to it
-        sqLiteOpenHelper.close();
+        briteDatabase.close();
     }
 }

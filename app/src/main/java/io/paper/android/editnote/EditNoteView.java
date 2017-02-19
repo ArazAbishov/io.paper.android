@@ -3,8 +3,24 @@ package io.paper.android.editnote;
 import android.support.annotation.NonNull;
 
 import io.paper.android.notes.Note;
-import io.paper.android.ui.View;
+import io.paper.android.commons.views.View;
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 
-public interface EditNoteView extends View {
-    void showNote(@NonNull Note note);
+interface EditNoteView extends View {
+
+    @NonNull
+    Observable<Object> toolbarNavigationButtonClicks();
+
+    @NonNull
+    Observable<String> noteTitleFieldChanges();
+
+    @NonNull
+    Observable<String> noteDescriptionFieldChanges();
+
+    @NonNull
+    Consumer<Note> showNote();
+
+    @NonNull
+    Consumer<Object> navigateUp();
 }
