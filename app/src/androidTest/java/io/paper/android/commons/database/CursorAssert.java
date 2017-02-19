@@ -1,4 +1,4 @@
-package io.paper.android.data;
+package io.paper.android.commons.database;
 
 import android.database.Cursor;
 import android.support.annotation.NonNull;

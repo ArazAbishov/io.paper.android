@@ -1,4 +1,4 @@
-package io.paper.android.utils;
+package io.paper.android.commons.schedulers;
 
 import android.support.annotation.NonNull;
 import android.support.test.espresso.IdlingResource;
