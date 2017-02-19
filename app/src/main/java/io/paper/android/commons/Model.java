@@ -1,4 +1,4 @@
-package io.paper.android.data;
+package io.paper.android.commons;
 
 import android.provider.BaseColumns;
 import android.support.annotation.Nullable;

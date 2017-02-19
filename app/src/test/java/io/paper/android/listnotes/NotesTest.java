@@ -1,9 +1,10 @@
-package io.paper.android.notes;
+package io.paper.android.listnotes;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import io.paper.android.notes.Note;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 

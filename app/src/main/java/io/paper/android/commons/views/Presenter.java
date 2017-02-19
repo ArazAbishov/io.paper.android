@@ -1,4 +1,4 @@
-package io.paper.android.ui;
+package io.paper.android.commons.views;
 
 import android.support.annotation.NonNull;
 
