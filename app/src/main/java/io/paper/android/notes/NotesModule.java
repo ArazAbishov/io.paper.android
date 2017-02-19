@@ -2,17 +2,17 @@ package io.paper.android.notes;
 
 import com.squareup.sqlbrite.BriteDatabase;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
+import io.paper.android.commons.dagger.PerSession;
 
+@PerSession
 @Module
-public final class NotesModule {
+public class NotesModule {
 
     @Provides
-    @Singleton
-    NotesRepository providesNotesRepository(BriteDatabase briteDatabase) {
+    @PerSession
+    NotesRepository notesRepository(BriteDatabase briteDatabase) {
         return new NotesRepositoryImpl(briteDatabase);
     }
 }

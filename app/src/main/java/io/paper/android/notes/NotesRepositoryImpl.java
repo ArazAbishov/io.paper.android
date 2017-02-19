@@ -10,7 +10,7 @@ import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import io.paper.android.notes.Note.Columns;
 import io.reactivex.Observable;
 
-class NotesRepositoryImpl implements NotesRepository {
+public class NotesRepositoryImpl implements NotesRepository {
     private static final String QUERY_STATEMENT = "SELECT " +
             Columns.ID + "," +
             Columns.TITLE + "," +

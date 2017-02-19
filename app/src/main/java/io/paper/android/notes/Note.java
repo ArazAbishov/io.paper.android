@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import com.gabrielittner.auto.value.cursor.ColumnName;
 import com.google.auto.value.AutoValue;
 
-import io.paper.android.data.Model;
+import io.paper.android.commons.Model;
 
 /**
  * Immutable model which represents Note
