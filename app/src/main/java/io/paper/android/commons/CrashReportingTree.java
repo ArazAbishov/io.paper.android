@@ -1,4 +1,4 @@
-package io.paper.android.utils;
+package io.paper.android.commons;
 
 import android.util.Log;
 
@@ -7,6 +7,10 @@ import com.crashlytics.android.Crashlytics;
 import timber.log.Timber;
 
 public final class CrashReportingTree extends Timber.Tree {
+
+    public CrashReportingTree() {
+        // explicit public constructor
+    }
 
     @Override
     protected void log(int priority, String tag, String message, Throwable throwable) {
