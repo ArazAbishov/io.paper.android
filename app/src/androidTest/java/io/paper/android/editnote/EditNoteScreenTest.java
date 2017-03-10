@@ -5,8 +5,6 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.squareup.spoon.Spoon;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -15,6 +13,7 @@ import org.junit.runner.RunWith;
 
 import io.paper.android.PaperApp;
 import io.paper.android.notes.NotesRepository;
+import io.paper.android.utils.Screenshot;
 
 @RunWith(AndroidJUnit4.class)
 public class EditNoteScreenTest {
@@ -51,15 +50,14 @@ public class EditNoteScreenTest {
                 .checkTitle(NOTE_TITLE)
                 .checkDescription(NOTE_DESCRIPTION);
 
-        Spoon.screenshot(editNoteActivityRule.getActivity(), "current_state_of_the_note");
+        Screenshot.capture(editNoteActivityRule.getActivity(), "current_state_of_the_note");
     }
 
     @After
     @SuppressWarnings("CheckReturnValue")
     public void tearDown() {
-        // we need to make sure that repository does not contain any state from execution of other tests
-        PaperApp paperApp = (PaperApp) InstrumentationRegistry
-                .getTargetContext().getApplicationContext();
-        paperApp.notesComponent().notesRepository().clear();
+        // we need to make sure that repository does not contain
+        // any state from execution of other tests
+        notesRepository.clear();
     }
 }
