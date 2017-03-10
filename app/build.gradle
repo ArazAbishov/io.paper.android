@@ -171,8 +171,9 @@ dependencies {
 
     // Spoon client which allows to capture screenshots
     androidTestCompile "com.squareup.spoon:spoon-client:${libraries.spoon}"
-
-    androidTestCompile "com.android.support.test.espresso:espresso-core:${libraries.espresso}"
+    androidTestCompile("com.android.support.test.espresso:espresso-core:${libraries.espresso}") {
+        exclude module: "support-annotations"
+    }
     androidTestCompile("com.android.support.test.espresso:espresso-contrib:${libraries.espresso}") {
         // Causes IncompatibleClassChangeError
         exclude module: "support-annotations"
