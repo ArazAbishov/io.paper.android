@@ -25,7 +25,7 @@ import rx.exceptions.OnErrorNotImplementedException;
 final class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.NoteViewHolder> {
     private final LayoutInflater inflater;
     private final List<Note> notes;
-    private final FlowableProcessor<ListNoteAction> subject;
+    private final FlowableProcessor<ListNotesAction> subject;
 
     ListNotesAdapter(LayoutInflater inflater) {
         this.inflater = inflater;
@@ -50,7 +50,7 @@ final class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.NoteV
     }
 
     @NonNull
-    public Flowable<ListNoteAction> asFlowable() {
+    public Flowable<ListNotesAction> asFlowable() {
         return subject;
     }
 
@@ -84,7 +84,7 @@ final class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.NoteV
         final Disposable subscribe(ViewGroup parent, View itemView) {
             return RxView.clicks(itemView)
                     .takeUntil(RxView.detaches(parent))
-                    .map(click -> ListNoteAction.click(note))
+                    .map(click -> ListNotesAction.click(note))
                     .subscribe(action -> subject.onNext(action), throwable -> {
                         throw new OnErrorNotImplementedException(throwable);
                     });

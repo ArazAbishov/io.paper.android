@@ -13,7 +13,7 @@ import io.reactivex.functions.Consumer;
 interface ListNotesView extends View {
 
     @NonNull
-    Flowable<ListNoteAction> notesActions();
+    Flowable<ListNotesAction> notesActions();
 
     @NonNull
     Observable<Object> createNoteButtonClicks();

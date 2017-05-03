@@ -88,7 +88,7 @@ public final class ListNotesFragment extends BaseFragment implements ListNotesVi
 
     @NonNull
     @Override
-    public Flowable<ListNoteAction> notesActions() {
+    public Flowable<ListNotesAction> notesActions() {
         return listNotesAdapter.asFlowable();
     }
 
