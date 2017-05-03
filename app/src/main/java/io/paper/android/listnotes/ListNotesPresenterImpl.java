@@ -6,7 +6,7 @@ import io.paper.android.commons.schedulers.SchedulerProvider;
 import io.paper.android.commons.views.View;
 import io.paper.android.notes.NotesRepository;
 import io.reactivex.disposables.CompositeDisposable;
-import timber.log.Timber;
+import rx.exceptions.OnErrorNotImplementedException;
 
 class ListNotesPresenterImpl implements ListNotesPresenter {
     private final SchedulerProvider schedulerProvider;
@@ -25,15 +25,27 @@ class ListNotesPresenterImpl implements ListNotesPresenter {
         if (view instanceof ListNotesView) {
             ListNotesView listNotesView = (ListNotesView) view;
 
+            disposable.add(listNotesView.notesActions()
+                    .subscribeOn(schedulerProvider.io())
+                    .observeOn(schedulerProvider.ui())
+                    .map(action -> action.note().id())
+                    .subscribe(listNotesView.navigateToEditNoteView(), throwable -> {
+                        throw new OnErrorNotImplementedException(throwable);
+                    }));
+
             disposable.add(notesRepository.list()
                     .observeOn(schedulerProvider.ui())
-                    .subscribe(listNotesView.showNotes()));
+                    .subscribe(listNotesView.showNotes(), throwable -> {
+                        throw new OnErrorNotImplementedException(throwable);
+                    }));
 
             disposable.add(listNotesView.createNoteButtonClicks()
                     .subscribeOn(schedulerProvider.ui())
                     .observeOn(schedulerProvider.io())
                     .switchMap((event) -> notesRepository.add("", ""))
-                    .subscribe(listNotesView.navigateToEditNoteView(), Timber::e));
+                    .subscribe(listNotesView.navigateToEditNoteView(), throwable -> {
+                        throw new OnErrorNotImplementedException(throwable);
+                    }));
         }
     }
 

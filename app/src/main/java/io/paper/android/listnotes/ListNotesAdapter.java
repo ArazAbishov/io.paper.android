@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.view.RxView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,22 +16,27 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.paper.android.R;
 import io.paper.android.notes.Note;
+import io.reactivex.Flowable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.processors.FlowableProcessor;
+import io.reactivex.processors.PublishProcessor;
+import rx.exceptions.OnErrorNotImplementedException;
 
 final class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.NoteViewHolder> {
     private final LayoutInflater inflater;
     private final List<Note> notes;
-    private final OnNoteClickListener onNoteClickListener;
+    private final FlowableProcessor<ListNoteAction> subject;
 
-    ListNotesAdapter(LayoutInflater inflater, OnNoteClickListener onNoteClickListener) {
+    ListNotesAdapter(LayoutInflater inflater) {
         this.inflater = inflater;
         this.notes = new ArrayList<>();
-        this.onNoteClickListener = onNoteClickListener;
+        this.subject = PublishProcessor.create();
     }
 
     @Override
     public NoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new NoteViewHolder(inflater.inflate(
-                R.layout.recyclerview_item_note, parent, false), onNoteClickListener);
+        return new NoteViewHolder(parent, inflater.inflate(
+                R.layout.recyclerview_item_note, parent, false));
     }
 
     @Override
@@ -42,6 +49,11 @@ final class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.NoteV
         return notes.size();
     }
 
+    @NonNull
+    public Flowable<ListNoteAction> asFlowable() {
+        return subject;
+    }
+
     void swap(List<Note> notes) {
         this.notes.clear();
 
@@ -52,11 +64,7 @@ final class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.NoteV
         notifyDataSetChanged();
     }
 
-    interface OnNoteClickListener {
-        void onNoteClick(Note note);
-    }
-
-    static class NoteViewHolder extends RecyclerView.ViewHolder {
+    class NoteViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.textview_note_title)
         TextView title;
@@ -64,43 +72,28 @@ final class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.NoteV
         @BindView(R.id.textview_note_description)
         TextView description;
 
-        @NonNull
-        OnRowClickListener onRowClickListener;
+        Note note;
 
-        NoteViewHolder(View itemView, OnNoteClickListener onNoteClickListener) {
+        @SuppressWarnings("CheckReturnValue")
+        NoteViewHolder(ViewGroup parent, View itemView) {
             super(itemView);
-
             ButterKnife.bind(this, itemView);
-
-            // injecting external click listener to delegate (internal click listener)
-            onRowClickListener = new OnRowClickListener(onNoteClickListener);
-
-            // setting onClick listener to view
-            itemView.setOnClickListener(onRowClickListener);
+            subscribe(parent, itemView);
         }
 
-        void update(Note note) {
+        final Disposable subscribe(ViewGroup parent, View itemView) {
+            return RxView.clicks(itemView)
+                    .takeUntil(RxView.detaches(parent))
+                    .map(click -> ListNoteAction.click(note))
+                    .subscribe(action -> subject.onNext(action), throwable -> {
+                        throw new OnErrorNotImplementedException(throwable);
+                    });
+        }
+
+        final void update(Note updated) {
+            note = updated;
             title.setText(note.title());
             description.setText(note.description());
-            onRowClickListener.setNote(note);
-        }
-    }
-
-    private static class OnRowClickListener implements View.OnClickListener {
-        private final OnNoteClickListener onNoteClickListener;
-        private Note note;
-
-        OnRowClickListener(OnNoteClickListener onNoteClickListener) {
-            this.onNoteClickListener = onNoteClickListener;
-        }
-
-        @Override
-        public void onClick(View view) {
-            onNoteClickListener.onNoteClick(note);
-        }
-
-        public void setNote(Note note) {
-            this.note = note;
         }
     }
 }

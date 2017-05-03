@@ -24,6 +24,7 @@ import io.paper.android.R;
 import io.paper.android.commons.views.BaseFragment;
 import io.paper.android.editnote.EditNoteActivity;
 import io.paper.android.notes.Note;
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 
@@ -68,8 +69,7 @@ public final class ListNotesFragment extends BaseFragment implements ListNotesVi
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        listNotesAdapter = new ListNotesAdapter(
-                LayoutInflater.from(getActivity()), note -> editNote(note.id()));
+        listNotesAdapter = new ListNotesAdapter(LayoutInflater.from(getActivity()));
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(listNotesAdapter);
     }
@@ -88,6 +88,12 @@ public final class ListNotesFragment extends BaseFragment implements ListNotesVi
 
     @NonNull
     @Override
+    public Flowable<ListNoteAction> notesActions() {
+        return listNotesAdapter.asFlowable();
+    }
+
+    @NonNull
+    @Override
     public Observable<Object> createNoteButtonClicks() {
         return RxView.clicks(addNoteButton);
     }
@@ -95,7 +101,7 @@ public final class ListNotesFragment extends BaseFragment implements ListNotesVi
     @NonNull
     @Override
     public Consumer<List<Note>> showNotes() {
-        return (notes) -> listNotesAdapter.swap(notes);
+        return notes -> listNotesAdapter.swap(notes);
     }
 
     @NonNull
