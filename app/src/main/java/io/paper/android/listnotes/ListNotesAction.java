@@ -7,13 +7,13 @@ import com.google.auto.value.AutoValue;
 import io.paper.android.notes.Note;
 
 @AutoValue
-public abstract class ListNotesAction {
+abstract class ListNotesAction {
 
     @NonNull
-    public abstract Note note();
+    abstract Note note();
 
     @NonNull
-    public static ListNotesAction click(@NonNull Note note) {
+    static ListNotesAction click(@NonNull Note note) {
         return new AutoValue_ListNotesAction(note);
     }
 }
