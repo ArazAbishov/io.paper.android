@@ -1,5 +1,7 @@
 package io.paper.android.listnotes;
 
+import android.support.v7.util.DiffUtil;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.paper.android.commons.schedulers.ImmediateSchedulerProvider;
+import io.paper.android.commons.tuples.Pair;
 import io.paper.android.notes.Note;
 import io.paper.android.notes.NotesRepository;
 import io.reactivex.Observable;
@@ -35,7 +38,7 @@ public class ListNotesPresenterTests {
     private ListNotesView listNotesView;
 
     @Captor
-    private ArgumentCaptor<List<Note>> notesCaptor;
+    private ArgumentCaptor<Pair<List<Note>, DiffUtil.DiffResult>> notesCaptor;
 
     @Captor
     private ArgumentCaptor<Long> navigateToEditNoteViewCaptor;

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -41,7 +42,6 @@ public final class ListNotesFragment extends BaseFragment implements ListNotesVi
 
     @Inject
     ListNotesPresenter listNotesPresenter;
-
     ListNotesAdapter listNotesAdapter;
 
     @Override
@@ -70,8 +70,11 @@ public final class ListNotesFragment extends BaseFragment implements ListNotesVi
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         listNotesAdapter = new ListNotesAdapter(LayoutInflater.from(getActivity()));
+        listNotesAdapter.setHasStableIds(true);
+
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(listNotesAdapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     @Override
