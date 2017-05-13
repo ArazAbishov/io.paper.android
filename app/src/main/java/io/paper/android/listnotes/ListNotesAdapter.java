@@ -1,6 +1,7 @@
 package io.paper.android.listnotes;
 
 import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,7 @@ final class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.NoteV
 
     @Override
     public void onBindViewHolder(NoteViewHolder holder, int position) {
-        holder.update(notes.get(position));
+        holder.update(notes.get(holder.getAdapterPosition()));
     }
 
     @Override
@@ -54,14 +55,19 @@ final class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.NoteV
         return subject;
     }
 
-    void swap(List<Note> notes) {
-        this.notes.clear();
+    @Override
+    public long getItemId(int position) {
+        return notes.get(position).id();
+    }
 
-        if (notes != null) {
-            this.notes.addAll(notes);
-        }
+    void swap(@NonNull List<Note> updates) {
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
+                new ListNotesDiff(notes, updates));
 
-        notifyDataSetChanged();
+        notes.clear();
+        notes.addAll(updates);
+
+        diffResult.dispatchUpdatesTo(this);
     }
 
     class NoteViewHolder extends RecyclerView.ViewHolder {

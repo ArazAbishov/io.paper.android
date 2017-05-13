@@ -34,6 +34,7 @@ class ListNotesPresenterImpl implements ListNotesPresenter {
                     }));
 
             disposable.add(notesRepository.list()
+                    .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribe(listNotesView.showNotes(), throwable -> {
                         throw new OnErrorNotImplementedException(throwable);

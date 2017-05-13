@@ -1,21 +1,20 @@
 package io.paper.android.commons.tuples;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
 
 @AutoValue
 public abstract class Pair<A, B> {
 
-    @Nullable
+    @NonNull
     public abstract A val0();
 
-    @Nullable
+    @NonNull
     public abstract B val1();
 
     @NonNull
-    public static <A, B> Pair<A, B> create(@Nullable A val0, @Nullable B val1) {
+    public static <A, B> Pair<A, B> create(@NonNull A val0, @NonNull B val1) {
         return new AutoValue_Pair<>(val0, val1);
     }
 }
